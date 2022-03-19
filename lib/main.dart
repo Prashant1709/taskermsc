@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:taskermsc/Screens/login.dart';
+import 'package:taskermsc/Screens/register.dart';
+import 'package:taskermsc/Screens/title_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -17,9 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
+        '/':(context)=>titlePage(),
         '/login':(context)=>login(),
+        '/regist':(context)=>Register(),
+
       },
     );
   }

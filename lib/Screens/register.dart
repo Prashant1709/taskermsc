@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-class login extends StatefulWidget {
-  const login({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<login> createState() => _loginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _loginState extends State<login> {
+class _RegisterState extends State<Register> {
   final _auth=FirebaseAuth.instance;
   String email="";
   String pass="";
+  String username="";
   @override
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -42,7 +43,7 @@ class _loginState extends State<login> {
               Container(
                 padding: EdgeInsets.only(top: 80),
                 child: Text(
-                  "Login",
+                  "Register",
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -50,19 +51,36 @@ class _loginState extends State<login> {
                 ),
               ),
               Container(
+                  padding: EdgeInsets.only(top: 30),
+                  child: Text("Email",
+                      style: TextStyle(fontSize: 18, color: Colors.white))),
+              Padding(padding: EdgeInsets.only(top: 10)),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(5)),
+                width: 350,
+                height: 50,
+                padding: EdgeInsets.only(left: 4),
+                child: TextFormField(
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "Email",
+                      hintStyle: TextStyle(color: Colors.grey[700])),
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value){
+                    email=value;
+                  },
+                ),
+              ),
+              Container(
                 padding: EdgeInsets.only(top: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Icon(Icons.email,color: Colors.white,),
-                        SizedBox(width: 10,),
-                        Text("Email-ID",
-                            style: TextStyle(fontSize: 18, color: Colors.white)),
-
-                      ],
-                    ),
+                    Text("Username",
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
                     Padding(padding: EdgeInsets.only(top: 10)),
                     Container(
                       decoration: BoxDecoration(
@@ -75,22 +93,16 @@ class _loginState extends State<login> {
                         style: TextStyle(fontSize: 18, color: Colors.white),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Enter Your Email",
+                            hintText: "Enter Your Username",
                             hintStyle: TextStyle(color: Colors.grey[700])),
                         onChanged: (value){
-                          email=value;
+                          username=value;
                         },
                       ),
                     ),
                     Padding(padding: EdgeInsets.only(top: 40)),
-                    Row(
-                      children: [
-                        Icon(Icons.admin_panel_settings_sharp,color: Colors.white,),
-                        SizedBox(width: 10,),
-                        Text("Password",
-                            style: TextStyle(fontSize: 18, color: Colors.white)),
-                      ],
-                    ),
+                    Text("Password",
+                        style: TextStyle(fontSize: 18, color: Colors.white)),
                     Padding(padding: EdgeInsets.only(top: 10)),
                     Container(
                       decoration: BoxDecoration(
@@ -103,46 +115,73 @@ class _loginState extends State<login> {
                         style: TextStyle(fontSize: 18, color: Colors.white),
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Password(>6)",
+                            hintText: "Password",
                             hintStyle: TextStyle(color: Colors.grey[700])),
                         keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
-                        obscuringCharacter: '*',
+                        obscureText: false,
                         onChanged: (value){
                           pass=value;
                         },
                       ),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 60)),
+                    Padding(padding: EdgeInsets.only(top: 40)),
                     Container(
                       height: 48,
                       width: 355,
                       decoration: BoxDecoration(border: Border.all()),
                       //color: Colors.blue[900],
-                      child: MaterialButton(onPressed: () async {
-                        try{
-                          final user=await _auth.signInWithEmailAndPassword(email: email, password: pass);
-                          if(user!=null){
-                            print("Logged IN");
-                            //Navigator.pushNamed(context, '/home');
+                      child: MaterialButton(
+                        onPressed: ()async {
+                          try{
+                            final newUser=await _auth.createUserWithEmailAndPassword(email: email, password: pass);
+                            if(newUser!=null){
+                              print("Registered");
+                              showDialog<void>(
+                                context: context,
+                                barrierDismissible: false, // user must tap button!
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('User Registered'),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: const <Widget>[
+                                          Text('Click proceed to update username and login'),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Proceed'),
+                                        onPressed: () {
+                                          Navigator.pushNamed(context,'/login');
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                    elevation: 24,
+                                  );
+                                },
+                              );
+                            }
                           }
-                          if(_auth.currentUser==null){
+                          catch(e){
+                            print(e);
                             showDialog<void>(
                               context: context,
                               barrierDismissible: false, // user must tap button!
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text('User Not Found'),
+                                  title: const Text('Error Encountered'),
                                   content: SingleChildScrollView(
                                     child: ListBody(
                                       children: const <Widget>[
-                                        Text('Please click on register to proceed!'),
+                                        Text("Check password, min 6 charachters needed"),
                                       ],
                                     ),
                                   ),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: const Text('Accept'),
+                                      child: const Text('Proceed'),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
@@ -153,51 +192,22 @@ class _loginState extends State<login> {
                               },
                             );
                           }
-                        }catch(e){
-                          showDialog<void>(
-                            context: context,
-                            barrierDismissible: false, // user must tap button!
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Error'),
-                                content: SingleChildScrollView(
-                                  child: ListBody(
-                                    children: const <Widget>[
-                                      Text('Please check the credentials to proceed!'),
-                                    ],
-                                  ),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: const Text('Accept'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                                elevation: 24,
-                              );
-                            },
-                          );
-                          print(e);
-                        }
-
-                      },
+                        },
                         color: Colors.blue[900],
-                        child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("LOGIN",style: TextStyle(color: Colors.white,fontSize: 16),),
-                          Icon(Icons.navigate_next,color: Colors.white,),
-                        ],),
+                        child: Center(
+                            child: Text("REGISTER",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white))),
                       ),
                     ),
+                    Padding(padding: EdgeInsets.all(12.0)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
                           child: Divider(
                             color: Colors.grey,
-                            height: 130,
+                            height: 10,
                             endIndent: 10,
                             thickness: 2,
                           ),
@@ -216,11 +226,12 @@ class _loginState extends State<login> {
                         ),
                       ],
                     ),
+                    Padding(padding: EdgeInsets.all(12.0)),
                     IntrinsicHeight(
                       child: Row(mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           OutlinedButton(onPressed: (){
-                              signInWithGoogle();
+                            signInWithGoogle();
                           }, child: CircleAvatar(foregroundImage: AssetImage('assets/google.png'),backgroundColor: Colors.black,minRadius: 22,maxRadius: 26,)),
                           VerticalDivider(thickness: 1,color: Colors.grey,),
                           OutlinedButton(onPressed: (){}, child: CircleAvatar(foregroundImage: AssetImage('assets/git.png'),backgroundColor: Colors.grey,minRadius: 22,maxRadius: 26,)),
@@ -234,67 +245,18 @@ class _loginState extends State<login> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?",
+                  Text("Already have an account?",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           color: Color.fromARGB(255, 128, 125, 125))),
                   TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context,'/regist');
+                        Navigator.pushNamed(context,'/login');
                       },
-                      child: Text("Register",
+                      child: Text("Login",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              color: Colors.white)))
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        showDialog<void>(
-                          context: context,
-                          barrierDismissible: false, // user must tap button!
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Password Recovery'),
-                              content: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Text('Enter registered email to get reset link.'),
-                                    TextFormField(
-                                      style: TextStyle(fontSize: 18, color: Colors.white),
-                                      decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Enter Your Email",
-                                          hintStyle: TextStyle(color: Colors.grey[700])),
-                                      onChanged: (value){
-                                        email=value;
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Proceed'),
-                                  onPressed: () {
-                                    _auth.sendPasswordResetEmail(email: email);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                              elevation: 24,
-                            );
-                          },
-                        );
-                      },
-                      child: Text("Forgot Password",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 18,
                               color: Colors.white)))
                 ],
               ),
