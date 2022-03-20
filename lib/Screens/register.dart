@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
 
@@ -10,9 +11,11 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final _auth=FirebaseAuth.instance;
+  final firestoreInstance = FirebaseFirestore.instance;
   String email="";
   String pass="";
   String username="";
+  String uid="";
   @override
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -135,7 +138,7 @@ class _RegisterState extends State<Register> {
                           try{
                             final newUser=await _auth.createUserWithEmailAndPassword(email: email, password: pass);
                             if(newUser!=null){
-                              print("Registered");
+                              //print("Registered");
                               showDialog<void>(
                                 context: context,
                                 barrierDismissible: false, // user must tap button!
@@ -152,9 +155,14 @@ class _RegisterState extends State<Register> {
                                     actions: <Widget>[
                                       TextButton(
                                         child: const Text('Proceed'),
-                                        onPressed: () {
-                                          Navigator.pushNamed(context,'/login');
-                                          Navigator.pop(context);
+                                        onPressed: () async {
+                                          final newUser = await _auth.currentUser;
+                                          uid=newUser!.uid;
+                                          firestoreInstance.collection('$uid').doc('Data').set({'username':username,});
+                                          firestoreInstance.collection('$uid').doc('Completed').set({'completed':0});
+                                          firestoreInstance.collection('$uid').doc('Ongoing').set({'ongoing':0});
+                                          firestoreInstance.collection('$uid').doc('All').set({'number':0,});
+                                          Navigator.of(context).popAndPushNamed('/login');
                                         },
                                       ),
                                     ],

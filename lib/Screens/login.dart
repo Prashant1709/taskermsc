@@ -124,7 +124,7 @@ class _loginState extends State<login> {
                           final user=await _auth.signInWithEmailAndPassword(email: email, password: pass);
                           if(user!=null){
                             print("Logged IN");
-                            //Navigator.pushNamed(context, '/home');
+                            Navigator.pushNamed(context, '/home');
                           }
                           if(_auth.currentUser==null){
                             showDialog<void>(

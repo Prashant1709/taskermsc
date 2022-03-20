@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:taskermsc/Screens/home.dart';
 import 'package:taskermsc/Screens/login.dart';
 import 'package:taskermsc/Screens/register.dart';
 import 'package:taskermsc/Screens/title_page.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/':(context)=>titlePage(),
         '/login':(context)=>login(),
         '/regist':(context)=>Register(),
-
+        '/home':(context)=>home(),
       },
     );
   }
