@@ -12,6 +12,7 @@ class _loginState extends State<login> {
   final _auth=FirebaseAuth.instance;
   String email="";
   String pass="";
+  String uid="";
   @override
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -123,8 +124,38 @@ class _loginState extends State<login> {
                         try{
                           final user=await _auth.signInWithEmailAndPassword(email: email, password: pass);
                           if(user!=null){
-                            print("Logged IN");
+                            //print("Logged IN");
+                            if(user.user!.emailVerified){
+                            uid=_auth.currentUser!.uid;
                             Navigator.pushNamed(context, '/home');
+                          }
+                          else{
+                              showDialog<void>(
+                                context: context,
+                                barrierDismissible: false, // user must tap button!
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('User not verified'),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: const <Widget>[
+                                          Text('Please check your registered email and verify to proceed!'),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Accept'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                    elevation: 24,
+                                  );
+                                },
+                              );
+                            }
                           }
                           if(_auth.currentUser==null){
                             showDialog<void>(

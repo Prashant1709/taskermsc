@@ -148,7 +148,7 @@ class _RegisterState extends State<Register> {
                                     content: SingleChildScrollView(
                                       child: ListBody(
                                         children: const <Widget>[
-                                          Text('Click proceed to update username and login'),
+                                          Text('Click proceed to update username and receive verification mail'),
                                         ],
                                       ),
                                     ),
@@ -158,9 +158,8 @@ class _RegisterState extends State<Register> {
                                         onPressed: () async {
                                           final newUser = await _auth.currentUser;
                                           uid=newUser!.uid;
+                                          await newUser.sendEmailVerification();
                                           firestoreInstance.collection('$uid').doc('Data').set({'username':username,});
-                                          firestoreInstance.collection('$uid').doc('Completed').set({'completed':0});
-                                          firestoreInstance.collection('$uid').doc('Ongoing').set({'ongoing':0});
                                           firestoreInstance.collection('$uid').doc('All').set({'number':0,});
                                           Navigator.of(context).popAndPushNamed('/login');
                                         },

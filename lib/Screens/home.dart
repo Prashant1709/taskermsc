@@ -9,31 +9,32 @@ class home extends StatefulWidget {
   @override
   State<home> createState() => _homeState();
 }
-
 class _homeState extends State<home> {
   final _auth=FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   String username="";
   String uid="";
   String Task="";
-  double _priority = 2;
   String priority="";
+  double _priority=0;
+  int all=0;
   @override
   void initState() {
     super.initState();
     getdat();
   }
-  void getdat() async {
-    final newUser = await _auth.currentUser;
+  Future<void> getdat() async {
+    final newUser = _auth.currentUser;
     //print(newUser?.uid);
     uid=newUser!.uid;
-    setdat();
-  }
-  void setdat(){
-    firestoreInstance.collection('$uid').doc('Data').snapshots().listen((result) {
+    print(uid);
+    firestoreInstance
+        .collection('$uid').doc('Data').snapshots()
+        .listen((result)  {
+      print(result.get("username"));
       username=result.get("username");
-    });
-  }
+      firestoreInstance.collection('$uid').doc('All').snapshots().listen((event) { all=event.get('number');});
+    });}
   DateTime _date = DateTime.now();
   String sdat="";
   void _selectDate() async {
@@ -104,6 +105,14 @@ class _homeState extends State<home> {
                   leading: Icon(Icons.home,color: Colors.teal,),
                   title: Text("Home"),
                   onTap: (){},
+                ),
+                ListTile(
+                  leading: Icon(Icons.exit_to_app,color: Colors.teal,),
+                  title: Text("Logout"),
+                  onTap: (){
+                   _auth.signOut();
+                   Navigator.pop(context);
+                  },
                 ),
                 Text("© MSC KIIT",textAlign: TextAlign.center,),
               ],
@@ -255,84 +264,121 @@ class _homeState extends State<home> {
           )),
           floatingActionButton:FloatingActionButton( //Floating action button on Scaffold
             onPressed: (){
-              showModalBottomSheet(context: context, builder: (context){
-                return Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(height: 20,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Create a new task!",style: TextStyle(color: Colors.teal,fontSize: 22),),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5)),
-                        width: 350,
-                        height: 50,
-                        padding: EdgeInsets.only(left: 4),
-                        child: TextFormField(
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Type here",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: false,
-                          onChanged: (value){
-                            Task=value;
-                          },
+              showDialog<void>(
+                context: context,
+                barrierDismissible: false, // user must tap button!
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Create Task',style: TextStyle(color: Colors.teal,fontSize: 18),),
+                    content: SingleChildScrollView(
+                      child: Material(
+                      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(height: 20,),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(5)),
+                              width: 350,
+                              height: 50,
+                              padding: EdgeInsets.only(left: 4),
+                              child: TextFormField(
+                                style: TextStyle(fontSize: 18, color: Colors.black),
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Type here",
+                                    hintStyle: TextStyle(color: Colors.grey)),
+                                keyboardType: TextInputType.visiblePassword,
+                                obscureText: false,
+                                onChanged: (value){
+                                  Task=value;
+                                },
+                              ),
+                            ),
+                          ),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              MaterialButton(onPressed:(){
+                                _selectDate();
+                                sdat=_date.day.toString();
+                              },
+                                color: Colors.teal,
+                                child: Text("Select End Date",style: TextStyle(color: Colors.white),),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                              ),
+                            ],
+                          ),
+                          SizedBox(width: 30,),
+                          Text("Set Priority",style: TextStyle(color: Colors.teal,fontSize: 18),),
+                          StatefulBuilder(builder: (context, setState) =>Slider(
+                            value: _priority,
+                            max: 100,
+                            divisions: 9,
+                            label: (_priority/10).round().toString(),
+                            onChanged: (double value) {
+                              setState(() {
+                                _priority = value;
+                              });
+                            },
+                          ),
+                          ),
+                          SizedBox(width: 20,),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [
+                          Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.image),
+                              tooltip: 'Add image to task',
+                              onPressed: () {},
+                            ),
+                            Text('Picture')
+                          ],
                         ),
-                      ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                icon: const Icon(Icons.person_add),
+                                tooltip: 'Add collaborators',
+                                onPressed: () {},
+                              ),
+                              Text('Collaborate')
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              IconButton(
+                                icon: const Icon(Icons.calendar_today),
+                                tooltip: 'Add meet',
+                                onPressed: () {},
+                              ),
+                              Text('Meeting')
+                            ],
+                          ),
+                        ],)
+                        ],),),
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        MaterialButton(onPressed:(){
-                          _selectDate();
-                          sdat=_date.day.toString();
-                        },
+                    actions: <Widget>[
+                      MaterialButton(onPressed: (){
+                        setState(() {
+                          all=all+1;
+                        });
+                        firestoreInstance.collection("$uid").doc("All").collection('$_date').doc('$Task').set({'Task':Task,'Date':_date,'Priority':10,'status':false,'number':all});
+                        Navigator.pop(context);
+                      },
                         color: Colors.teal,
-                          child: Text("Select End Date",style: TextStyle(color: Colors.white),),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Set Priority",style: TextStyle(color: Colors.teal,fontSize: 18),),
-                    ),
-                    Row(mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Low",style: TextStyle(color: Colors.green,fontSize: 14),),
-                        StatefulBuilder(builder: (context, setState) => Slider(
-                          value: _priority,
-                          min: 10,
-                          max: 100,
-                          divisions: 9,
-                          activeColor: Colors.teal,
-                          inactiveColor: Colors.tealAccent,
-                          label: ((_priority/10).round()).toString(),
-                          onChanged: (value) {
-                            setState(() {
-                              _priority = value;
-
-                            });
-                          },
-                        ),),
-                        Text("High",style: TextStyle(color: Colors.red,fontSize: 14),),
-                      ],
-                    ),
-                    SizedBox(height: 20,),
-                    MaterialButton(onPressed: (){},
-                      color: Colors.teal,
-                      child: Text("Create",style: TextStyle(color: Colors.white),),
-                    shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)) ,
-                    ),
-                  ],
-                );
-              },shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)) );
+                        child: Text("Create",style: TextStyle(color: Colors.white),),
+                        shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)) ,
+                      ),
+                    ],
+                    elevation: 24,
+                  );
+                },
+              );
             },
             backgroundColor: Color.fromRGBO(64, 95, 95, 1),
             child: Icon(Icons.add), //icon inside button
