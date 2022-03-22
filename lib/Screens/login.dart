@@ -108,6 +108,7 @@ class _loginState extends State<login> {
                             hintStyle: TextStyle(color: Colors.grey[700])),
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
+
                         obscuringCharacter: '*',
                         onChanged: (value){
                           pass=value;

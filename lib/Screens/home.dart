@@ -18,11 +18,15 @@ class _homeState extends State<home> {
   String priority="";
   double _priority=0;
   int all=0;
+  List <DateTime> date=[];
+  List <String> task=[];
+  //List <String> priority=[];
+  List <bool> Status=[];
+  List pcol1=[];
   @override
   void initState() {
     super.initState();
-    getdat();
-  }
+    getdat();}
   Future<void> getdat() async {
     final newUser = _auth.currentUser;
     //print(newUser?.uid);
@@ -34,7 +38,37 @@ class _homeState extends State<home> {
       print(result.get("username"));
       username=result.get("username");
       firestoreInstance.collection('$uid').doc('All').snapshots().listen((event) { all=event.get('number');});
-    });}
+    });
+    firestoreInstance.collection("$uid").doc('Tasks').collection('Data').snapshots().listen((event) {
+      for(var list in event.docs){
+        Timestamp timestamp=list.get('Date');
+        var result=DateTime.fromMicrosecondsSinceEpoch(timestamp.microsecondsSinceEpoch);
+        //print(result);
+        date.add(result);
+        var task1=list.get('Task');
+        task.add(task1);
+        var sta=list.get('status');
+        Status.add(sta);
+        var prio=list.get('Priority');
+        //priority.add(prio);
+        if(prio=="green"){
+          setState(() {
+            pcol1.add(Colors.green);
+          });
+        }
+        if(prio=="yellow"){
+          setState(() {
+            pcol1.add(Colors.yellow);
+          });
+        }
+        if(prio=="red"){
+          setState(() {
+            pcol1.add(Colors.red);
+          });
+        }
+      }
+    });
+  }
   DateTime _date = DateTime.now();
   String sdat="";
   void _selectDate() async {
@@ -55,9 +89,9 @@ class _homeState extends State<home> {
   Widget build(BuildContext context) {
       return MaterialApp(
         home: Scaffold(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.white24,
           appBar: AppBar(
-            backgroundColor: Color.fromRGBO(50, 70, 70, 1),
+            backgroundColor: Colors.white24,
             centerTitle: true,
             elevation: 0,
             actions: <Widget>[
@@ -65,6 +99,12 @@ class _homeState extends State<home> {
                   padding: EdgeInsets.only(right: 20.0),
                   child: GestureDetector(
                     onTap: () {
+                      setState(() {
+                        date.clear();
+                        task.clear();
+                        Status.clear();
+                      });
+                      getdat();
                       //Navigator.pushNamed(context,'/profile'),
                     },
                     child: Icon(
@@ -148,117 +188,202 @@ class _homeState extends State<home> {
                 ),
                 SizedBox(height: 50,),
                 Padding(padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 120,
-                          width: 120,
-                          child: Stack(
-                            children:<Widget>[ Center(
-                              child: Container(
-                                child: StreamBuilder<Object>(
-                                    stream: firestoreInstance.collection('$uid').doc('prg').snapshots(),
-                                    builder: (context, snapshot) {
-                                      return CircularProgressIndicator(
-                                        strokeWidth: 15,
-                                        value: 0.75,
-                                        color: Color.fromRGBO(79, 9, 29,1),
-                                      );
-                                    }
-                                ),
-                                width: 200,
-                                height:200,
-                              ),
-                            ),
-                              Center(child: Row(
-                                children: [
-                                  Text("\t\t\t\t\t\t 75%",textAlign:TextAlign.center,style: TextStyle(fontSize:20,fontStyle: FontStyle.italic,fontWeight: FontWeight.bold,fontFamily: 'poppins'),),
-                                ],
-                              )),
-                            ],
-                          ),
-                        ),
+                Padding(padding: EdgeInsets.all(10)),
+                Container(
+                  height: 500,
+                  child: StreamBuilder<Object>(
+                      stream:firestoreInstance.collection("$uid").doc('Tasks').collection('Data').snapshots() ,
+                      builder: (context, snapshot) {
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10),
+                          itemCount: task.length,
+                          itemBuilder: (context,int index)=>
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    side:BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                  ),
+                                  onPressed: (){
+                                    showDialog<void>(
+                                      context: context,
+                                      barrierDismissible: true, // user must tap button!
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Update Task',style: TextStyle(color: Colors.teal,fontSize: 18),),
+                                          content: SingleChildScrollView(
+                                            child: Material(
+                                              child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  SizedBox(height: 20,),
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(color: Colors.grey),
+                                                          borderRadius: BorderRadius.circular(5)),
+                                                      width: 350,
+                                                      height: 50,
+                                                      padding: EdgeInsets.only(left: 4),
+                                                      child: TextFormField(
+                                                        style: TextStyle(fontSize: 18, color: Colors.black),
+                                                        decoration: InputDecoration(
+                                                            border: InputBorder.none,
+                                                            hintText: "Type here",
+                                                            hintStyle: TextStyle(color: Colors.grey)),
+                                                        keyboardType: TextInputType.visiblePassword,
+                                                        obscureText: false,
+                                                        onChanged: (value){
+                                                          Task=value;
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    children: [
+                                                      MaterialButton(onPressed:(){
+                                                        _selectDate();
+                                                        sdat=_date.toString();
+                                                      },
+                                                        color: Colors.teal,
+                                                        child: Text("Select End Date",style: TextStyle(color: Colors.white),),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(width: 30,),
+                                                  Text("Set Priority",style: TextStyle(color: Colors.teal,fontSize: 18),),
+                                                  StatefulBuilder(builder: (context, setState) =>Slider(
+                                                    value: _priority,
+                                                    max: 10,
+                                                    label: (_priority/10).round().toString(),
+                                                    onChanged: (double value) {
+                                                      // print("$value");
+                                                      setState(() {
+                                                        _priority = value;
 
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: MaterialButton(onPressed: (){},color: Color.fromRGBO(64, 95, 95, 1),child: Text("All Tasks",style: TextStyle(color: Colors.white),),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 120,
-                          width: 120,
-                          child: Stack(
-                            children:<Widget>[ Center(
-                              child: Container(
-                                child: StreamBuilder<Object>(
-                                    stream: firestoreInstance.collection('$uid').doc('prg').snapshots(),
-                                    builder: (context, snapshot) {
-                                      return CircularProgressIndicator(
-                                        strokeWidth: 15,
-                                        value: 0.65,
-                                        color: Color.fromRGBO(79, 9, 29,1),
-                                      );
-                                    }
+                                                      });
+                                                      //print(_priority.round());
+                                                    },
+                                                  ),
+                                                  ),
+                                                  SizedBox(width: 20,),
+                                                  Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,children: [
+                                                    Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        IconButton(
+                                                          icon: const Icon(Icons.image),
+                                                          tooltip: 'Add image to task',
+                                                          onPressed: () {},
+                                                        ),
+                                                        Text('Picture')
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        IconButton(
+                                                          icon: const Icon(Icons.person_add),
+                                                          tooltip: 'Add collaborators',
+                                                          onPressed: () {},
+                                                        ),
+                                                        Text('Collaborate')
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        IconButton(
+                                                          icon: const Icon(Icons.calendar_today),
+                                                          tooltip: 'Add meet',
+                                                          onPressed: () {},
+                                                        ),
+                                                        Text('Meeting')
+                                                      ],
+                                                    ),
+                                                  ],)
+                                                ],),),
+                                          ),
+                                          actions: <Widget>[
+                                            MaterialButton(onPressed: (){
+                                              setState(() {
+                                                all=all-1;
+                                                if(_priority.toInt()>=0 && _priority.toInt()<4){
+                                                  setState((){
+                                                    priority="green";
+                                                  });
+                                                }
+                                                else if(_priority.toInt()>=4 && _priority.toInt()<=7){
+                                                  setState((){
+                                                    priority="yellow";
+                                                  });
+                                                }
+                                                else{
+                                                  setState((){
+                                                    priority="red";
+                                                  });
+                                                }
+                                              });
+                                              firestoreInstance.collection("$uid").doc('Tasks').collection('Data').doc('${date[index]}').update({'Task':Task,'Date':_date,'Priority':priority,'status':false,});
+                                              firestoreInstance.collection("$uid").doc("Data").update({'number':all});
+                                              Navigator.pop(context);
+                                            },
+                                              color: Colors.teal,
+                                              child: Text("Update",style: TextStyle(color: Colors.white),),
+                                              shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)) ,
+                                            ),
+                                            MaterialButton(onPressed: (){
+                                              setState(() {
+                                                all=all-1;
+
+                                              });
+                                              firestoreInstance.collection("$uid").doc('Tasks').collection('Data').doc('${date[index]}').delete();
+                                              firestoreInstance.collection("$uid").doc("Data").update({'number':all});
+                                              Navigator.pop(context);
+                                            },
+                                              color: Colors.teal,
+                                              child: Text("Mark as Done",style: TextStyle(color: Colors.white),),
+                                              shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)) ,
+                                            ),
+                                          ],
+                                          elevation: 24,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 100,
+                                    width: 350,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.white,
+                                          pcol1[index],
+                                        ],
+                                        begin: Alignment.bottomRight,
+                                        end: Alignment.topLeft,
+                                      ),
+                                    ),
+                                    child:Card(
+                                      color:Colors.white,
+                                      child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text("${task[index]}"),
+                                          Text("${date[index]}"),
+                                          //Text("${Status[index]}"),
+                                        ],
+                                      ), //declareyour widget here
+                                    ),
+                                  ),
                                 ),
-                                width: 200,
-                                height:200,
-                              ),
-                            ),
-                              Center(child: Row(
-                                children: [
-                                  Text("\t\t\t\t\t\t 65%",textAlign:TextAlign.center,style: TextStyle(fontSize:20,fontStyle: FontStyle.italic,fontWeight: FontWeight.bold,fontFamily: 'poppins'),),
-                                ],
-                              )),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: MaterialButton(onPressed: (){},color: Color.fromRGBO(64, 95, 95, 1),child: Text("Ongoing",style: TextStyle(color: Colors.white),),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40,),
-                SizedBox(
-                  height: 120,
-                  width: 120,
-                  child: Stack(
-                    children:<Widget>[ Center(
-                      child: Container(
-                        child: StreamBuilder<Object>(
-                            stream: firestoreInstance.collection('$uid').doc('prg').snapshots(),
-                            builder: (context, snapshot) {
-                              return CircularProgressIndicator(
-                                strokeWidth: 15,
-                                value: 0.25,
-                                color: Color.fromRGBO(79, 9, 29,1),
-                              );
-                            }
-                        ),
-                        width: 200,
-                        height:200,
-                      ),
-                    ),
-                      Center(child: Row(
-                        children: [
-                          Text("\t\t\t\t\t\t 25%",textAlign:TextAlign.center,style: TextStyle(fontSize:20,fontStyle: FontStyle.italic,fontWeight: FontWeight.bold,fontFamily: 'poppins'),),
-                        ],
-                      )),
-                    ],
+                              ),);
+
+                      }
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: MaterialButton(onPressed: (){},color: Color.fromRGBO(64, 95, 95, 1),child: Text("Completed",style: TextStyle(color: Colors.white),),shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),),
-                ),
-
               ],
             ),
           )),
@@ -266,7 +391,7 @@ class _homeState extends State<home> {
             onPressed: (){
               showDialog<void>(
                 context: context,
-                barrierDismissible: false, // user must tap button!
+                barrierDismissible: true, // user must tap button!
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Create Task',style: TextStyle(color: Colors.teal,fontSize: 18),),
@@ -302,7 +427,7 @@ class _homeState extends State<home> {
                             children: [
                               MaterialButton(onPressed:(){
                                 _selectDate();
-                                sdat=_date.day.toString();
+                                sdat=_date.toString();
                               },
                                 color: Colors.teal,
                                 child: Text("Select End Date",style: TextStyle(color: Colors.white),),
@@ -314,13 +439,15 @@ class _homeState extends State<home> {
                           Text("Set Priority",style: TextStyle(color: Colors.teal,fontSize: 18),),
                           StatefulBuilder(builder: (context, setState) =>Slider(
                             value: _priority,
-                            max: 100,
-                            divisions: 9,
+                            max: 10,
                             label: (_priority/10).round().toString(),
                             onChanged: (double value) {
+                             // print("$value");
                               setState(() {
                                 _priority = value;
+
                               });
+                              //print(_priority.round());
                             },
                           ),
                           ),
@@ -366,8 +493,24 @@ class _homeState extends State<home> {
                       MaterialButton(onPressed: (){
                         setState(() {
                           all=all+1;
+                          if(_priority.toInt()>=0 && _priority.toInt()<4){
+                            setState((){
+                              priority="green";
+                            });
+                          }
+                          else if(_priority.toInt()>=4 && _priority.toInt()<=7){
+                            setState((){
+                              priority="yellow";
+                            });
+                          }
+                          else{
+                            setState((){
+                              priority="red";
+                            });
+                          }
                         });
-                        firestoreInstance.collection("$uid").doc("All").collection('$_date').doc('$Task').set({'Task':Task,'Date':_date,'Priority':10,'status':false,'number':all});
+                        firestoreInstance.collection("$uid").doc('Tasks').collection('Data').doc('$_date').set({'Task':Task,'Date':_date,'Priority':priority,'status':false,});
+                        firestoreInstance.collection("$uid").doc("Data").update({'number':all});
                         Navigator.pop(context);
                       },
                         color: Colors.teal,
@@ -399,7 +542,7 @@ class _homeState extends State<home> {
                   },),
 
                   IconButton(icon: Icon(Icons.recent_actors, color: Colors.white,), onPressed: () {
-                    //Navigator.pushNamed(context, '/logs');
+                    Navigator.pushNamed(context, '/task');
                   },),
                   SizedBox(width: 30,),
                   IconButton(icon: Icon(Icons.sensor_door_outlined, color: Colors.white,), onPressed: () {

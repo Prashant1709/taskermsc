@@ -19,17 +19,8 @@ class titlePage extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                "Welcome to",
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-          ),
-          Center(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "MSC Task Assigner",
-                style: TextStyle(color: Colors.white, fontSize: 24),
+                "Task It",
+                style: TextStyle(color: Colors.white, fontSize: 44,fontFamily: 'ShadowsIntoLight'),
               ),
             ),
           ),
