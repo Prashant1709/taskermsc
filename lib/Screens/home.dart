@@ -811,11 +811,11 @@ class _homeState extends State<home> {
                   ),
                   IconButton(
                     icon: Icon(
-                      Icons.recent_actors,
+                      Icons.calendar_today,
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/task');
+                      Navigator.pushNamed(context, '/calendar');
                     },
                   ),
                   SizedBox(

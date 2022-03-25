@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:taskermsc/Screens/Profile%20Page/contacts.dart';
 import 'package:taskermsc/Screens/Profile%20Page/personal.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile.dart';
+import 'package:taskermsc/Screens/calendar.dart';
 import 'package:taskermsc/Screens/login.dart';
 import 'package:taskermsc/Screens/home.dart';
 import 'package:taskermsc/Screens/register.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => profile(),
         '/personal': (context) => Personal(),
         '/contact': (context) => Contacts(),
+        '/calendar':(context)=>calendar(),
       },
     );
   }
