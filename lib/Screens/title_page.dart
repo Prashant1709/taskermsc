@@ -9,80 +9,100 @@ class titlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.black,
+          backgroundColor: Color.fromARGB(255, 20, 24, 30),
           // ignore: prefer_const_literals_to_create_immutables
           body: Column(
-        // ignore: prefer_const_literals_to_create_immutables
-        children: <Widget>[
-          Padding(padding: EdgeInsets.all(80)),
-          Center(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Task It",
-                style: TextStyle(color: Colors.white, fontSize: 44,fontFamily: 'ShadowsIntoLight'),
+            // ignore: prefer_const_literals_to_create_immutables
+            children: <Widget>[
+              Padding(
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.height * 0.1)),
+              Center(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Task It",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.height * 0.08,
+                        fontFamily: 'ShadowsIntoLight'),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(padding: EdgeInsets.all(50)),
-          Center(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Please login to your account or create",
-                style: TextStyle(
-                    color: Color.fromARGB(209, 158, 158, 158), fontSize: 16),
+              Padding(padding: EdgeInsets.all(50)),
+              Center(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Please login to your account or create",
+                    style: TextStyle(
+                        color: Color.fromARGB(209, 158, 158, 158),
+                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Center(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "new account to continue",
-                style: TextStyle(
-                    color: Color.fromARGB(209, 158, 158, 158), fontSize: 16),
+              Center(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "new account to continue",
+                    style: TextStyle(
+                        color: Color.fromARGB(209, 158, 158, 158),
+                        fontSize: MediaQuery.of(context).size.height * 0.02),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(padding: EdgeInsets.all(130)),
-          Container(
-            height: 48,
-            width: 333,
-            decoration:
-                BoxDecoration(border: Border.all(), color: Colors.blue[900]),
-            child: MaterialButton(
-              onPressed: (){
-                Navigator.pushNamed(context,'/login');
-              },
-              color: Colors.blue[900],
-              child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("LOGIN",style: TextStyle(color: Colors.white,fontSize: 16),),
-                  Icon(Icons.navigate_next,color: Colors.white,),
-                ],
+              Padding(padding: EdgeInsets.all(130)),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.059,
+                width: MediaQuery.of(context).size.width * 0.9,
+                decoration: BoxDecoration(
+                    border: Border.all(), color: Colors.blue[900]),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  color: Colors.blue[900],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "LOGIN",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.022),
+                      ),
+                      Icon(
+                        Icons.navigate_next,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(padding: EdgeInsets.all(10)),
-          Container(
-            height: 48,
-            width: 333,
-            decoration: BoxDecoration(
-                border:
-                    Border.all(color: Color.fromRGBO(36, 59, 139, 5), width: 5)),
-            child: RaisedButton(
-              onPressed: () {
-                Navigator.pushNamed(context,'/regist');
-              },
-              color: Colors.black,
-              child: Center(
-                  child: Text("CREATE ACCOUNT",
-                      style: TextStyle(fontSize: 16, color: Colors.white))),
-            ),
-          ),
-        ],
-      )),
+              Padding(padding: EdgeInsets.all(10)),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.059,
+                width: MediaQuery.of(context).size.width * 0.9,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Color.fromRGBO(36, 59, 139, 5), width: 5)),
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/regist');
+                  },
+                  color: Colors.black,
+                  child: Center(
+                      child: Text("CREATE ACCOUNT",
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.022,
+                              color: Colors.white))),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
