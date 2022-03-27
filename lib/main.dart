@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:taskermsc/Screens/Profile%20Page/contacts.dart';
-import 'package:taskermsc/Screens/Profile%20Page/personal.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile2.dart';
 import 'package:taskermsc/Screens/calendar.dart';
 import 'package:taskermsc/Screens/login.dart';
@@ -25,14 +23,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/home',
       routes: {
         '/': (context) => titlePage(),
         '/login': (context) => login(),
         '/regist': (context) => Register(),
         '/home': (context) => home(),
-        '/personal': (context) => Personal(),
-        '/contact': (context) => Contacts(),
         '/calendar': (context) => calendar(),
         '/profile2': (context) => Profile2(),
       },

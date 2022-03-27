@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class home extends StatefulWidget {
   const home({Key? key}) : super(key: key);
@@ -74,17 +75,17 @@ class _homeState extends State<home> {
         //priority.add(prio);
         if (prio == "green") {
           setState(() {
-            pcol1.add(Colors.green);
+            pcol1.add(AssetImage("assets/green_background.jpg"));
           });
         }
         if (prio == "yellow") {
           setState(() {
-            pcol1.add(Colors.amber);
+            pcol1.add(AssetImage("assets/yellow_background.png"));
           });
         }
         if (prio == "red") {
           setState(() {
-            pcol1.add(Colors.red);
+            pcol1.add(AssetImage("assets/red_background.jpg"));
           });
         }
       }
@@ -246,12 +247,10 @@ class _homeState extends State<home> {
                         .collection('Data')
                         .snapshots(),
                     builder: (context, snapshot) {
-                      return GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1,
-                                  childAspectRatio: 1 / 0.3,
-                                  mainAxisSpacing: 10),
+                      return StaggeredGridView.countBuilder(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 10,
+                          staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                           itemCount: task.length,
                           itemBuilder: (context, int index) {
                             if (task[0].isEmpty) {
@@ -268,7 +267,7 @@ class _homeState extends State<home> {
                               return OutlinedButton(
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
-                                    minHeight: height(0.2),
+                                    minHeight: height(0.1),
                                     minWidth: width(1),
                                   ),
                                   child: Card(
@@ -279,40 +278,63 @@ class _homeState extends State<home> {
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     child: Container(
+                                      padding: EdgeInsets.only(left: 2),
                                       decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              pcol1[index],
-                                              pcol1[index],
-                                            ],
-                                            // begin: Alignment.bottomRight,
-                                            // end: Alignment.topCenter,
+                                          image: DecorationImage(
+                                            image: pcol1[index],
+                                            fit: BoxFit.cover,
                                           ),
+                                          // gradient: LinearGradient(
+                                          //   colors: [
+                                          //     pcol1[index],
+                                          //     pcol1[index],
+                                          //   ],
+                                          //   // begin: Alignment.bottomRight,
+                                          //   // end: Alignment.topCenter,
+                                          // ),
+
                                           borderRadius:
-                                              BorderRadius.circular(18)),
+                                              BorderRadius.circular(12)),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
+                                          Text(""),
+
                                           Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 20)),
-                                          Text(
-                                            "    ${task[index].toUpperCase()}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: height(0.024),
-                                                fontWeight: FontWeight.bold),
+                                            padding:
+                                                EdgeInsets.only(left: 10.0),
+                                            child: Text(
+                                              "${task[index]}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: height(0.024),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                           Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 30)),
-                                          Text(
-                                            "      ${(date[index])}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: height(0.02),
-                                                fontWeight: FontWeight.bold),
+                                            padding:
+                                                EdgeInsets.only(left: 10.0),
+                                            child: Text(
+                                              "@Username",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: height(0.024),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            // ignore: prefer_const_constructors
+                                            padding: EdgeInsets.only(
+                                                top: 50, left: 10, bottom: 20),
+                                            child: Text(
+                                              "${(date[index])}",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: height(0.02),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                           //Text("${Status[index]}"),
                                         ],
@@ -367,7 +389,7 @@ class _homeState extends State<home> {
                                                     child: TextFormField(
                                                       style: TextStyle(
                                                           fontSize: 18,
-                                                          color: Colors.black),
+                                                          color: Colors.white),
                                                       decoration: InputDecoration(
                                                           border:
                                                               InputBorder.none,
@@ -656,7 +678,7 @@ class _homeState extends State<home> {
                                 padding: EdgeInsets.only(left: 4),
                                 child: TextFormField(
                                   style: TextStyle(
-                                      fontSize: 18, color: Colors.black),
+                                      fontSize: 18, color: Colors.white),
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Type here",

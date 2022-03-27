@@ -1,8 +1,10 @@
+// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations, camel_case_types
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:flutter/gestures.dart';
+
 class calendar extends StatefulWidget {
   const calendar({Key? key}) : super(key: key);
 
@@ -18,7 +20,7 @@ class _calendarState extends State<calendar> {
   String Task = "";
   String priority = "";
   double _priority = 0;
-  DateTime _sdate=DateTime.now();
+  DateTime _sdate = DateTime.now();
   int all = 0;
   List<DateTime> date = [];
   List<String> task = [];
@@ -33,7 +35,7 @@ class _calendarState extends State<calendar> {
 
   Future<void> getdat() async {
     final newUser = _auth.currentUser;
-    _sdate=DateTime.now();
+    _sdate = DateTime.now();
     //print(newUser?.uid);
     uid = newUser!.uid;
     print(uid);
@@ -106,6 +108,7 @@ class _calendarState extends State<calendar> {
       });
     }
   }
+
   //Gives height and width according to screen size
   double height(double height) {
     return MediaQuery.of(context).size.height * height;
@@ -114,6 +117,7 @@ class _calendarState extends State<calendar> {
   double width(double width) {
     return MediaQuery.of(context).size.width * width;
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -224,27 +228,28 @@ class _calendarState extends State<calendar> {
               ],
             ),
           ),
-          body:SfCalendar(
+          body: SfCalendar(
             view: CalendarView.month,
             backgroundColor: Colors.white,
             dataSource: MeetingDataSource(_getDataSource()),
             monthViewSettings: MonthViewSettings(
-                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
-          )
-      ),);
+                appointmentDisplayMode:
+                    MonthAppointmentDisplayMode.appointment),
+          )),
+    );
   }
 }
+
 List<Meeting> _getDataSource() {
   final List<Meeting> meetings = <Meeting>[];
   final DateTime today = DateTime.now();
   final DateTime startTime =
-  DateTime(today.year, today.month, today.day, 9, 0, 0);
+      DateTime(today.year, today.month, today.day, 9, 0, 0);
   final DateTime endTime = startTime.add(const Duration(hours: 2));
   meetings.add(Meeting(
       'Conference', startTime, endTime, const Color(0xFF0F8644), false));
   return meetings;
 }
-
 
 class MeetingDataSource extends CalendarDataSource {
   MeetingDataSource(List<Meeting> source) {
@@ -275,7 +280,8 @@ class MeetingDataSource extends CalendarDataSource {
     return appointments![index].isAllDay;
   }
 }
-  class Meeting {
+
+class Meeting {
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
 
   String eventName;
@@ -283,4 +289,4 @@ class MeetingDataSource extends CalendarDataSource {
   DateTime to;
   Color background;
   bool isAllDay;
-  }
+}

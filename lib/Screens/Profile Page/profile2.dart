@@ -33,7 +33,7 @@ class _Profile2State extends State<Profile2> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(255, 27, 33, 41),
       body: Column(
         children: [
           Row(
@@ -98,7 +98,7 @@ class _Profile2State extends State<Profile2> {
             child: Card(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              color: Color.fromARGB(255, 33, 40, 51),
+              color: Color.fromARGB(255, 59, 71, 90),
               elevation: height(0.02),
               shadowColor: Colors.blue[900],
               child: Column(
@@ -178,59 +178,6 @@ class _Profile2State extends State<Profile2> {
                         // ignore: prefer_const_literals_to_create_immutables
                       ],
                     ),
-                    // Padding(
-                    //   padding: EdgeInsets.only(
-                    //     top: height(0.01),
-                    //     left: width(0.03),
-                    //   ),
-                    //   child: ConstrainedBox(
-                    //     constraints: BoxConstraints(
-                    //         minHeight: height(0.1), minWidth: width(0.9)),
-                    //     // decoration: BoxDecoration(
-                    //     //   border: Border.all(color: Colors.blue),
-                    //     // ),
-
-                    //     child: Column(
-                    //       crossAxisAlignment: CrossAxisAlignment.start,
-                    //       children: [
-                    //         Text(
-                    //           "Recent :",
-                    //           style: TextStyle(
-                    //               color: Colors.white54, fontSize: height(0.025)),
-                    //         ),
-                    //         Padding(padding: EdgeInsets.only(top: height(0.004))),
-                    //         Container(
-                    //           padding: EdgeInsets.only(left: width(0.05)),
-                    //           child: Text(
-                    //             "Task 1",
-                    //             style: TextStyle(
-                    //                 color: Colors.white, fontSize: height(0.021)),
-                    //           ),
-                    //         ),
-                    //         Padding(padding: EdgeInsets.only(top: height(0.01))),
-                    //         Row(
-                    //           children: [
-                    //             Text(
-                    //               "Date:",
-                    //               style: TextStyle(
-                    //                   color: Colors.white54,
-                    //                   fontSize: height(0.017)),
-                    //             ),
-                    //             Container(
-                    //               padding: EdgeInsets.only(left: width(0.02)),
-                    //               child: Text(
-                    //                 "22-10-2022",
-                    //                 style: TextStyle(
-                    //                     color: Colors.white,
-                    //                     fontSize: height(0.017)),
-                    //               ),
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // ),
                     Padding(
                       padding:
                           EdgeInsets.only(left: width(0.03), top: height(0.03)),
@@ -296,7 +243,7 @@ class _Profile2State extends State<Profile2> {
             child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
-                color: Color.fromARGB(255, 33, 40, 51),
+                color: Color.fromARGB(255, 59, 71, 90),
                 elevation: height(0.02),
                 shadowColor: Colors.blue[900],
                 // ignore: prefer_const_literals_to_create_immutables
@@ -319,7 +266,6 @@ class _Profile2State extends State<Profile2> {
                         indent: width(0.01),
                         thickness: 2,
                       ),
-                      Text("          ")
                     ],
                   ),
                 )),
