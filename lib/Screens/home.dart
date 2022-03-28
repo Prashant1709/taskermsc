@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../main.dart';
 
 class home extends StatefulWidget {
   const home({Key? key}) : super(key: key);
@@ -36,6 +37,60 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     getdat();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text('${notification.title}'),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text('${notification.body}')],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+  }
+  void showNotification() {
+    setState(() {
+    });
+    flutterLocalNotificationsPlugin.show(
+        0,
+        "Task It",
+        "New Task Created at ${DateTime.now()}",
+        NotificationDetails(
+            android: AndroidNotificationDetails(channel.id, channel.name,
+                importance: Importance.high,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher')));
   }
 
   Future<void> getdat() async {
@@ -789,6 +844,7 @@ class _homeState extends State<home> {
                   actions: <Widget>[
                     MaterialButton(
                       onPressed: () {
+                        showNotification();
                         setState(() {
                           all = all + 1;
                           if (_priority.toInt() >= 0 && _priority.toInt() < 4) {

@@ -3,6 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:taskermsc/Screens/Profile Page/ImageSel.dart';
 
 class Profile2 extends StatefulWidget {
   const Profile2({Key? key}) : super(key: key);
@@ -10,13 +12,30 @@ class Profile2 extends StatefulWidget {
   @override
   State<Profile2> createState() => _Profile2State();
 }
-
+enum ImageSourceType { gallery, camera }
 class _Profile2State extends State<Profile2> {
+
+
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   String username = "";
   String uid = "";
-
+  void _handleURLButtonPress(BuildContext context, var type) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ImageSel(type)));
+  }
+  Future<void> getdat() async {
+    final newUser = _auth.currentUser;
+    uid = newUser!.uid;
+    print(uid);
+    firestoreInstance
+        .collection('$uid')
+        .doc('Data')
+        .snapshots()
+        .listen((result) {
+      print(result.get("username"));
+      username = result.get("username");});
+  }
   double height(double height) {
     return MediaQuery.of(context).size.height * height;
   }
@@ -24,6 +43,12 @@ class _Profile2State extends State<Profile2> {
   double width(double width) {
     return MediaQuery.of(context).size.width * width;
   }
+      @override
+      void initState() {
+        super.initState();
+        getdat();
+        print(_auth.currentUser?.photoURL.toString());
+      }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +78,7 @@ class _Profile2State extends State<Profile2> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        "@Username",
+                        username,
                         style: TextStyle(color: Colors.white, fontSize: 30),
                       ),
                     ),
@@ -66,9 +91,7 @@ class _Profile2State extends State<Profile2> {
                   Padding(
                     padding: EdgeInsets.only(right: 20),
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        "https://www.linkpicture.com/q/dp_4.png",
-                      ),
+                      backgroundImage: NetworkImage('${_auth.currentUser?.photoURL.toString()}'),
                       backgroundColor: Colors.transparent,
                       radius: 70,
                     ),
@@ -80,7 +103,34 @@ class _Profile2State extends State<Profile2> {
                       child: Icon(Icons.create_rounded),
                       fillColor: Colors.blue,
                       shape: CircleBorder(),
-                      onPressed: () {},
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Wrap(
+                              children: [
+                                OutlinedButton(onPressed:(){
+                                  _handleURLButtonPress(context, ImageSourceType.gallery);
+                                },
+                                  child: ListTile(
+                                    leading: Icon(Icons.image,color: Colors.purple,),
+                                    title: Text('Choose from Gallery'),
+                                  ),
+                                ),
+                                OutlinedButton(onPressed:(){
+                                  _handleURLButtonPress(context, ImageSourceType.camera);
+                                },
+                                  child: ListTile(
+                                    leading: Icon(Icons.camera_alt,color: Colors.blueGrey,),
+                                    title: Text('Use Camera'),
+                                  ),
+                                ),
+
+                              ],
+                            );
+                          },
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -131,6 +181,7 @@ class _Profile2State extends State<Profile2> {
                             color: Colors.white54, fontSize: height(0.025)),
                       ),
                     ),
+                    SizedBox(height: 10,),
                     Row(
                       children: [
                         Padding(padding: EdgeInsets.only(left: width(0.03))),
@@ -180,13 +231,14 @@ class _Profile2State extends State<Profile2> {
                     ),
                     Padding(
                       padding:
-                          EdgeInsets.only(left: width(0.03), top: height(0.03)),
+                          EdgeInsets.only(left: width(0.03), top: height(0.02)),
                       child: Text(
                         "Remaining :",
                         style: TextStyle(
                             color: Colors.white54, fontSize: height(0.025)),
                       ),
                     ),
+                    SizedBox(height: 7,),
                     Row(
                       children: [
                         Padding(padding: EdgeInsets.only(left: width(0.03))),
