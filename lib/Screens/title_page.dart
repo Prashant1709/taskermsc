@@ -11,25 +11,23 @@ class titlePage extends StatelessWidget {
       home: Scaffold(
           backgroundColor: Color.fromARGB(255, 20, 24, 30),
           // ignore: prefer_const_literals_to_create_immutables
-          body: Column(
+          body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
-              Padding(
-                  padding:
-                      EdgeInsets.all(MediaQuery.of(context).size.height * 0.1)),
+              SizedBox(height: 240,),
+              CircleAvatar(backgroundImage: AssetImage('assets/logo2.png'),backgroundColor: Color.fromARGB(255, 20, 24, 30),radius: 70,),
               Center(
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Task It",
                     style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.teal.shade700,
                         fontSize: MediaQuery.of(context).size.height * 0.08,
                         fontFamily: 'ShadowsIntoLight'),
                   ),
                 ),
               ),
-              Padding(padding: EdgeInsets.all(50)),
               Center(
                 child: Align(
                   alignment: Alignment.center,
@@ -52,7 +50,7 @@ class titlePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(padding: EdgeInsets.all(130)),
+              Padding(padding: EdgeInsets.all(15)),
               Container(
                 height: MediaQuery.of(context).size.height * 0.059,
                 width: MediaQuery.of(context).size.width * 0.9,
@@ -81,7 +79,7 @@ class titlePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(padding: EdgeInsets.all(10)),
+              Padding(padding: EdgeInsets.all(5)),
               Container(
                 height: MediaQuery.of(context).size.height * 0.059,
                 width: MediaQuery.of(context).size.width * 0.9,

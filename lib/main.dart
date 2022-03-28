@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => home(),
         '/calendar': (context) => calendar(),
         '/profile2': (context) => Profile2(),
+        '/calendar':(context)=>calendar(),
       },
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class home extends StatefulWidget {
   const home({Key? key}) : super(key: key);
@@ -14,6 +17,7 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+  String _url = 'https://meet.google.com';
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   String username = "";
@@ -90,6 +94,17 @@ class _homeState extends State<home> {
         }
       }
     });
+  }
+
+  Future<void> _launchInWebViewOrVC(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: true,
+      forceWebView: true,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
   }
 
   DateTime _date = DateTime.now();
@@ -249,9 +264,9 @@ class _homeState extends State<home> {
                     builder: (context, snapshot) {
                       return StaggeredGridView.countBuilder(
                           crossAxisCount: 1,
-                          mainAxisSpacing: 10,
                           staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                           itemCount: task.length,
+                          mainAxisSpacing: 10,
                           itemBuilder: (context, int index) {
                             if (task[0].isEmpty) {
                               return Padding(
@@ -265,45 +280,33 @@ class _homeState extends State<home> {
                               );
                             } else {
                               return OutlinedButton(
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                    minHeight: height(0.1),
-                                    minWidth: width(1),
-                                  ),
-                                  child: Card(
-                                    clipBehavior: Clip.antiAlias,
-                                    elevation: 20,
-                                    margin: EdgeInsets.all(0),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
+                                child: Card(
+                                  clipBehavior: Clip.antiAlias,
+                                  elevation: 20,
+                                  margin: EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minHeight: height(0.13),
+                                      minWidth: width(1),
+                                    ),
                                     child: Container(
-                                      padding: EdgeInsets.only(left: 2),
+                                      // height: 90,
+                                      // width: width(1),
                                       decoration: BoxDecoration(
-                                          image: DecorationImage(
+                                        image: DecorationImage(
                                             image: pcol1[index],
-                                            fit: BoxFit.cover,
-                                          ),
-                                          // gradient: LinearGradient(
-                                          //   colors: [
-                                          //     pcol1[index],
-                                          //     pcol1[index],
-                                          //   ],
-                                          //   // begin: Alignment.bottomRight,
-                                          //   // end: Alignment.topCenter,
-                                          // ),
-
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
+                                            fit: BoxFit.cover),
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(""),
-
                                           Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 10.0),
+                                            padding: EdgeInsets.only(
+                                                top: 20, left: 10, right: 10),
                                             child: Text(
                                               "${task[index]}",
                                               style: TextStyle(
@@ -312,22 +315,10 @@ class _homeState extends State<home> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 10.0),
-                                            child: Text(
-                                              "@Username",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: height(0.024),
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
 
                                           Padding(
-                                            // ignore: prefer_const_constructors
                                             padding: EdgeInsets.only(
-                                                top: 50, left: 10, bottom: 20),
+                                                top: 20, left: 10, bottom: 10),
                                             child: Text(
                                               "${(date[index])}",
                                               style: TextStyle(
@@ -521,7 +512,10 @@ class _homeState extends State<home> {
                                                             color: Colors.white,
                                                           ),
                                                           tooltip: 'Add meet',
-                                                          onPressed: () {},
+                                                          onPressed: () {
+                                                            _launchInWebViewOrVC(
+                                                                _url);
+                                                          },
                                                         ),
                                                         Text(
                                                           'Meeting',
@@ -775,7 +769,9 @@ class _homeState extends State<home> {
                                       color: Colors.white,
                                       icon: const Icon(Icons.calendar_today),
                                       tooltip: 'Add meet',
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _launchInWebViewOrVC(_url);
+                                      },
                                     ),
                                     Text('Meeting',
                                         style: TextStyle(
