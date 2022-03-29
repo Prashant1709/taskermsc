@@ -204,11 +204,13 @@ class _RegisterState extends State<Register> {
                                                   .set({
                                                 'username': username,
                                               });
+                                              _auth.currentUser?.updateDisplayName(username);
                                               firestoreInstance
                                                   .collection('$uid')
                                                   .doc('All')
                                                   .set({
                                                 'number': 0,
+
                                               });
                                               Navigator.of(context)
                                                   .popAndPushNamed('/login');

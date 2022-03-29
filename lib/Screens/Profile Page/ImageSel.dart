@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile2.dart';
@@ -16,10 +16,13 @@ class ImageSel extends StatefulWidget {
 class ImageSelState extends State<ImageSel> {
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
+  final firestoreInstance = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   var _image;
   var imagePicker;
   var type;
+  String uid="";
+  String url="";
 
   ImageSelState(this.type);
 
@@ -27,6 +30,10 @@ class ImageSelState extends State<ImageSel> {
   void initState() {
     super.initState();
     imagePicker = new ImagePicker();
+    final newUser = _auth.currentUser;
+    //print(newUser?.uid);
+    uid = newUser!.uid;
+    print(uid);
   }
 
   @override
@@ -54,7 +61,15 @@ class ImageSelState extends State<ImageSel> {
                 setState(() {
                   _image = File(image.path);
                 });
-                _auth.currentUser!.updatePhotoURL(_image.toString());
+                storage.ref('${_auth.currentUser!.uid}').child('${_auth.currentUser!.displayName}').putFile(File(image.path));
+                url=await storage.ref('${_auth.currentUser!.uid}').child('${_auth.currentUser!.displayName}').getDownloadURL();
+                firestoreInstance
+                    .collection('$uid')
+                    .doc('Data')
+                    .set({
+                  'DisplayPhoto': url,
+                });
+               Navigator.pop(context);
               },
               child: Container(
                 width: 200,

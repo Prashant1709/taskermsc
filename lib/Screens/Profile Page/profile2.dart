@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:taskermsc/Screens/Profile Page/ImageSel.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class Profile2 extends StatefulWidget {
   const Profile2({Key? key}) : super(key: key);
@@ -15,11 +16,14 @@ class Profile2 extends StatefulWidget {
 enum ImageSourceType { gallery, camera }
 class _Profile2State extends State<Profile2> {
 
-
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   String username = "";
   String uid = "";
+  String url="";
+  String url2="";
   void _handleURLButtonPress(BuildContext context, var type) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ImageSel(type)));
@@ -28,13 +32,17 @@ class _Profile2State extends State<Profile2> {
     final newUser = _auth.currentUser;
     uid = newUser!.uid;
     print(uid);
+    url=await storage.ref('${_auth.currentUser!.uid}').child('${_auth.currentUser!.displayName}').getDownloadURL();
     firestoreInstance
         .collection('$uid')
         .doc('Data')
         .snapshots()
-        .listen((result) {
-      print(result.get("username"));
-      username = result.get("username");});
+        .listen((event) {
+    url2 = event.get('DisplayPhoto').toString();
+    print(url2);
+    });
+
+    print(url);
   }
   double height(double height) {
     return MediaQuery.of(context).size.height * height;
@@ -47,7 +55,6 @@ class _Profile2State extends State<Profile2> {
       void initState() {
         super.initState();
         getdat();
-        print(_auth.currentUser?.photoURL.toString());
       }
 
   @override
@@ -78,7 +85,7 @@ class _Profile2State extends State<Profile2> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        username,
+                        _auth.currentUser!.displayName.toString(),
                         style: TextStyle(color: Colors.white, fontSize: 30),
                       ),
                     ),
@@ -88,13 +95,21 @@ class _Profile2State extends State<Profile2> {
               Stack(
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage('${_auth.currentUser?.photoURL.toString()}'),
-                      backgroundColor: Colors.transparent,
-                      radius: 70,
-                    ),
+                  StreamBuilder<Object>(
+                    stream: firestoreInstance
+                        .collection('$uid')
+                        .doc('Data')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(url2),
+                              backgroundColor: Colors.transparent,
+                          radius: 60,
+                        ),
+                      );
+                    }
                   ),
                   Positioned(
                     bottom: 5,

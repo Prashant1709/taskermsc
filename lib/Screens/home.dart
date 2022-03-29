@@ -99,13 +99,6 @@ class _homeState extends State<home> {
     //print(newUser?.uid);
     uid = newUser!.uid;
     print(uid);
-    firestoreInstance
-        .collection('$uid')
-        .doc('Data')
-        .snapshots()
-        .listen((result) {
-      print(result.get("username"));
-      username = result.get("username");
       firestoreInstance
           .collection('$uid')
           .doc('All')
@@ -113,7 +106,7 @@ class _homeState extends State<home> {
           .listen((event) {
         all = event.get('number');
       });
-    });
+
     firestoreInstance
         .collection("$uid")
         .doc('Tasks')
@@ -242,17 +235,11 @@ class _homeState extends State<home> {
                     SizedBox(
                       height: 10,
                     ),
-                    StreamBuilder<Object>(
-                        stream: firestoreInstance
-                            .collection('$uid')
-                            .doc('Data')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          return Column(
+                    Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                username,
+                                _auth.currentUser!.displayName.toString(),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
@@ -266,8 +253,8 @@ class _homeState extends State<home> {
                                 ),
                               ),
                             ],
-                          );
-                        }),
+                          ),
+
                   ],
                 ),
               ),
