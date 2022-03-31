@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:taskermsc/Screens/Chat/ChatScreen.dart';
+import 'package:taskermsc/Screens/Chat/messages.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile2.dart';
 import 'package:taskermsc/Screens/calendar.dart';
 import 'package:taskermsc/Screens/login.dart';
@@ -16,19 +18,21 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
     playSound: true);
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('A bg message just showed up :  ${message.messageId}');
 }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/home',
+      initialRoute: '/',
       routes: {
         '/': (context) => titlePage(),
         '/login': (context) => login(),
@@ -57,7 +61,9 @@ class MyApp extends StatelessWidget {
         '/home': (context) => home(),
         '/calendar': (context) => calendar(),
         '/profile2': (context) => Profile2(),
-        '/calendar':(context)=>calendar(),
+        '/calendar': (context) => calendar(),
+        '/message': (context) => Messages(),
+        '/ChatScreen': (context) => ChatScreen(),
       },
     );
   }
