@@ -37,11 +37,12 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     getdat();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
             notification.body,
@@ -53,16 +54,19 @@ class _homeState extends State<home> {
                 playSound: true,
                 icon: '@mipmap/ic_launcher',
               ),
-            ));
-      }
-    });
+            ),
+          );
+        }
+      },
+    );
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        showDialog(
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) {
+        print('A new onMessageOpenedApp event was published!');
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          showDialog(
             context: context,
             builder: (_) {
               return AlertDialog(
@@ -74,13 +78,15 @@ class _homeState extends State<home> {
                   ),
                 ),
               );
-            });
-      }
-    });
+            },
+          );
+        }
+      },
+    );
   }
+
   void showNotification() {
-    setState(() {
-    });
+    setState(() {});
     flutterLocalNotificationsPlugin.show(
         0,
         "Task It",
@@ -99,13 +105,9 @@ class _homeState extends State<home> {
     //print(newUser?.uid);
     uid = newUser!.uid;
     print(uid);
-      firestoreInstance
-          .collection('$uid')
-          .doc('All')
-          .snapshots()
-          .listen((event) {
-        all = event.get('number');
-      });
+    firestoreInstance.collection('$uid').doc('All').snapshots().listen((event) {
+      all = event.get('number');
+    });
 
     firestoreInstance
         .collection("$uid")
@@ -117,14 +119,14 @@ class _homeState extends State<home> {
         Timestamp timestamp = list.get('Date');
         var result = DateTime.fromMicrosecondsSinceEpoch(
             timestamp.microsecondsSinceEpoch);
-        //print(result);
+        // print(result);
         date.add(result);
         var task1 = list.get('Task');
         task.add(task1);
         var sta = list.get('status');
         Status.add(sta);
         var prio = list.get('Priority');
-        //priority.add(prio);
+        // priority.add(prio);
         if (prio == "green") {
           setState(() {
             pcol1.add(AssetImage("assets/green_background.jpg"));
@@ -173,7 +175,7 @@ class _homeState extends State<home> {
     }
   }
 
-  //Gives height and width according to screen size
+  // Gives height and width according to screen size
   double height(double height) {
     return MediaQuery.of(context).size.height * height;
   }
@@ -236,25 +238,24 @@ class _homeState extends State<home> {
                       height: 10,
                     ),
                     Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _auth.currentUser!.displayName.toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                "${_auth.currentUser!.email}",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _auth.currentUser!.displayName.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
                           ),
-
+                        ),
+                        Text(
+                          "${_auth.currentUser!.email}",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
