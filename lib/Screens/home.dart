@@ -925,7 +925,7 @@ class _homeState extends State<home> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      //Navigator.pushNamed(context, '/sen');
+                      Navigator.pushNamed(context, '/chat');
                     },
                   ),
                   IconButton(

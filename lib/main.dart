@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:taskermsc/Screens/ChatPage.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile2.dart';
 import 'package:taskermsc/Screens/calendar.dart';
 import 'package:taskermsc/Screens/login.dart';
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         '/calendar': (context) => calendar(),
         '/profile2': (context) => Profile2(),
         '/calendar':(context)=>calendar(),
+        '/chat':(context)=>chat(),
       },
     );
   }

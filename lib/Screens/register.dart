@@ -199,10 +199,11 @@ class _RegisterState extends State<Register> {
                                               await newUser
                                                   .sendEmailVerification();
                                               firestoreInstance
-                                                  .collection('$uid')
-                                                  .doc('Data')
+                                                  .collection('Users')
+                                                  .doc('$uid')
                                                   .set({
                                                 'username': username,
+                                                'status':false,
                                               });
                                               _auth.currentUser?.updateDisplayName(username);
                                               firestoreInstance
