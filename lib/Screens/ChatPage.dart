@@ -31,6 +31,7 @@ class _chatState extends State<chat> {
   }
   @override
   void dispose() {
+    super.dispose();
     firestoreInstance.collection('Users').doc('$uid').update({'status':false});
   }
   Widget build(BuildContext context) {

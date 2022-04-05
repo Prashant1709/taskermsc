@@ -105,21 +105,23 @@ class _homeState extends State<home> {
     //print(newUser?.uid);
     uid = newUser!.uid;
     print(uid);
-    firestoreInstance.collection('$uid').doc('All').snapshots().listen((event) {
-      all = event.get('number');
+    firestoreInstance
+        .collection('Users')
+        .doc('$uid').snapshots().listen((event) {
+          all=event.get('number');
     });
 
     firestoreInstance
-        .collection("$uid")
-        .doc('Tasks')
-        .collection('Data')
+        .collection("Users")
+        .doc('$uid')
+        .collection('Task')
         .snapshots()
         .listen((event) {
       for (var list in event.docs) {
         Timestamp timestamp = list.get('Date');
         var result = DateTime.fromMicrosecondsSinceEpoch(
             timestamp.microsecondsSinceEpoch);
-        // print(result);
+        print(result);
         date.add(result);
         var task1 = list.get('Task');
         task.add(task1);
@@ -300,9 +302,8 @@ class _homeState extends State<home> {
                 height: 500,
                 child: StreamBuilder<QuerySnapshot>(
                     stream: firestoreInstance
-                        .collection("$uid")
-                        .doc('Tasks')
-                        .collection('Data')
+                        .collection("Users")
+                        .doc('$uid').collection('Task')
                         .snapshots(),
                     builder: (context, snapshot) {
                       return StaggeredGridView.countBuilder(
@@ -597,9 +598,9 @@ class _homeState extends State<home> {
                                                 }
                                               });
                                               firestoreInstance
-                                                  .collection("$uid")
-                                                  .doc('Tasks')
-                                                  .collection('Data')
+                                                  .collection("Users")
+                                                  .doc('$uid')
+                                                  .collection('Task')
                                                   .doc('${date[index]}')
                                                   .update({
                                                 'Task': Task,
@@ -608,8 +609,8 @@ class _homeState extends State<home> {
                                                 'status': false,
                                               });
                                               firestoreInstance
-                                                  .collection("$uid")
-                                                  .doc("Data")
+                                                  .collection("Users")
+                                                  .doc("$uid")
                                                   .update({'number': all});
                                               Navigator.pop(context);
                                               setState(() {
@@ -636,15 +637,13 @@ class _homeState extends State<home> {
                                                 all = all - 1;
                                               });
                                               firestoreInstance
-                                                  .collection("$uid")
-                                                  .doc('Tasks')
-                                                  .collection('Data')
-                                                  .doc('${date[index]}')
-                                                  .delete();
+                                                  .collection("Users")
+                                                  .doc('$uid')
+                                                  .collection('Task')
+                                                  .doc('${date[index]}').delete();
                                               firestoreInstance
-                                                  .collection("$uid")
-                                                  .doc("Data")
-                                                  .update({'number': all});
+                                                  .collection("Users")
+                                                  .doc('$uid').update({'number': all});
                                               Navigator.pop(context);
                                               setState(() {
                                                 date.clear();
@@ -851,9 +850,9 @@ class _homeState extends State<home> {
                           }
                         });
                         firestoreInstance
-                            .collection("$uid")
-                            .doc('Tasks')
-                            .collection('Data')
+                            .collection("Users")
+                            .doc('$uid')
+                            .collection('Task')
                             .doc('$_date')
                             .set({
                           'Task': Task,
