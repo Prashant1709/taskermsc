@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 class ImageSel extends StatefulWidget {
   final type;
   ImageSel(this.type);
@@ -21,8 +22,8 @@ class ImageSelState extends State<ImageSel> {
   var _image;
   var imagePicker;
   var type;
-  String uid="";
-  String url="";
+  String uid = "";
+  String url = "";
 
   ImageSelState(this.type);
 
@@ -40,7 +41,7 @@ class ImageSelState extends State<ImageSel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+          backgroundColor: Colors.black,
           title: Text(type == ImageSourceType.camera
               ? "Image from Camera"
               : "Image from Gallery")),
@@ -56,50 +57,59 @@ class ImageSelState extends State<ImageSel> {
                     ? ImageSource.camera
                     : ImageSource.gallery;
                 XFile image = await imagePicker.pickImage(
-                    source: source, imageQuality: 50, preferredCameraDevice: CameraDevice.front);
+                    source: source,
+                    imageQuality: 50,
+                    preferredCameraDevice: CameraDevice.front);
 
                 setState(() {
                   _image = File(image.path);
                 });
-                storage.ref('${_auth.currentUser!.uid}').child('${_auth.currentUser!.displayName}').putFile(File(image.path));
-                url=await storage.ref('${_auth.currentUser!.uid}').child('${_auth.currentUser!.displayName}').getDownloadURL();
-                firestoreInstance
-                    .collection('$uid')
-                    .doc('Data')
-                    .set({
+                storage
+                    .ref('${_auth.currentUser!.uid}')
+                    .child('${_auth.currentUser!.displayName}')
+                    .putFile(File(image.path));
+                url = await storage
+                    .ref('${_auth.currentUser!.uid}')
+                    .child('${_auth.currentUser!.displayName}')
+                    .getDownloadURL();
+                firestoreInstance.collection('$uid').doc('Data').set({
                   'DisplayPhoto': url,
                 });
-               Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: Container(
                 width: 200,
                 height: 200,
-                decoration: BoxDecoration(
-                    color: Colors.red[200]),
+                decoration: BoxDecoration(color: Colors.red[200]),
                 child: _image != null
                     ? Image.file(
-                  _image,
-                  width: 200.0,
-                  height: 200.0,
-                  fit: BoxFit.fitHeight,
-                )
+                        _image,
+                        width: 200.0,
+                        height: 200.0,
+                        fit: BoxFit.fill,
+                      )
                     : Container(
-                  decoration: BoxDecoration(
-                      color: Colors.blueGrey),
-                  width: 20,
-                  height: 20,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.grey[800],
-                  ),
-                ),
+                        decoration: BoxDecoration(color: Colors.blueGrey),
+                        width: 20,
+                        height: 20,
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.grey[800],
+                        ),
+                      ),
               ),
             ),
-            
           ),
-          SizedBox(height: 20,),
-          Text("Click up to Select Image",style: TextStyle(fontSize: 20),),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Click up to Select Image",
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(
+            height: 20,
+          ),
         ],
       ),
     );

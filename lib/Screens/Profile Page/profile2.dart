@@ -13,37 +13,43 @@ class Profile2 extends StatefulWidget {
   @override
   State<Profile2> createState() => _Profile2State();
 }
-enum ImageSourceType { gallery, camera }
-class _Profile2State extends State<Profile2> {
 
+enum ImageSourceType { gallery, camera }
+
+class _Profile2State extends State<Profile2> {
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   String username = "";
   String uid = "";
-  String url="";
-  String url2="";
+  String url = "";
+  String url2 = "";
   void _handleURLButtonPress(BuildContext context, var type) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ImageSel(type)));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ImageSel(type)));
   }
+
   Future<void> getdat() async {
     final newUser = _auth.currentUser;
     uid = newUser!.uid;
     print(uid);
-    url=await storage.ref('${_auth.currentUser!.uid}').child('${_auth.currentUser!.displayName}').getDownloadURL();
+    url = await storage
+        .ref('${_auth.currentUser!.uid}')
+        .child('${_auth.currentUser!.displayName}')
+        .getDownloadURL();
     firestoreInstance
         .collection('$uid')
         .doc('Data')
         .snapshots()
         .listen((event) {
-    url2 = event.get('DisplayPhoto').toString();
-    print(url2);
+      url2 = event.get('DisplayPhoto').toString();
+      print(url2);
     });
 
     print(url);
   }
+
   double height(double height) {
     return MediaQuery.of(context).size.height * height;
   }
@@ -51,11 +57,12 @@ class _Profile2State extends State<Profile2> {
   double width(double width) {
     return MediaQuery.of(context).size.width * width;
   }
-      @override
-      void initState() {
-        super.initState();
-        getdat();
-      }
+
+  @override
+  void initState() {
+    super.initState();
+    getdat();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,21 +103,23 @@ class _Profile2State extends State<Profile2> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   StreamBuilder<Object>(
-                    stream: firestoreInstance
-                        .collection('$uid')
-                        .doc('Data')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      return Padding(
-                        padding: EdgeInsets.only(right: 20),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(url2),
-                              backgroundColor: Colors.transparent,
-                          radius: 60,
-                        ),
-                      );
-                    }
-                  ),
+                      stream: firestoreInstance
+                          .collection('$uid')
+                          .doc('Data')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        return Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: CircleAvatar(
+                            backgroundImage: url2.isEmpty
+                                ? NetworkImage(
+                                    "https://i.pinimg.com/originals/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.png")
+                                : NetworkImage(url2),
+                            backgroundColor: Colors.transparent,
+                            radius: 60,
+                          ),
+                        );
+                      }),
                   Positioned(
                     bottom: 5,
                     left: 70,
@@ -124,23 +133,32 @@ class _Profile2State extends State<Profile2> {
                           builder: (context) {
                             return Wrap(
                               children: [
-                                OutlinedButton(onPressed:(){
-                                  _handleURLButtonPress(context, ImageSourceType.gallery);
-                                },
+                                OutlinedButton(
+                                  onPressed: () {
+                                    _handleURLButtonPress(
+                                        context, ImageSourceType.gallery);
+                                  },
                                   child: ListTile(
-                                    leading: Icon(Icons.image,color: Colors.purple,),
+                                    leading: Icon(
+                                      Icons.image,
+                                      color: Colors.purple,
+                                    ),
                                     title: Text('Choose from Gallery'),
                                   ),
                                 ),
-                                OutlinedButton(onPressed:(){
-                                  _handleURLButtonPress(context, ImageSourceType.camera);
-                                },
+                                OutlinedButton(
+                                  onPressed: () {
+                                    _handleURLButtonPress(
+                                        context, ImageSourceType.camera);
+                                  },
                                   child: ListTile(
-                                    leading: Icon(Icons.camera_alt,color: Colors.blueGrey,),
+                                    leading: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.blueGrey,
+                                    ),
                                     title: Text('Use Camera'),
                                   ),
                                 ),
-
                               ],
                             );
                           },
@@ -196,7 +214,9 @@ class _Profile2State extends State<Profile2> {
                             color: Colors.white54, fontSize: height(0.025)),
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       children: [
                         Padding(padding: EdgeInsets.only(left: width(0.03))),
@@ -253,7 +273,9 @@ class _Profile2State extends State<Profile2> {
                             color: Colors.white54, fontSize: height(0.025)),
                       ),
                     ),
-                    SizedBox(height: 7,),
+                    SizedBox(
+                      height: 7,
+                    ),
                     Row(
                       children: [
                         Padding(padding: EdgeInsets.only(left: width(0.03))),
