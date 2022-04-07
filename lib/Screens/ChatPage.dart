@@ -13,54 +13,6 @@ class chat extends StatefulWidget {
 
 String dp_url =
     "https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png";
-Widget chatBox(String name, String url, String lastMessage, String time) {
-  return Container(
-    child: InkWell(
-      onTap: () {},
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(
-                url //"https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png",
-                ),
-            radius: 14,
-          ),
-          Column(
-            children: [
-              Text(
-                name,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    lastMessage,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    time,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                  )
-                ],
-              ),
-            ],
-          )
-        ],
-      ),
-    ),
-  );
-}
 
 class _chatState extends State<chat> {
   final _auth = FirebaseAuth.instance;
