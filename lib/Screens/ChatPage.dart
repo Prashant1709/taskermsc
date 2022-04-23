@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class chat extends StatefulWidget {
   const chat({Key? key}) : super(key: key);
@@ -18,7 +19,10 @@ class _chatState extends State<chat> {
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   List<String> users = [];
+  List<String> pno=[];
+  List<String> desig=[];
   String uid = "";
+  String url="";
   @override
   void initState() {
     super.initState();
@@ -26,6 +30,9 @@ class _chatState extends State<chat> {
       for (var i in event.docs) {
         print(i.get('username'));
         users.add('${i.get('username')}');
+        print(i.get('phone'));
+        pno.add(i.get('phone'));
+        desig.add(i.get('designation'));
       }
     });
     getdat();
@@ -36,7 +43,16 @@ class _chatState extends State<chat> {
     uid = newUser!.uid;
     firestoreInstance.collection('Users').doc('$uid').update({'status': true});
   }
-
+  Future<void> _launcchat(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   void dispose() {
     super.dispose();
@@ -130,10 +146,16 @@ class _chatState extends State<chat> {
                           );
                         } else {
                           return SingleChildScrollView(
-                            child: ListTile(
-                              title: chatBox(users[index], dp_url,
-                                  "Hi I am " + users[index], "18:20"),
-                            ),
+                              child: ListTile(
+                                trailing: IconButton(onPressed:(){setState(() {
+                                  url="https://wa.me/${pno[index]}";
+                                });
+
+                                _launcchat(url);
+                                } ,icon: Icon(Icons.chat,color: Colors.white,),),
+                                title: chatBox(users[index], dp_url,
+                                    "" + desig[index], "18:20"),
+                              ),
                           );
                         }
                       },

@@ -19,7 +19,9 @@ class _RegisterState extends State<Register> {
   String email = "";
   String pass = "";
   String username = "";
+  String pno="";
   String uid = "";
+  String designation="";
   @override
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -161,6 +163,92 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         Padding(padding: EdgeInsets.only(top: 40)),
+                        Text("WhatsApp Number",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.026,
+                                color: Colors.white)),
+                        Padding(padding: EdgeInsets.only(top: 10)),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(5)),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          padding: EdgeInsets.only(left: 4),
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Number here",
+                              hintStyle: TextStyle(color: Colors.grey[700]),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  _passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                              ),
+                            ),
+                            keyboardType: TextInputType.number,
+                            obscureText: !_passwordVisible,
+                            onChanged: (value) {
+                              pno = value;
+                            },
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(top: 40)),
+                        Text("Designation",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.026,
+                                color: Colors.white)),
+                        Padding(padding: EdgeInsets.only(top: 10)),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius: BorderRadius.circular(5)),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          padding: EdgeInsets.only(left: 4),
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Your Department or Designation",
+                              hintStyle: TextStyle(color: Colors.grey[700]),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  _passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                              ),
+                            ),
+                            keyboardType: TextInputType.text,
+                            obscureText: !_passwordVisible,
+                            onChanged: (value) {
+                              designation = value;
+                            },
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(top: 40)),
                         Container(
                           height: MediaQuery.of(context).size.height * 0.062,
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -205,9 +293,10 @@ class _RegisterState extends State<Register> {
                                                 'username': username,
                                                 'status':false,
                                                 'number':0,
+                                                'phone':pno,
+                                                'designation':designation,
                                               });
                                               _auth.currentUser?.updateDisplayName(username);
-
                                               Navigator.of(context)
                                                   .popAndPushNamed('/login');
                                             },
@@ -220,6 +309,7 @@ class _RegisterState extends State<Register> {
                                 }
                               } catch (e) {
                                 print(e);
+                                if(pass.length<6){
                                 showDialog<void>(
                                   context: context,
                                   barrierDismissible:
@@ -248,6 +338,37 @@ class _RegisterState extends State<Register> {
                                   },
                                 );
                               }
+                              else{
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                    false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Error Encountered'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const <Widget>[
+                                              Text(
+                                                  "Something looks fishy, check the details entered or your network connectivity"),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Proceed'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                        elevation: 24,
+                                      );
+                                    },
+                                  );
+                                }
+                              }
+
                             },
                             color: Colors.blue[900],
                             child: Center(
@@ -260,7 +381,7 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         Padding(padding: EdgeInsets.all(12.0)),
-                        Row(
+                        /*Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
@@ -320,7 +441,7 @@ class _RegisterState extends State<Register> {
                                   )),
                             ],
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),

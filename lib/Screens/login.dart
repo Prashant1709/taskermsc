@@ -231,33 +231,33 @@ class _loginState extends State<login> {
                                   );
                                 }
                               } catch (e) {
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Error'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const <Widget>[
-                                            Text(
-                                                'Please check the credentials to proceed!'),
-                                          ],
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Error'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const <Widget>[
+                                              Text(
+                                                  'Please check the credentials to proceed!\n\nPassword must be greater than 6 letters\n\nE-Mail must not have spaces'),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Accept'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                      elevation: 24,
-                                    );
-                                  },
-                                );
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Accept'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                        elevation: 24,
+                                      );
+                                    },
+                                  );
                                 print(e);
                               }
                             },
