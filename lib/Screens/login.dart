@@ -282,7 +282,7 @@ class _loginState extends State<login> {
                             ),
                           ),
                         ),
-                        Row(
+                        /*Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
@@ -341,7 +341,7 @@ class _loginState extends State<login> {
                                   )),
                             ],
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),

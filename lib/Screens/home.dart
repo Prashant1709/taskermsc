@@ -27,12 +27,18 @@ class _homeState extends State<home> {
   String priority = "";
   String meet="";
   bool mcreate=false;
+  bool _value=false;
   double _priority = 0;
   DateTime _sdate = DateTime.now();
   int all = 0;
   List<DateTime> date = [];
   List<String> task = [];
   List<String>meetl=[];
+  List<String>uids=[];
+  List<String>users=[];
+  List<String>udesig=[];
+  List<String>uno=[];
+  String chattext="";
   //List <String> priority=[];
   List<bool> Status = [];
   List pcol1 = [];
@@ -55,6 +61,7 @@ class _homeState extends State<home> {
                 channel.name,
                 color: Colors.blue,
                 playSound: true,
+                colorized: true,
                 icon: '@mipmap/ic_launcher',
               ),
             ),
@@ -152,9 +159,31 @@ class _homeState extends State<home> {
         }
       }
     });
+    firestoreInstance.collection('Users').snapshots().listen((event) {
+      for (var i in event.docs) {
+        /*print(i.get('username'));
+        print(i.id);
+        print(i.get('designation'));*/
+        if(i.id!=_auth.currentUser?.uid){
+        uids.add(i.id);
+        users.add(i.get('username'));
+        udesig.add(i.get('designation'));
+        uno.add(i.get('phone'));
+      }}
+    });
   }
 
   Future<void> _launchInWebViewOrVC(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
+  Future<void> _launcchat(String url) async {
     if (!await launch(
       url,
       forceSafariVC: false,
@@ -552,7 +581,62 @@ class _homeState extends State<home> {
                                                                       ),
                                                                       tooltip:
                                                                       'Add collaborators',
-                                                                      onPressed: () {},
+                                                                        onPressed: () {
+                                                                          showModalBottomSheet(context: context, builder: (BuildContext bc){
+                                                                            return StreamBuilder<QuerySnapshot>(
+                                                                                stream: firestoreInstance.collection("Users").snapshots(),
+                                                                                builder: (context, snapshot) {
+                                                                                  return ListView.builder(
+                                                                                      itemCount: uids.length,
+                                                                                      itemBuilder: (BuildContext context,int index){
+                                                                                        return ListTile(
+                                                                                          leading: IconButton(onPressed: (){
+                                                                                            setState(() {
+                                                                                              all = all + 1;
+                                                                                              if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                                setState(() {
+                                                                                                  priority = "green";
+                                                                                                });
+                                                                                              } else if (_priority.toInt() >= 4 &&
+                                                                                                  _priority.toInt() <= 7) {
+                                                                                                setState(() {
+                                                                                                  priority = "yellow";
+                                                                                                });
+                                                                                              } else {
+                                                                                                setState(() {
+                                                                                                  priority = "red";
+                                                                                                });
+                                                                                              }
+                                                                                            });
+
+                                                                                            firestoreInstance
+                                                                                                .collection("Users")
+                                                                                                .doc('${uids[index]}')
+                                                                                                .collection('Task')
+                                                                                                .doc('$_date')
+                                                                                                .update({
+                                                                                              'Task': Task,
+                                                                                              'Date': _date,
+                                                                                              'Priority': priority,
+                                                                                              'status': false,
+                                                                                              'sdate': _sdate,
+                                                                                              'meet':meet,
+                                                                                            });
+                                                                                          },icon: Icon(Icons.add),),
+                                                                                          title: Text("${users[index]}-${udesig[index]}"),
+                                                                                          trailing:IconButton(onPressed: (){
+                                                                                            setState(() {
+                                                                                              chattext="https://wa.me/${uno[index]}?text=$Task is assigned to you,check you app";
+                                                                                            });
+                                                                                            _launcchat(chattext);
+                                                                                          }, icon: Icon(Icons.chat),),
+                                                                                        );
+                                                                                      });
+                                                                                }
+                                                                            );
+
+                                                                          });
+                                                                        },
                                                                     ),
                                                                     Text(
                                                                       'Collaborate',
@@ -737,10 +821,6 @@ class _homeState extends State<home> {
                                                           ),
                                                           Padding(
                                                             padding: const EdgeInsets.all(8.0),
-                                                            child: Text("Collaborators:"),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Text("Image:"),
                                                           ),
                                                           Padding(
@@ -902,7 +982,62 @@ class _homeState extends State<home> {
                                       color: Colors.white,
                                       icon: const Icon(Icons.person_add),
                                       tooltip: 'Add collaborators',
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        showModalBottomSheet(context: context, builder: (BuildContext bc){
+                                          return StreamBuilder<QuerySnapshot>(
+                                            stream: firestoreInstance.collection("Users").snapshots(),
+                                            builder: (context, snapshot) {
+                                              return ListView.builder(
+                                                  itemCount: uids.length,
+                                                  itemBuilder: (BuildContext context,int index){
+                                                    return ListTile(
+                                                      leading: IconButton(onPressed: (){
+                                                        setState(() {
+                                                          all = all + 1;
+                                                          if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                            setState(() {
+                                                              priority = "green";
+                                                            });
+                                                          } else if (_priority.toInt() >= 4 &&
+                                                              _priority.toInt() <= 7) {
+                                                            setState(() {
+                                                              priority = "yellow";
+                                                            });
+                                                          } else {
+                                                            setState(() {
+                                                              priority = "red";
+                                                            });
+                                                          }
+                                                        });
+
+                                                        firestoreInstance
+                                                            .collection("Users")
+                                                            .doc('${uids[index]}')
+                                                            .collection('Task')
+                                                            .doc('$_date')
+                                                            .set({
+                                                          'Task': Task,
+                                                          'Date': _date,
+                                                          'Priority': priority,
+                                                          'status': false,
+                                                          'sdate': _sdate,
+                                                          'meet':meet,
+                                                        });
+                                                      },icon: Icon(Icons.add),),
+                                                      title: Text("${users[index]}-${udesig[index]}"),
+                                                      trailing:IconButton(onPressed: (){
+                                                        setState(() {
+                                                          chattext="https://wa.me/${uno[index]}?text=$Task is assigned to you,check you app";
+                                                        });
+                                                        _launcchat(chattext);
+                                                      }, icon: Icon(Icons.chat),),
+                                                    );
+                                                  });
+                                            }
+                                          );
+
+                                        });
+                                      },
                                     ),
                                     Text('Collaborate',
                                         style: TextStyle(
@@ -1066,6 +1201,11 @@ class _homeState extends State<home> {
                       color: Colors.white,
                     ),
                     onPressed: () {
+                      showDialog(context: context, builder: (BuildContext bc){
+                        return AlertDialog(
+                          title: Text("Page under construction"),
+                        );
+                      });
                       //Navigator.pushNamed(context, '/str');
                     },
                   ),
