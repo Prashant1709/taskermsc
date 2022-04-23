@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:taskermsc/Screens/ChatPage.dart';
@@ -42,27 +45,62 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+User? user = FirebaseAuth.instance.currentUser;
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => titlePage(),
-        '/login': (context) => login(),
-        '/regist': (context) => Register(),
-        '/home': (context) => home(),
-        '/calendar': (context) => calendar(),
-        '/profile2': (context) => Profile2(),
-        '/calendar': (context) => calendar(),
-        '/chat': (context) => chat(),
-      },
+    if (user == null) {
+      return MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/one': (context) => titlePage(),
+          '/login': (context) => login(),
+          '/regist': (context) => Register(),
+          '/home': (context) => home(),
+          '/calendar': (context) => calendar(),
+          '/profile2': (context) => Profile2(),
+          '/chat': (context) => chat(),
+        },
+        home: Home(),
+      );
+    } else {
+      return MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/home',
+        routes: {
+          '/one': (context) => titlePage(),
+          '/login': (context) => login(),
+          '/regist': (context) => Register(),
+          '/home': (context) => home(),
+          '/calendar': (context) => calendar(),
+          '/profile2': (context) => Profile2(),
+          '/chat': (context) => chat(),
+        },
+        home: Home(),
+      );
+    }
+  }
+}
+
+class Home extends StatelessWidget {
+  Home({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      builder: (context, snap) => FirebaseAuth.instance.currentUser == null
+          ? titlePage()
+          : home(), //If user is not signout open the BuildResume class
+      stream: FirebaseAuth.instance.authStateChanges(),
     );
   }
 }

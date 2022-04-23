@@ -11,11 +11,18 @@ class titlePage extends StatelessWidget {
       home: Scaffold(
           backgroundColor: Color.fromARGB(255, 20, 24, 30),
           // ignore: prefer_const_literals_to_create_immutables
-          body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
-              SizedBox(height: 240,),
-              CircleAvatar(backgroundImage: AssetImage('assets/logo2.png'),backgroundColor: Color.fromARGB(255, 20, 24, 30),radius: 70,),
+              SizedBox(
+                height: 240,
+              ),
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/logo2.png'),
+                backgroundColor: Color.fromARGB(255, 20, 24, 30),
+                radius: 70,
+              ),
               Center(
                 child: Align(
                   alignment: Alignment.center,
@@ -86,11 +93,13 @@ class titlePage extends StatelessWidget {
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: Color.fromRGBO(36, 59, 139, 5), width: 5)),
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/regist');
                   },
-                  color: Colors.black,
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color?>(Colors.black)),
                   child: Center(
                       child: Text("CREATE ACCOUNT",
                           style: TextStyle(
