@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:taskermsc/Screens/ChatPage.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile2.dart';
 import 'package:taskermsc/Screens/calendar.dart';
@@ -42,6 +43,7 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(const MyApp());
 }
 
