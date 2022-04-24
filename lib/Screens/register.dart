@@ -19,9 +19,9 @@ class _RegisterState extends State<Register> {
   String email = "";
   String pass = "";
   String username = "";
-  String pno="";
+  String pno = "";
   String uid = "";
-  String designation="";
+  String designation = "";
   @override
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -166,7 +166,7 @@ class _RegisterState extends State<Register> {
                         Text("WhatsApp Number",
                             style: TextStyle(
                                 fontSize:
-                                MediaQuery.of(context).size.height * 0.026,
+                                    MediaQuery.of(context).size.height * 0.026,
                                 color: Colors.white)),
                         Padding(padding: EdgeInsets.only(top: 10)),
                         Container(
@@ -182,6 +182,25 @@ class _RegisterState extends State<Register> {
                               border: InputBorder.none,
                               hintText: "Number here",
                               hintStyle: TextStyle(color: Colors.grey[700]),
+                              // prefixIcon: IconButton(
+                              //   icon: Icon(Icons.add),
+                              //   onPressed: () {},
+                              // ),
+                              // prefixText: "+91",
+                              // prefixStyle: TextStyle(color: Colors.white),
+                              prefixIcon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    '+91',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 17),
+                                  ),
+                                ],
+                              ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   // Based on passwordVisible state choose the icon
@@ -209,7 +228,7 @@ class _RegisterState extends State<Register> {
                         Text("Designation",
                             style: TextStyle(
                                 fontSize:
-                                MediaQuery.of(context).size.height * 0.026,
+                                    MediaQuery.of(context).size.height * 0.026,
                                 color: Colors.white)),
                         Padding(padding: EdgeInsets.only(top: 10)),
                         Container(
@@ -291,12 +310,13 @@ class _RegisterState extends State<Register> {
                                                   .doc('$uid')
                                                   .set({
                                                 'username': username,
-                                                'status':false,
-                                                'number':0,
-                                                'phone':pno,
-                                                'designation':designation,
+                                                'status': false,
+                                                'number': 0,
+                                                'phone': pno,
+                                                'designation': designation,
                                               });
-                                              _auth.currentUser?.updateDisplayName(username);
+                                              _auth.currentUser
+                                                  ?.updateDisplayName(username);
                                               Navigator.of(context)
                                                   .popAndPushNamed('/login');
                                             },
@@ -309,40 +329,39 @@ class _RegisterState extends State<Register> {
                                 }
                               } catch (e) {
                                 print(e);
-                                if(pass.length<6){
-                                showDialog<void>(
-                                  context: context,
-                                  barrierDismissible:
-                                      false, // user must tap button!
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Error Encountered'),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const <Widget>[
-                                            Text(
-                                                "Check password, min 6 charachters needed"),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          child: const Text('Proceed'),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                      elevation: 24,
-                                    );
-                                  },
-                                );
-                              }
-                              else{
+                                if (pass.length < 6) {
                                   showDialog<void>(
                                     context: context,
                                     barrierDismissible:
-                                    false, // user must tap button!
+                                        false, // user must tap button!
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Error Encountered'),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const <Widget>[
+                                              Text(
+                                                  "Check password, min 6 charachters needed"),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Proceed'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                        elevation: 24,
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  showDialog<void>(
+                                    context: context,
+                                    barrierDismissible:
+                                        false, // user must tap button!
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: const Text('Error Encountered'),
@@ -368,7 +387,6 @@ class _RegisterState extends State<Register> {
                                   );
                                 }
                               }
-
                             },
                             color: Colors.blue[900],
                             child: Center(
