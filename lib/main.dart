@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:taskermsc/Screens/ChatPage.dart';
 import 'package:taskermsc/Screens/Profile%20Page/profile2.dart';
 import 'package:taskermsc/Screens/calendar.dart';
+import 'package:taskermsc/Screens/events.dart';
 import 'package:taskermsc/Screens/login.dart';
 import 'package:taskermsc/Screens/home.dart';
 import 'package:taskermsc/Screens/register.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
           '/calendar': (context) => calendar(),
           '/profile2': (context) => Profile2(),
           '/chat': (context) => chat(),
+          '/event':(context)=>event(),
         },
         home: Home(),
       );
@@ -86,6 +88,7 @@ class MyApp extends StatelessWidget {
           '/calendar': (context) => calendar(),
           '/profile2': (context) => Profile2(),
           '/chat': (context) => chat(),
+          '/event':(context)=>event(),
         },
         home: Home(),
       );

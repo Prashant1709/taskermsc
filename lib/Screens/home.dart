@@ -253,12 +253,7 @@ class _homeState extends State<home> {
                   getdat();
                   //Navigator.pushNamed(context,'/profile'),
                 },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    "https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png",
-                  ),
-                  radius: 28,
-                ),
+                child: Icon(Icons.refresh,color: Colors.white,),
               ),
             ),
           ],
@@ -278,10 +273,10 @@ class _homeState extends State<home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
-                        radius: 28,
-                        backgroundImage: NetworkImage(
-                            "https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png")),
-                    SizedBox(
+                      backgroundImage: AssetImage(_auth.currentUser?.photoURL as String),
+                      radius: 28,
+                      backgroundColor: Colors.blueGrey,
+                    ),SizedBox(
                       height: 10,
                     ),
                     Column(
@@ -340,7 +335,7 @@ class _homeState extends State<home> {
             children: [
               Divider(
                 color: Colors.grey,
-                height: 90,
+                height: 20,
                 thickness: 2,
               ),
               Container(
@@ -1201,12 +1196,7 @@ class _homeState extends State<home> {
                       color: Colors.white,
                     ),
                     onPressed: () {
-                      showDialog(context: context, builder: (BuildContext bc){
-                        return AlertDialog(
-                          title: Text("Page under construction"),
-                        );
-                      });
-                      //Navigator.pushNamed(context, '/str');
+                      Navigator.pushNamed(context, '/event');
                     },
                   ),
                 ],

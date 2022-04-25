@@ -3,9 +3,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:taskermsc/Screens/Profile Page/ImageSel.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class Profile2 extends StatefulWidget {
   const Profile2({Key? key}) : super(key: key);
@@ -17,38 +14,13 @@ class Profile2 extends StatefulWidget {
 enum ImageSourceType { gallery, camera }
 
 class _Profile2State extends State<Profile2> {
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   String username = "";
   String uid = "";
   String url = "";
   String url2 = "";
-  void _handleURLButtonPress(BuildContext context, var type) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ImageSel(type)));
-  }
 
-  Future<void> getdat() async {
-    final newUser = _auth.currentUser;
-    uid = newUser!.uid;
-    print(uid);
-    url = await storage
-        .ref('${_auth.currentUser!.uid}')
-        .child('${_auth.currentUser!.displayName}')
-        .getDownloadURL();
-    firestoreInstance
-        .collection('$uid')
-        .doc('Data')
-        .snapshots()
-        .listen((event) {
-      url2 = event.get('DisplayPhoto').toString();
-      print(url2);
-    });
-
-    print(url);
-  }
 
   double height(double height) {
     return MediaQuery.of(context).size.height * height;
@@ -56,12 +28,6 @@ class _Profile2State extends State<Profile2> {
 
   double width(double width) {
     return MediaQuery.of(context).size.width * width;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getdat();
   }
 
   @override
@@ -101,68 +67,160 @@ class _Profile2State extends State<Profile2> {
               ),
               Stack(
                 // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  StreamBuilder<Object>(
-                      stream: firestoreInstance
-                          .collection('$uid')
-                          .doc('Data')
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        return Padding(
-                          padding: EdgeInsets.only(right: 20),
-                          child: CircleAvatar(
-                            backgroundImage: url2.isEmpty
-                                ? NetworkImage(
-                                    "https://i.pinimg.com/originals/38/aa/95/38aa95f88d5f0fc3fc0f691abfaeaf0c.png")
-                                : NetworkImage(url2),
-                            backgroundColor: Colors.transparent,
-                            radius: 60,
-                          ),
-                        );
-                      }),
+                children: [CircleAvatar(
+                  backgroundImage: AssetImage(_auth.currentUser?.photoURL as String),
+                  radius: 62,
+                  backgroundColor: Colors.blueGrey,
+                ),
                   Positioned(
+                    left: 60,
                     bottom: 5,
-                    left: 70,
                     child: RawMaterialButton(
                       child: Icon(Icons.create_rounded),
                       fillColor: Colors.blue,
                       shape: CircleBorder(),
                       onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) {
-                            return Wrap(
-                              children: [
-                                OutlinedButton(
-                                  onPressed: () {
-                                    _handleURLButtonPress(
-                                        context, ImageSourceType.gallery);
-                                  },
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.image,
-                                      color: Colors.purple,
+                        showModalBottomSheet(context: context, builder: (BuildContext bc){
+                          return Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Select your Display Picture",style: TextStyle(color: Colors.teal,fontSize: 20),),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    OutlinedButton(onPressed: (){
+                                      _auth.currentUser?.updatePhotoURL("assets/male1.png");
+                                      //Navigator.of(context).popAndPushNamed('/login');
+                                      Navigator.pop(context);
+                                      showDialog(context: context,builder: (BuildContext bc){
+                                        return AlertDialog(
+                                          title: const Text('DP will be updated on next Login'),
+                                        );
+                                      });
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(width: 5.0,color: Colors.transparent)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/male1.png"),backgroundColor: Colors.blueGrey,),
+                                          Text("Andy",style: TextStyle(color: Colors.orange,fontSize: 16),),
+                                        ],
+                                      ),
+                                    ),OutlinedButton(onPressed: (){
+                                      _auth.currentUser?.updatePhotoURL("assets/male2.png");
+                                      //Navigator.of(context).popAndPushNamed('/login');
+                                      Navigator.pop(context);
+                                      showDialog(context: context,builder: (BuildContext bc){
+                                        return AlertDialog(
+                                          title: const Text('DP will be updated on next Login'),
+                                        );
+                                      });
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(width: 5.0,color: Colors.transparent)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/male2.png"),backgroundColor: Colors.blueGrey,),
+                                          Text("Mandy",style: TextStyle(color: Colors.pink,fontSize: 16),),
+                                        ],
+                                      ),
+                                    ),OutlinedButton(onPressed: (){
+                                      _auth.currentUser?.updatePhotoURL("assets/male3.png");
+                                      //Navigator.of(context).popAndPushNamed('/login');
+                                      Navigator.pop(context);
+                                      showDialog(context: context,builder: (BuildContext bc){
+                                        return AlertDialog(
+                                          title: const Text('DP will be updated on next Login'),
+                                        );
+                                      });
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(width: 5.0,color: Colors.transparent)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/male3.png"),backgroundColor: Colors.blueGrey,),
+                                          Text("Sandy",style: TextStyle(color: Colors.brown,fontSize: 16),),
+                                        ],
+                                      ),
                                     ),
-                                    title: Text('Choose from Gallery'),
-                                  ),
+                                  ],
                                 ),
-                                OutlinedButton(
-                                  onPressed: () {
-                                    _handleURLButtonPress(
-                                        context, ImageSourceType.camera);
-                                  },
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.camera_alt,
-                                      color: Colors.blueGrey,
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    OutlinedButton(onPressed: (){
+                                      _auth.currentUser?.updatePhotoURL("assets/Female1.png");
+                                      //Navigator.of(context).popAndPushNamed('/login');
+                                      Navigator.pop(context);
+                                      showDialog(context: context,builder: (BuildContext bc){
+                                        return AlertDialog(
+                                          title: const Text('DP will be updated on next Login'),
+                                        );
+                                      });
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(width: 5.0,color: Colors.transparent)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/Female1.png"),backgroundColor: Colors.blueGrey,),
+                                          Text("Alisha",style: TextStyle(color: Colors.orange,fontSize: 16),),
+                                        ],
+                                      ),
+                                    ),OutlinedButton(onPressed: (){
+                                      _auth.currentUser?.updatePhotoURL("assets/Female2.png");
+                                      //Navigator.of(context).popAndPushNamed('/login');
+                                      Navigator.pop(context);
+                                      showDialog(context: context,builder: (BuildContext bc){
+                                        return AlertDialog(
+                                          title: const Text('DP will be updated on next Login'),
+                                        );
+                                      });
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(width: 5.0,color: Colors.transparent)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/Female2.png"),backgroundColor: Colors.blueGrey,),
+                                          Text("Nora",style: TextStyle(color: Colors.pink,fontSize: 16),),
+                                        ],
+                                      ),
+                                    ),OutlinedButton(onPressed: (){
+                                      _auth.currentUser?.updatePhotoURL("assets/Female3.png");
+                                      //Navigator.of(context).popAndPushNamed('/login');
+                                      Navigator.pop(context);
+                                      showDialog(context: context,builder: (BuildContext bc){
+                                        return AlertDialog(
+                                          title: const Text('DP will be updated on next Login'),
+                                        );
+                                      });
+                                    },
+                                      style: OutlinedButton.styleFrom(
+                                          side: BorderSide(width: 5.0,color: Colors.transparent)
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/Female3.png"),backgroundColor: Colors.blueGrey,),
+                                          Text("Candice",style: TextStyle(color: Colors.brown,fontSize: 16),),
+                                        ],
+                                      ),
                                     ),
-                                    title: Text('Use Camera'),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            );
-                          },
-                        );
+                              ),
+                            ],
+                          );
+                        });
                       },
                     ),
                   ),

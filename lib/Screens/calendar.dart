@@ -568,7 +568,17 @@ class _calendarState extends State<calendar> {
                 showDatePickerButton: true,
                 minDate: DateTime.now(),
                 dataSource: MeetingDataSource(_getDataSource()),
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.blueGrey.shade200,
+                cellBorderColor: Colors.white,
+                todayHighlightColor: Colors.orange,
+                selectionDecoration:BoxDecoration(
+                  color: Colors.transparent,
+                  border:
+                  Border.all(color: Colors.white,
+                      width: 3),
+                  borderRadius: const BorderRadius.all(Radius.circular(3)),
+                  shape: BoxShape.rectangle,
+                ),
                 onTap: calendarTapped,
                 monthViewSettings: MonthViewSettings(
                     appointmentDisplayMode:

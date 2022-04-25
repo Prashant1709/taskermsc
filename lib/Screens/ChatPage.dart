@@ -12,8 +12,6 @@ class chat extends StatefulWidget {
   State<chat> createState() => _chatState();
 }
 
-String dp_url =
-    "https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png";
 
 class _chatState extends State<chat> {
   final _auth = FirebaseAuth.instance;
@@ -21,6 +19,7 @@ class _chatState extends State<chat> {
   List<String> users = [];
   List<String> pno=[];
   List<String> desig=[];
+  List<String> purl=[];
   String uid = "";
   String url="";
   @override
@@ -33,6 +32,7 @@ class _chatState extends State<chat> {
         print(i.get('phone'));
         pno.add(i.get('phone'));
         desig.add(i.get('designation'));
+        purl.add(i.get('photourl'));
       }
     });
     getdat();
@@ -77,9 +77,7 @@ class _chatState extends State<chat> {
           child: Row(
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(
-                    url //"https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png",
-                    ),
+                backgroundImage: AssetImage(url),
                 radius: 28,
               ),
               Padding(
@@ -153,7 +151,7 @@ class _chatState extends State<chat> {
 
                                 _launcchat(url);
                                 } ,icon: Icon(Icons.chat,color: Colors.white,),),
-                                title: chatBox(users[index], dp_url,
+                                title: chatBox(users[index],purl[index],
                                     "" + desig[index], "18:20"),
                               ),
                           );
