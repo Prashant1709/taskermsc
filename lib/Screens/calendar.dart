@@ -28,6 +28,7 @@ class _calendarState extends State<calendar> {
   String? _text = '', _titleText = '';
   Color? _headerColor, _viewHeaderColor, _calendarColor;
   DateTime _sdate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
   int all = 0;
   List<DateTime> date = [];
   List<String> task = [];
@@ -91,22 +92,54 @@ class _calendarState extends State<calendar> {
     });
   }
 
-  DateTime _date = DateTime.now();
-  String sdat = "";
-  void _selectDate() async {
-    final DateTime? newDate = await showDatePicker(
+  String etime="";
+  Future<TimeOfDay> _selectTime(BuildContext context) async {
+    final selected = await showTimePicker(
       context: context,
-      initialDate: _date,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2028, 1),
-      helpText: 'Enter End Date',
+      initialTime: selectedTime,
     );
-    if (newDate != null) {
+    if (selected != null && selected != selectedTime) {
       setState(() {
-        _date = newDate;
-        sdat = _date.day.toString();
+        selectedTime = selected;
+        etime="${selectedTime.hour}:${selectedTime.minute}";
+      });
+      //print(etime);
+    }
+    return selectedTime;
+  }
+  DateTime selectedDate = DateTime.now();
+  Future<DateTime> selectDate(BuildContext context) async {
+    final selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2035),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
       });
     }
+    return selectedDate;
+  }
+  DateTime dateTime = DateTime.now();
+  Future _selectDateTime(BuildContext context) async {
+    final date = await selectDate(context);
+    if (date == null) return;
+
+    final time = await _selectTime(context);
+
+    if (time == null) return;
+    setState(() {
+      dateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+      );
+    });
+    //print(dateTime);
   }
 
   void calendarTapped(CalendarTapDetails details) {
@@ -269,8 +302,7 @@ class _calendarState extends State<calendar> {
                                                   children: [
                                                     MaterialButton(
                                                       onPressed: () {
-                                                        _selectDate();
-                                                        sdat = _date.toString();
+                                                        _selectDateTime(context);
                                                       },
                                                       color: Colors.blue[900],
                                                       child: Text(
@@ -302,11 +334,10 @@ class _calendarState extends State<calendar> {
                                                       (context, setState) =>
                                                           Slider(
                                                     value: _priority,
-                                                    max: 10,
-                                                    label: (_priority / 10)
-                                                        .round()
-                                                        .toString(),
-                                                    onChanged: (double value) {
+                                                            max: 9,
+                                                            divisions:9,
+                                                            label:"Priority:${(_priority+1).round().toString()}",
+                                                            onChanged: (double value) {
                                                       // print("$value");
                                                       setState(() {
                                                         _priority = value;
@@ -351,7 +382,7 @@ class _calendarState extends State<calendar> {
                                                   .doc('${date[index]}')
                                                   .update({
                                                 'Task': Task,
-                                                'Date': _date,
+                                                'Date': dateTime,
                                                 'Priority': priority,
                                                 'status': false,
                                               });
@@ -638,8 +669,7 @@ class _calendarState extends State<calendar> {
                               children: [
                                 MaterialButton(
                                   onPressed: () {
-                                    _selectDate();
-                                    sdat = _date.toString();
+                                    _selectDateTime(context);
                                   },
                                   color: Colors.blue[900],
                                   child: Text(
@@ -663,8 +693,9 @@ class _calendarState extends State<calendar> {
                             StatefulBuilder(
                               builder: (context, setState) => Slider(
                                 value: _priority,
-                                max: 10,
-                                label: (_priority / 10).round().toString(),
+                                max: 9,
+                                divisions:9,
+                                label:"Priority:${(_priority+1).round().toString()}",
                                 onChanged: (double value) {
                                   // print("$value");
                                   setState(() {
@@ -756,10 +787,10 @@ class _calendarState extends State<calendar> {
                             .collection("Users")
                             .doc('$uid')
                             .collection('Task')
-                            .doc('$_date')
+                            .doc('$dateTime')
                             .set({
                           'Task': Task,
-                          'Date': _date,
+                          'Date': dateTime,
                           'Priority': priority,
                           'status': false,
                           'sdate': _sdate,
