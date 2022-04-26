@@ -12,16 +12,15 @@ class chat extends StatefulWidget {
   State<chat> createState() => _chatState();
 }
 
-
 class _chatState extends State<chat> {
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   List<String> users = [];
-  List<String> pno=[];
-  List<String> desig=[];
-  List<String> purl=[];
+  List<String> pno = [];
+  List<String> desig = [];
+  List<String> purl = [];
   String uid = "";
-  String url="";
+  String url = "";
   @override
   void initState() {
     super.initState();
@@ -43,6 +42,7 @@ class _chatState extends State<chat> {
     uid = newUser!.uid;
     firestoreInstance.collection('Users').doc('$uid').update({'status': true});
   }
+
   Future<void> _launcchat(String url) async {
     if (!await launch(
       url,
@@ -53,6 +53,7 @@ class _chatState extends State<chat> {
       throw 'Could not launch $url';
     }
   }
+
   @override
   void dispose() {
     super.dispose();
@@ -67,7 +68,8 @@ class _chatState extends State<chat> {
     double width(double width) {
       return MediaQuery.of(context).size.width * width;
     }
-    Future<Null> refreshList() async{
+
+    Future<Null> refreshList() async {
       await Future.delayed(Duration(seconds: 2));
       users.clear();
       pno.clear();
@@ -128,49 +130,61 @@ class _chatState extends State<chat> {
         ),
         backgroundColor: Color.fromARGB(255, 27, 33, 41),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                StreamBuilder<QuerySnapshot>(
-                  stream: firestoreInstance.collection('Users').snapshots(),
-                  builder: (context, snapshot) {
-                    return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        if (users.isEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                child: Text(
-                              'No Data to show',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                            )),
-                          );
-                        } else {
-                          return SingleChildScrollView(
-                              child: ListTile(
-                                trailing: IconButton(onPressed:(){setState(() {
-                                  url="https://wa.me/${pno[index]}";
-                                });
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: 1, minWidth: 1),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  RefreshIndicator(
+                    onRefresh: refreshList,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: firestoreInstance.collection('Users').snapshots(),
+                      builder: (context, snapshot) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: users.length,
+                          itemBuilder: (context, index) {
+                            if (users.isEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                    child: Text(
+                                  'No Data to show',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                )),
+                              );
+                            } else {
+                              return SingleChildScrollView(
+                                child: ListTile(
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        url = "https://wa.me/${pno[index]}";
+                                      });
 
-                                _launcchat(url);
-                                } ,icon: Icon(Icons.chat,color: Colors.white,),),
-                                title: chatBox(users[index],purl[index],
-                                    "" + desig[index], "18:20"),
-                              ),
-                          );
-                        }
+                                      _launcchat(url);
+                                    },
+                                    icon: Icon(
+                                      Icons.chat,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  title: chatBox(users[index], purl[index],
+                                      "" + desig[index], "18:20"),
+                                ),
+                              );
+                            }
+                          },
+                        );
                       },
-                    );
-                  },
-                ),
-              ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
