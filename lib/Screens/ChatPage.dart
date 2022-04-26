@@ -67,6 +67,15 @@ class _chatState extends State<chat> {
     double width(double width) {
       return MediaQuery.of(context).size.width * width;
     }
+    Future<Null> refreshList() async{
+      await Future.delayed(Duration(seconds: 2));
+      users.clear();
+      pno.clear();
+      desig.clear();
+      purl.clear();
+      await Future.delayed(Duration(seconds: 1));
+      getdat();
+    }
 
     Widget chatBox(String name, String url, String lastMessage, String time) {
       return Container(
@@ -79,6 +88,7 @@ class _chatState extends State<chat> {
               CircleAvatar(
                 backgroundImage: AssetImage(url),
                 radius: 28,
+                backgroundColor: Colors.blueGrey,
               ),
               Padding(
                 padding: EdgeInsets.only(top: height(0.015), left: 15),
