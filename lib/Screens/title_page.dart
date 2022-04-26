@@ -2,9 +2,44 @@
 
 import 'package:flutter/material.dart';
 
-class titlePage extends StatelessWidget {
+class titlePage extends StatefulWidget {
   const titlePage({Key? key}) : super(key: key);
 
+  @override
+  State<titlePage> createState() => _titlePageState();
+}
+
+class _titlePageState extends State<titlePage> {
+  int _widgetId = 1;
+  @override
+  /*void initState() {
+    // TODO: implement initState
+    super.initState();
+    _updateWidget();
+  }
+  Widget _image1(BuildContext context){
+    return Container(
+      key: Key("First"),
+      height: 200,
+      child: Image(image: AssetImage("assets/4.png"),),
+    );
+  }
+  Widget _image2(BuildContext context){
+    return Container(
+      key: Key("Second"),
+      height: 200,
+      child: Image(image: AssetImage("assets/2.png"),),
+    );
+  }
+  Widget _renderWidget() {
+    return _widgetId == 1 ? _image1(context) : _image2(context);
+  }
+
+  void _updateWidget() {
+    setState(() {
+      _widgetId = _widgetId == 1 ? 2 : 1;
+    });
+  }*/
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,23 +53,23 @@ class titlePage extends StatelessWidget {
               SizedBox(
                 height: 240,
               ),
-              CircleAvatar(
-                backgroundImage: AssetImage('assets/logo2.png'),
-                backgroundColor: Color.fromARGB(255, 20, 24, 30),
-                radius: 70,
+              AnimatedSwitcher(duration: const Duration(seconds: 2),
+                child: //_renderWidget(// )
+                Container(height:300,width:270 ,child: Image(image: AssetImage("assets/3.png"),)),
               ),
-              Center(
+              /*Center(
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Task It",
+                    "Tasker",
                     style: TextStyle(
-                        color: Colors.teal.shade700,
+                        color: Color.fromRGBO(103, 200, 195, 1),
                         fontSize: MediaQuery.of(context).size.height * 0.08,
                         fontFamily: 'ShadowsIntoLight'),
                   ),
                 ),
-              ),
+              ),*/
+
               Center(
                 child: Align(
                   alignment: Alignment.center,
@@ -65,6 +100,9 @@ class titlePage extends StatelessWidget {
                     border: Border.all(), color: Colors.blue[900]),
                 child: MaterialButton(
                   onPressed: () {
+                    //_renderWidget();
+                    //_updateWidget();
+
                     Navigator.pushNamed(context, '/login');
                   },
                   color: Colors.blue[900],

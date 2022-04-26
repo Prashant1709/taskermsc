@@ -14,14 +14,23 @@ class Profile2 extends StatefulWidget {
 enum ImageSourceType { gallery, camera }
 
 class _Profile2State extends State<Profile2> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdat();
+  }
+
   final _auth = FirebaseAuth.instance;
   final firestoreInstance = FirebaseFirestore.instance;
   String username = "";
   String uid = "";
   String url = "";
   String url2 = "";
-
-
+  String email = "";
+  String pno = "";
+  String dropdownValue = 'Select Dept';
+  String desig="";
   double height(double height) {
     return MediaQuery.of(context).size.height * height;
   }
@@ -29,7 +38,19 @@ class _Profile2State extends State<Profile2> {
   double width(double width) {
     return MediaQuery.of(context).size.width * width;
   }
-
+  Future<void> getdat() async {
+    final newUser = _auth.currentUser;
+    //print(newUser?.uid);
+    uid = newUser!.uid;
+    //print(uid);
+    firestoreInstance
+        .collection('Users')
+        .doc('$uid').snapshots().listen((event) {
+          username=event.get('username');
+          pno=event.get('phone');
+          desig=event.get('designation');
+    });
+    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -233,190 +254,281 @@ class _Profile2State extends State<Profile2> {
             height: 40,
             thickness: 2,
           ),
-          Container(
-            // width: width(1),
-            height: height(0.25),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              color: Color.fromARGB(255, 59, 71, 90),
-              elevation: height(0.02),
-              shadowColor: Colors.blue[900],
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          SingleChildScrollView(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: firestoreInstance.collection('Users').snapshots(),
+              builder: (context, snapshot) {
+                return Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: width(0.03), top: height(0.013)),
-                      child: Text(
-                        "Status",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 97, 162,
-                              236), //Color.fromARGB(255, 103, 115, 151),
-                          fontSize: height(0.037),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                      endIndent: width(0.7),
-                      indent: width(0.03),
-                      thickness: 2,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: width(0.03), top: height(0.01)),
-                      child: Text(
-                        "Completed :",
-                        style: TextStyle(
-                            color: Colors.white54, fontSize: height(0.025)),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Row(
                       children: [
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Icon(
-                          Icons.circle,
-                          color: Colors.red,
-                          size: height(0.02),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Text(
-                          "15",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: height(0.02),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.1))),
-
-                        Icon(
-                          Icons.circle,
-                          color: Colors.yellow[600],
-                          size: height(0.02),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Text(
-                          "8",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: height(0.02),
-                          ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.1))),
-                        Icon(
-                          Icons.circle,
-                          color: Colors.green[600],
-                          size: height(0.02),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Text(
-                          "2",
-                          style: TextStyle(
-                              color: Colors.white, fontSize: height(0.02)),
-                        ),
-
-                        // ignore: prefer_const_literals_to_create_immutables
+                        SizedBox(width: 10,),
+                        Container(
+                            padding: EdgeInsets.only(top: 30),
+                            child: Text("Email:",
+                                style: TextStyle(
+                                    fontSize:
+                                    MediaQuery.of(context).size.height * 0.024,
+                                    color: Colors.white))),
                       ],
                     ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: width(0.03), top: height(0.02)),
-                      child: Text(
-                        "Remaining :",
-                        style: TextStyle(
-                            color: Colors.white54, fontSize: height(0.025)),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 7,
-                    ),
-                    Row(
-                      children: [
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Icon(
-                          Icons.circle,
-                          color: Colors.red,
-                          size: height(0.02),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Text(
-                          "12",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: height(0.02),
+
+                Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Container(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("${_auth.currentUser?.email}",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.021,
+                                color: Colors.white))),
+                    IconButton(onPressed: (){
+                      showDialog(context: context, builder: (BuildContext bc){
+                        return AlertDialog(
+                          title: Text("Edit",style: TextStyle(color: Colors.teal,fontSize: 18)),
+                          content: Container(height: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  width: MediaQuery.of(context).size.width * 0.9,
+                                  height: MediaQuery.of(context).size.height * 0.06,
+                                  padding: EdgeInsets.only(left: 4),
+                                  child: TextFormField(
+                                    style: TextStyle(fontSize: 18, color: Colors.black),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Email",
+                                        hintStyle: TextStyle(color: Colors.grey[700])),
+                                    keyboardType: TextInputType.emailAddress,
+                                    onChanged: (value) {
+                                      email = value;
+                                    },
+                                  ),
+                                ),
+                                MaterialButton(onPressed: (){
+                                  _auth.currentUser?.updateEmail(email);
+                                  _auth.currentUser?.sendEmailVerification();
+                                  Navigator.pop(context);
+                                },color: Colors.teal,child: Text("Submit"),),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.1))),
-                        Icon(
-                          Icons.circle,
-                          color: Colors.yellow[600],
-                          size: height(0.02),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Text(
-                          "3",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: height(0.02),
+                        );
+                      });
+                    }, icon: Icon(Icons.edit,color: Colors.white,))
+                  ],
+                ),Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Container(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("Username:",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.024,
+                                color: Colors.white))),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Container(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("$username",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.021,
+                                color: Colors.white))),
+                    IconButton(onPressed: (){
+                      showDialog(context: context, builder: (BuildContext bc){
+                        return AlertDialog(
+                          title: Text("Edit",style: TextStyle(color: Colors.teal,fontSize: 18)),
+                          content: Container(height: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  width: MediaQuery.of(context).size.width * 0.9,
+                                  height: MediaQuery.of(context).size.height * 0.06,
+                                  padding: EdgeInsets.only(left: 4),
+                                  child: TextFormField(
+                                    style: TextStyle(fontSize: 18, color: Colors.black),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Username",
+                                        hintStyle: TextStyle(color: Colors.grey[700])),
+                                    keyboardType: TextInputType.emailAddress,
+                                    onChanged: (value) {
+                                      username = value;
+                                    },
+                                  ),
+                                ),
+                                MaterialButton(onPressed: (){
+                                  _auth.currentUser?.updateDisplayName(username);
+                                  firestoreInstance.collection("Users").doc("$uid").update(
+                                      {
+                                        'username':username,
+                                      });
+                                  Navigator.pop(context);
+                                },color: Colors.teal,child: Text("Submit"),),
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.1))),
-                        Icon(
-                          Icons.circle,
-                          color: Colors.green[600],
-                          size: height(0.02),
-                        ),
-                        Padding(padding: EdgeInsets.only(left: width(0.03))),
-                        Text(
-                          "20",
-                          style: TextStyle(
-                              color: Colors.white, fontSize: height(0.02)),
-                        ),
-                      ],
-                    ),
-                  ]),
+                        );
+                      });
+                    }, icon: Icon(Icons.edit,color: Colors.white,))
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Container(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("Department:",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.024,
+                                color: Colors.white))),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Container(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("$desig",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.021,
+                                color: Colors.white))),
+                    IconButton(onPressed: (){
+                      showDialog(context: context, builder: (BuildContext bc){
+                        return AlertDialog(backgroundColor: Colors.blueGrey,
+                          title: Text("Edit",style: TextStyle(color: Colors.tealAccent,fontSize: 18)),
+                          content: Container(height: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                DropdownButton(
+                                  dropdownColor: Colors.teal,
+                                  value: dropdownValue,
+                                  icon: const Icon(Icons.keyboard_arrow_down,color: Colors.white,),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.white),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.white,
+                                  ),
+                                  onChanged: (String? newValue){
+                                    setState(() {
+                                      dropdownValue=newValue!;
+                                    });
+                                  },
+                                  items: <String>['Select Dept','Graphic Design','Content','Video Editing','Operations','KIIT BUZZ','CR&Mkt.','Web Dev','M L','App Dev','Cloud','Cyber Sec','AR/VR','UI/UX']
+                                      .map<DropdownMenuItem<String>>((String value){
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value,style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),),
+                                    );
+                                  }).toList(),
+
+                                ),
+                                MaterialButton(onPressed: (){
+                                  firestoreInstance.collection("Users").doc("$uid").update(
+                                      {
+                                        'designation':dropdownValue,
+                                      });
+                                  Navigator.pop(context);
+                                },color: Colors.teal,child: Text("Submit"),),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                    }, icon: Icon(Icons.edit,color: Colors.white,))
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Container(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("Phone:",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.024,
+                                color: Colors.white))),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 10,),
+                    Container(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("$pno",
+                            style: TextStyle(
+                                fontSize:
+                                MediaQuery.of(context).size.height * 0.021,
+                                color: Colors.white))),
+                    IconButton(onPressed: (){
+                      showDialog(context: context, builder: (BuildContext bc){
+                        return AlertDialog(
+                          title: Text("Edit",style: TextStyle(color: Colors.teal,fontSize: 18)),
+                          content: Container(height: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  width: MediaQuery.of(context).size.width * 0.9,
+                                  height: MediaQuery.of(context).size.height * 0.06,
+                                  padding: EdgeInsets.only(left: 4),
+                                  child: TextFormField(
+                                    style: TextStyle(fontSize: 18, color: Colors.black),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Phone",
+                                        hintStyle: TextStyle(color: Colors.grey[700])),
+                                    keyboardType: TextInputType.phone,
+                                    onChanged: (value) {
+                                      pno = value;
+                                    },
+                                  ),
+                                ),
+                                MaterialButton(onPressed: (){
+                                  firestoreInstance.collection("Users").doc("$uid").update(
+                                      {
+                                        'phone':pno,
+                                      });
+                                  Navigator.pop(context);
+                                },color: Colors.teal,child: Text("Submit"),),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                    }, icon: Icon(Icons.edit,color: Colors.white,))
+                  ],
+                ),
+                  ],
+                );
+              }
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: height(0.02))),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: height(0.2),
-              minWidth: width(1),
-            ),
-            child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                color: Color.fromARGB(255, 59, 71, 90),
-                elevation: height(0.02),
-                shadowColor: Colors.blue[900],
-                // ignore: prefer_const_literals_to_create_immutables
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: width(0.03), top: height(0.013)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      Text(
-                        "Created Tasks ",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 97, 162, 236),
-                            fontSize: height(0.033)),
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                        endIndent: width(0.53),
-                        indent: width(0.01),
-                        thickness: 2,
-                      ),
-                    ],
-                  ),
-                )),
-          )
         ],
       ),
     );

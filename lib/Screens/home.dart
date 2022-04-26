@@ -45,6 +45,7 @@ class _homeState extends State<home> {
   void initState() {
     super.initState();
     getdat();
+    _edate();
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
         RemoteNotification? notification = message.notification;
@@ -98,7 +99,7 @@ class _homeState extends State<home> {
     setState(() {});
     flutterLocalNotificationsPlugin.show(
         0,
-        "Task It",
+        "Tasker",
         "New Task Created at ${DateTime.now()}",
         NotificationDetails(
             android: AndroidNotificationDetails(channel.id, channel.name,
@@ -107,7 +108,24 @@ class _homeState extends State<home> {
                 playSound: true,
                 icon: '@mipmap/ic_launcher')));
   }
+  void _edate(){
+    for(int i=0;i<date.length;i++)
+      {
+        if(date[i].difference(DateTime.now()).inHours.toInt()<2){
 
+          flutterLocalNotificationsPlugin.show(
+              0,
+              "Tasker",
+              "One of your tasks is near deadline",
+              NotificationDetails(
+                  android: AndroidNotificationDetails(channel.id, channel.name,
+                      importance: Importance.high,
+                      color: Colors.blue,
+                      playSound: true,
+                      icon: '@mipmap/ic_launcher')));
+        }
+      }
+  }
   Future<void> getdat() async {
     final newUser = _auth.currentUser;
     _sdate = DateTime.now();
@@ -273,6 +291,8 @@ class _homeState extends State<home> {
     pcol1.clear();
     await Future.delayed(Duration(seconds: 1));
     getdat();
+    await Future.delayed(Duration(seconds: 1));
+    _edate();
   }
   Widget build(BuildContext context) {
     return MaterialApp(
