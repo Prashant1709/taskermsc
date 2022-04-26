@@ -483,6 +483,7 @@ class _calendarState extends State<calendar> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text("Your Tasks"),
+          leading: IconButton(onPressed: (){Navigator.pop(context);},icon: Icon(Icons.keyboard_arrow_left,color: Colors.white,),),
           centerTitle: true,
           elevation: 0,
           actions: <Widget>[
@@ -498,92 +499,10 @@ class _calendarState extends State<calendar> {
                   getdat();
                   //Navigator.pushNamed(context,'/profile'),
                 },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    "https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png",
-                  ),
-                  radius: 28,
-                ),
+                child: Icon(Icons.refresh,color: Colors.white,),
               ),
             ),
           ],
-        ),
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          "https://www.linkpicture.com/q/dark_blue_1.jpg"),
-                      fit: BoxFit.fill),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                        radius: 28,
-                        backgroundImage: NetworkImage(
-                            "https://www.kindpng.com/picc/m/53-533328_man-cartoon-suit-businessman-person-manager-male-man.png")),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    StreamBuilder<Object>(
-                        stream: firestoreInstance
-                            .collection('$uid')
-                            .doc('Data')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                username,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                "${_auth.currentUser!.email}",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                  ],
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.home,
-                  color: Colors.teal,
-                ),
-                title: Text("Home"),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.teal,
-                ),
-                title: Text("Logout"),
-                onTap: () {
-                  _auth.signOut();
-                  Navigator.pop(context);
-                  //exit(0);
-                },
-              ),
-              Text(
-                "© MSC KIIT",
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
         ),
         body: StreamBuilder<Object>(
             stream:
