@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:taskermsc/Screens/search.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class chat extends StatefulWidget {
@@ -26,13 +27,14 @@ class _chatState extends State<chat> {
     super.initState();
     firestoreInstance.collection('Users').snapshots().listen((event) {
       for (var i in event.docs) {
-        print(i.get('username'));
+        //print(i.get('username'));
+        if (i.id != _auth.currentUser?.uid){
         users.add('${i.get('username')}');
-        print(i.get('phone'));
+        //print(i.get('phone'));
         pno.add(i.get('phone'));
         desig.add(i.get('designation'));
         purl.add(i.get('photourl'));
-      }
+      }}
     });
     getdat();
   }
@@ -42,7 +44,6 @@ class _chatState extends State<chat> {
     uid = newUser!.uid;
     firestoreInstance.collection('Users').doc('$uid').update({'status': true});
   }
-
   Future<void> _launcchat(String url) async {
     if (!await launch(
       url,
@@ -53,7 +54,6 @@ class _chatState extends State<chat> {
       throw 'Could not launch $url';
     }
   }
-
   @override
   void dispose() {
     super.dispose();
@@ -126,7 +126,13 @@ class _chatState extends State<chat> {
         appBar: AppBar(
           title: Text("Chat"),
           centerTitle: true,
-          backgroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+          leading: IconButton(onPressed:(){Navigator.pop(context);} ,icon: Icon(Icons.keyboard_arrow_left,color: Colors.white,),),
+          actions: [
+            IconButton(onPressed: () {
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>search()));
+            }, icon: Icon(Icons.search,color: Colors.white,)),
+          ],
         ),
         backgroundColor: Color.fromARGB(255, 27, 33, 41),
         body: SafeArea(
@@ -139,7 +145,7 @@ class _chatState extends State<chat> {
                   RefreshIndicator(
                     onRefresh: refreshList,
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: firestoreInstance.collection('Users').snapshots(),
+                        stream: firestoreInstance.collection('Users').snapshots(),
                       builder: (context, snapshot) {
                         return ListView.builder(
                           shrinkWrap: true,
