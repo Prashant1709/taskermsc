@@ -507,7 +507,7 @@ class _homeState extends State<home> {
                                             margin: EdgeInsets.all(0),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20)),
+                                                BorderRadius.circular(20)),
                                             child: ConstrainedBox(
                                               constraints: BoxConstraints(
                                                 minHeight: height(0.13),
@@ -521,42 +521,37 @@ class _homeState extends State<home> {
                                                       image: pcol1[index],
                                                       fit: BoxFit.cover),
                                                   borderRadius:
-                                                      BorderRadius.circular(18),
+                                                  BorderRadius.circular(18),
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
                                                   children: [
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10,
-                                                                  right: 10),
-                                                          child: Expanded(
-                                                            child: Container(
-                                                              child: Text(
-                                                                "${task[index]}",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        height(
-                                                                            0.024),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ),
+                                                          EdgeInsets.only(
+                                                              top: 20,
+                                                              left: 10,
+                                                              right: 10),
+                                                          child: Text(
+                                                            "${task[index]}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                height(
+                                                                    0.024),
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                           ),
                                                         ),
-
                                                         Padding(
                                                           padding:
                                                               EdgeInsets.only(
