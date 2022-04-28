@@ -202,21 +202,6 @@ class _RegisterState extends State<Register> {
                                   ),
                                 ],
                               ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  // Based on passwordVisible state choose the icon
-                                  _passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  // Update the state i.e. toogle the state of passwordVisible variable
-                                  setState(() {
-                                    _passwordVisible = !_passwordVisible;
-                                  });
-                                },
-                              ),
                             ),
                             keyboardType: TextInputType.number,
                             obscureText: !_passwordVisible,
@@ -237,22 +222,38 @@ class _RegisterState extends State<Register> {
                             height: 2,
                             color: Colors.white,
                           ),
-                          onChanged: (String? newValue){
+                          onChanged: (String? newValue) {
                             setState(() {
-                              dropdownValue=newValue!;
+                              dropdownValue = newValue!;
                             });
                           },
-                          items: <String>['Select Department','Graphic Design','Content','Video Editing','Operations','KIIT BUZZ','Corporate Relations&Marketing','Web Development','Machine Learning','App Development','Cloud','Cyber Security','AR/VR','UI/UX']
-                              .map<DropdownMenuItem<String>>((String value){
+                          items: <String>[
+                            'Select Department',
+                            'Graphic Design',
+                            'Content',
+                            'Video Editing',
+                            'Operations',
+                            'KIIT BUZZ',
+                            'Corporate Relations&Marketing',
+                            'Web Development',
+                            'Machine Learning',
+                            'App Development',
+                            'Cloud',
+                            'Cyber Security',
+                            'AR/VR',
+                            'UI/UX'
+                          ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value,style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),),
+                              child: Text(
+                                value,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
                             );
                           }).toList(),
-
                         ),
                         Padding(padding: EdgeInsets.only(top: 40)),
                         Container(
@@ -262,7 +263,6 @@ class _RegisterState extends State<Register> {
                           //color: Colors.blue[900],
                           child: MaterialButton(
                             onPressed: () async {
-
                               try {
                                 final newUser =
                                     await _auth.createUserWithEmailAndPassword(
@@ -302,151 +302,351 @@ class _RegisterState extends State<Register> {
                                                 'number': 0,
                                                 'phone': pno,
                                                 'designation': dropdownValue,
-                                                'photourl':"",
+                                                'photourl': "",
                                               });
                                               _auth.currentUser
                                                   ?.updateDisplayName(username);
-                                              showModalBottomSheet(context: context, builder: (BuildContext bc){
-                                                return Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(8.0),
-                                                      child: Text("Select your Display Picture",style: TextStyle(color: Colors.teal,fontSize: 20),),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(10.0),
-                                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                        children: [
-                                                          OutlinedButton(onPressed: (){
-                                                            _auth.currentUser?.updatePhotoURL("assets/male1.png");
-                                                            Navigator.of(context).popAndPushNamed('/login');
-                                                            firestoreInstance
-                                                                .collection('Users')
-                                                                .doc('$uid')
-                                                                .update({
-                                                              'photourl': "assets/male1.png",
-                                                            });
-                                                          },
-                                                            style: OutlinedButton.styleFrom(
-                                                                side: BorderSide(width: 5.0,color: Colors.transparent)
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/male1.png"),backgroundColor: Colors.blueGrey,),
-                                                                Text("Andy",style: TextStyle(color: Colors.orange,fontSize: 16),),
-                                                              ],
-                                                            ),
-                                                          ),OutlinedButton(onPressed: (){
-                                                            _auth.currentUser?.updatePhotoURL("assets/male2.png");
-                                                            Navigator.of(context).popAndPushNamed('/login');
-                                                            firestoreInstance
-                                                                .collection('Users')
-                                                                .doc('$uid')
-                                                                .update({
-                                                              'photourl': "assets/male2.png",
-                                                            });
-                                                          },
-                                                            style: OutlinedButton.styleFrom(
-                                                                side: BorderSide(width: 5.0,color: Colors.transparent)
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/male2.png"),backgroundColor: Colors.blueGrey,),
-                                                                Text("Mandy",style: TextStyle(color: Colors.pink,fontSize: 16),),
-                                                              ],
-                                                            ),
-                                                          ),OutlinedButton(onPressed: (){
-                                                            _auth.currentUser?.updatePhotoURL("assets/male3.png");
-                                                            Navigator.of(context).popAndPushNamed('/login');
-                                                            firestoreInstance
-                                                                .collection('Users')
-                                                                .doc('$uid')
-                                                                .update({
-                                                              'photourl': "assets/male3.png",
-                                                            });
-                                                          },
-                                                            style: OutlinedButton.styleFrom(
-                                                                side: BorderSide(width: 5.0,color: Colors.transparent)
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/male3.png"),backgroundColor: Colors.blueGrey,),
-                                                                Text("Sandy",style: TextStyle(color: Colors.brown,fontSize: 16),),
-                                                              ],
-                                                            ),
+                                              showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (BuildContext bc) {
+                                                    return Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Text(
+                                                            "Select your Display Picture",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.teal,
+                                                                fontSize: 20),
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ),
-
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(10.0),
-                                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                        children: [
-                                                          OutlinedButton(onPressed: (){
-                                                            _auth.currentUser?.updatePhotoURL("assets/Female1.png");
-                                                            Navigator.of(context).popAndPushNamed('/login');
-                                                            firestoreInstance
-                                                                .collection('Users')
-                                                                .doc('$uid')
-                                                                .update({
-                                                              'photourl': "assets/Female1.png",
-                                                            });
-                                                          },
-                                                            style: OutlinedButton.styleFrom(
-                                                                side: BorderSide(width: 5.0,color: Colors.transparent)
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/Female1.png"),backgroundColor: Colors.blueGrey,),
-                                                                Text("Alisha",style: TextStyle(color: Colors.orange,fontSize: 16),),
-                                                              ],
-                                                            ),
-                                                          ),OutlinedButton(onPressed: (){
-                                                            _auth.currentUser?.updatePhotoURL("assets/Female2.png");
-                                                            Navigator.of(context).popAndPushNamed('/login');
-                                                            firestoreInstance
-                                                                .collection('Users')
-                                                                .doc('$uid')
-                                                                .update({
-                                                              'photourl': "assets/Female2.png",
-                                                            });
-                                                          },
-                                                            style: OutlinedButton.styleFrom(
-                                                                side: BorderSide(width: 5.0,color: Colors.transparent)
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/Female2.png"),backgroundColor: Colors.blueGrey,),
-                                                                Text("Nora",style: TextStyle(color: Colors.pink,fontSize: 16),),
-                                                              ],
-                                                            ),
-                                                          ),OutlinedButton(onPressed: (){
-                                                            _auth.currentUser?.updatePhotoURL("assets/Female3.png");
-                                                            Navigator.of(context).popAndPushNamed('/login');
-                                                            firestoreInstance
-                                                                .collection('Users')
-                                                                .doc('$uid')
-                                                                .update({
-                                                              'photourl': "assets/Female3.png",
-                                                            });
-                                                          },
-                                                            style: OutlinedButton.styleFrom(
-                                                                side: BorderSide(width: 5.0,color: Colors.transparent)
-                                                            ),
-                                                            child: Column(
-                                                              children: [
-                                                                CircleAvatar(radius: 32,backgroundImage: AssetImage("assets/Female3.png"),backgroundColor: Colors.blueGrey,),
-                                                                Text("Candice",style: TextStyle(color: Colors.brown,fontSize: 16),),
-                                                              ],
-                                                            ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              OutlinedButton(
+                                                                onPressed: () {
+                                                                  _auth
+                                                                      .currentUser
+                                                                      ?.updatePhotoURL(
+                                                                          "assets/male1.png");
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .popAndPushNamed(
+                                                                          '/login');
+                                                                  firestoreInstance
+                                                                      .collection(
+                                                                          'Users')
+                                                                      .doc(
+                                                                          '$uid')
+                                                                      .update({
+                                                                    'photourl':
+                                                                        "assets/male1.png",
+                                                                  });
+                                                                },
+                                                                style: OutlinedButton.styleFrom(
+                                                                    side: BorderSide(
+                                                                        width:
+                                                                            5.0,
+                                                                        color: Colors
+                                                                            .transparent)),
+                                                                child: Column(
+                                                                  children: [
+                                                                    CircleAvatar(
+                                                                      radius:
+                                                                          32,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              "assets/male1.png"),
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blueGrey,
+                                                                    ),
+                                                                    Text(
+                                                                      "Andy",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .orange,
+                                                                          fontSize:
+                                                                              16),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              OutlinedButton(
+                                                                onPressed: () {
+                                                                  _auth
+                                                                      .currentUser
+                                                                      ?.updatePhotoURL(
+                                                                          "assets/male2.png");
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .popAndPushNamed(
+                                                                          '/login');
+                                                                  firestoreInstance
+                                                                      .collection(
+                                                                          'Users')
+                                                                      .doc(
+                                                                          '$uid')
+                                                                      .update({
+                                                                    'photourl':
+                                                                        "assets/male2.png",
+                                                                  });
+                                                                },
+                                                                style: OutlinedButton.styleFrom(
+                                                                    side: BorderSide(
+                                                                        width:
+                                                                            5.0,
+                                                                        color: Colors
+                                                                            .transparent)),
+                                                                child: Column(
+                                                                  children: [
+                                                                    CircleAvatar(
+                                                                      radius:
+                                                                          32,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              "assets/male2.png"),
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blueGrey,
+                                                                    ),
+                                                                    Text(
+                                                                      "Mandy",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .pink,
+                                                                          fontSize:
+                                                                              16),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              OutlinedButton(
+                                                                onPressed: () {
+                                                                  _auth
+                                                                      .currentUser
+                                                                      ?.updatePhotoURL(
+                                                                          "assets/male3.png");
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .popAndPushNamed(
+                                                                          '/login');
+                                                                  firestoreInstance
+                                                                      .collection(
+                                                                          'Users')
+                                                                      .doc(
+                                                                          '$uid')
+                                                                      .update({
+                                                                    'photourl':
+                                                                        "assets/male3.png",
+                                                                  });
+                                                                },
+                                                                style: OutlinedButton.styleFrom(
+                                                                    side: BorderSide(
+                                                                        width:
+                                                                            5.0,
+                                                                        color: Colors
+                                                                            .transparent)),
+                                                                child: Column(
+                                                                  children: [
+                                                                    CircleAvatar(
+                                                                      radius:
+                                                                          32,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              "assets/male3.png"),
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blueGrey,
+                                                                    ),
+                                                                    Text(
+                                                                      "Sandy",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .brown,
+                                                                          fontSize:
+                                                                              16),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
-                                              });
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(10.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              OutlinedButton(
+                                                                onPressed: () {
+                                                                  _auth
+                                                                      .currentUser
+                                                                      ?.updatePhotoURL(
+                                                                          "assets/Female1.png");
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .popAndPushNamed(
+                                                                          '/login');
+                                                                  firestoreInstance
+                                                                      .collection(
+                                                                          'Users')
+                                                                      .doc(
+                                                                          '$uid')
+                                                                      .update({
+                                                                    'photourl':
+                                                                        "assets/Female1.png",
+                                                                  });
+                                                                },
+                                                                style: OutlinedButton.styleFrom(
+                                                                    side: BorderSide(
+                                                                        width:
+                                                                            5.0,
+                                                                        color: Colors
+                                                                            .transparent)),
+                                                                child: Column(
+                                                                  children: [
+                                                                    CircleAvatar(
+                                                                      radius:
+                                                                          32,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              "assets/Female1.png"),
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blueGrey,
+                                                                    ),
+                                                                    Text(
+                                                                      "Alisha",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .orange,
+                                                                          fontSize:
+                                                                              16),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              OutlinedButton(
+                                                                onPressed: () {
+                                                                  _auth
+                                                                      .currentUser
+                                                                      ?.updatePhotoURL(
+                                                                          "assets/Female2.png");
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .popAndPushNamed(
+                                                                          '/login');
+                                                                  firestoreInstance
+                                                                      .collection(
+                                                                          'Users')
+                                                                      .doc(
+                                                                          '$uid')
+                                                                      .update({
+                                                                    'photourl':
+                                                                        "assets/Female2.png",
+                                                                  });
+                                                                },
+                                                                style: OutlinedButton.styleFrom(
+                                                                    side: BorderSide(
+                                                                        width:
+                                                                            5.0,
+                                                                        color: Colors
+                                                                            .transparent)),
+                                                                child: Column(
+                                                                  children: [
+                                                                    CircleAvatar(
+                                                                      radius:
+                                                                          32,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              "assets/Female2.png"),
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blueGrey,
+                                                                    ),
+                                                                    Text(
+                                                                      "Nora",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .pink,
+                                                                          fontSize:
+                                                                              16),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              OutlinedButton(
+                                                                onPressed: () {
+                                                                  _auth
+                                                                      .currentUser
+                                                                      ?.updatePhotoURL(
+                                                                          "assets/Female3.png");
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .popAndPushNamed(
+                                                                          '/login');
+                                                                  firestoreInstance
+                                                                      .collection(
+                                                                          'Users')
+                                                                      .doc(
+                                                                          '$uid')
+                                                                      .update({
+                                                                    'photourl':
+                                                                        "assets/Female3.png",
+                                                                  });
+                                                                },
+                                                                style: OutlinedButton.styleFrom(
+                                                                    side: BorderSide(
+                                                                        width:
+                                                                            5.0,
+                                                                        color: Colors
+                                                                            .transparent)),
+                                                                child: Column(
+                                                                  children: [
+                                                                    CircleAvatar(
+                                                                      radius:
+                                                                          32,
+                                                                      backgroundImage:
+                                                                          AssetImage(
+                                                                              "assets/Female3.png"),
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blueGrey,
+                                                                    ),
+                                                                    Text(
+                                                                      "Candice",
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .brown,
+                                                                          fontSize:
+                                                                              16),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
                                             },
                                           ),
                                         ],
