@@ -1144,30 +1144,28 @@ class _homeState extends State<home> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Flexible(
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 20,
-                                                                    left: 10,
-                                                                    right: 10),
-                                                            child: Text(
-                                                              "${task[index]}",
-                                                              softWrap: false,
-                                                              maxLines: 10,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      height(
-                                                                          0.024),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 20,
+                                                                  left: 10,
+                                                                  right: 10),
+                                                          child: Text(
+                                                            "${task[index]}",
+                                                            softWrap: false,
+                                                            maxLines: 10,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                    height(
+                                                                        0.024),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
                                                           ),
                                                         ),
 
