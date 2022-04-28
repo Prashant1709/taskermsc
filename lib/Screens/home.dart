@@ -23,7 +23,7 @@ class _homeState extends State<home> {
   String Task = "";
   String priority = "";
   String meet = "";
-  String tdet="";
+  String tdet = "";
   bool mcreate = false;
   double _priority = 0;
   DateTime _sdate = DateTime.now();
@@ -36,13 +36,13 @@ class _homeState extends State<home> {
   List<String> users = [];
   List<String> udesig = [];
   List<String> uno = [];
-  List<String> tdetail=[];
+  List<String> tdetail = [];
   String chattext = "";
   //List <String> priority=[];
   List<bool> Status = [];
   List pcol1 = [];
   List<Map<String, dynamic>> _foundUsers = [];
-  List<Map<String, dynamic>> _Users=[];
+  List<Map<String, dynamic>> _Users = [];
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _homeState extends State<home> {
     getdat();
     _edate();
     FirebaseMessaging.onMessage.listen(
-          (RemoteMessage message) {
+      (RemoteMessage message) {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
         if (notification != null && android != null) {
@@ -80,7 +80,7 @@ class _homeState extends State<home> {
     }
 
     FirebaseMessaging.onMessageOpenedApp.listen(
-          (RemoteMessage message) {
+      (RemoteMessage message) {
         print('A new onMessageOpenedApp event was published!');
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
@@ -168,7 +168,7 @@ class _homeState extends State<home> {
         var link = list.get('meet');
         meetl.add(link);
         //print(link);
-        var det=list.get('Details');
+        var det = list.get('Details');
         tdetail.add(det);
         var prio = list.get('Priority');
         // priority.add(prio);
@@ -192,21 +192,26 @@ class _homeState extends State<home> {
     firestoreInstance.collection('Users').snapshots().listen((event) {
       for (var i in event.docs) {
         if (i.id != _auth.currentUser?.uid) {
-          _Users.add({"id":i.id,"username":i.get('username'),"phone":i.get('phone'),"desig":i.get('designation')});
+          _Users.add({
+            "id": i.id,
+            "username": i.get('username'),
+            "phone": i.get('phone'),
+            "desig": i.get('designation')
+          });
         }
       }
     });
     _foundUsers = _Users;
   }
+
   void _runFilter(String enteredKeyword) {
     List<Map<String, dynamic>> results = [];
     if (enteredKeyword.isEmpty) {
       results = _Users;
     } else {
-      results = _Users
-          .where((user) =>
-          user["username"].toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
+      results = _Users.where((user) => user["username"]
+          .toLowerCase()
+          .contains(enteredKeyword.toLowerCase())).toList();
     }
 
     // Refresh the UI
@@ -214,6 +219,7 @@ class _homeState extends State<home> {
       _foundUsers = results;
     });
   }
+
   Future<void> _launchInWebViewOrVC(String url) async {
     if (!await launch(
       url,
@@ -311,7 +317,7 @@ class _homeState extends State<home> {
   Future<Null> refreshList() async {
     await Future.delayed(Duration(seconds: 2));
     setState(() {
-      Task="";
+      Task = "";
     });
     date.clear();
     task.clear();
@@ -381,7 +387,7 @@ class _homeState extends State<home> {
                     children: [
                       CircleAvatar(
                         backgroundImage:
-                        AssetImage(_auth.currentUser?.photoURL as String),
+                            AssetImage(_auth.currentUser?.photoURL as String),
                         radius: 28,
                         backgroundColor: Colors.blueGrey,
                       ),
@@ -439,1607 +445,2046 @@ class _homeState extends State<home> {
           ),
           body: SafeArea(
               child: TabBarView(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        RefreshIndicator(
-                          onRefresh: refreshList,
-                          backgroundColor: Colors.blue[900],
-                          color: Colors.white,
-                          child: Container(
-                            height: 660,
-                            child: StreamBuilder<QuerySnapshot>(
-                                stream: firestoreInstance
-                                    .collection("Users")
-                                    .doc('$uid')
-                                    .collection('Task')
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  return ListView.builder(
-                                      itemCount: task.length,
-                                      itemBuilder: (context, int index) {
-                                        if (date[index]
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: refreshList,
+                      backgroundColor: Colors.blue[900],
+                      color: Colors.white,
+                      child: Container(
+                        height: 660,
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: firestoreInstance
+                                .collection("Users")
+                                .doc('$uid')
+                                .collection('Task')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              return ListView.builder(
+                                  itemCount: task.length,
+                                  itemBuilder: (context, int index) {
+                                    if (date[index]
                                             .difference(DateTime.now())
                                             .isNegative !=
-                                            true) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: OutlinedButton(
-                                              child: Card(
-                                                clipBehavior: Clip.antiAlias,
-                                                elevation: 20,
-                                                margin: EdgeInsets.all(0),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
+                                        true) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: OutlinedButton(
+                                          child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            elevation: 20,
+                                            margin: EdgeInsets.all(0),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
                                                     BorderRadius.circular(20)),
-                                                child: ConstrainedBox(
-                                                  constraints: BoxConstraints(
-                                                    minHeight: height(0.13),
-                                                    minWidth: width(1),
-                                                  ),
-                                                  child: Container(
-                                                    // height: 90,
-                                                    // width: width(1),
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: pcol1[index],
-                                                          fit: BoxFit.cover),
-                                                      borderRadius:
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                minHeight: height(0.13),
+                                                minWidth: width(1),
+                                              ),
+                                              child: Container(
+                                                // height: 90,
+                                                // width: width(1),
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: pcol1[index],
+                                                      fit: BoxFit.cover),
+                                                  borderRadius:
                                                       BorderRadius.circular(18),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceEvenly,
-                                                      children: [
-                                                        Column(
-                                                          crossAxisAlignment:
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
+                                                      children: [
+                                                        Padding(
+                                                          padding:
                                                               EdgeInsets.only(
                                                                   top: 20,
                                                                   left: 10,
                                                                   right: 10),
+                                                          child: Expanded(
+                                                            child: Container(
                                                               child: Text(
                                                                 "${task[index]}",
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                    height(
-                                                                        0.024),
+                                                                        height(
+                                                                            0.024),
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                                        FontWeight
+                                                                            .bold),
                                                               ),
                                                             ),
+                                                          ),
+                                                        ),
 
-                                                            Padding(
-                                                              padding:
+                                                        Padding(
+                                                          padding:
                                                               EdgeInsets.only(
                                                                   top: 20,
                                                                   left: 10,
                                                                   bottom: 10),
-                                                              child: Text(
-                                                                "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "End Date: " +
+                                                                    "${(date[index].day)}-${(date[index].month)}-${(date[index].year)}" +
+                                                                    "\nEnd Time: "
+                                                                        "${date[index].hour}:${date[index].minute}",
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                    height(
-                                                                        0.02),
+                                                                        height(
+                                                                            0.02),
                                                                     fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                                        FontWeight
+                                                                            .bold),
                                                               ),
-                                                            ),
-                                                            //Text("${Status[index]}"),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 100,
-                                                        ),
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                          children: [
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  showDialog<void>(
-                                                                    context:
-                                                                    context,
-                                                                    barrierDismissible:
-                                                                    true,
-                                                                    // user must tap button!
-                                                                    builder:
-                                                                        (BuildContext
-                                                                    context) {
-                                                                      return AlertDialog(
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                            BorderRadius.circular(40.0)),
-                                                                        backgroundColor:
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            48,
-                                                                            48,
-                                                                            54),
-                                                                        title:
-                                                                        Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .only(
-                                                                              left:
-                                                                              12,
-                                                                              top:
-                                                                              10),
-                                                                          child:
-                                                                          const Text(
-                                                                            'Update Task',
-                                                                            style: TextStyle(
-                                                                                color: Color.fromARGB(
-                                                                                    255,
-                                                                                    250,
-                                                                                    251,
-                                                                                    252),
-                                                                                fontSize:
-                                                                                28),
-                                                                          ),
-                                                                        ),
-                                                                        content:
-                                                                        SingleChildScrollView(
-                                                                          child:
-                                                                          Material(
-                                                                            color: Color.fromARGB(
-                                                                                255,
-                                                                                48,
-                                                                                48,
-                                                                                54),
+                                                              SizedBox(
+                                                                width: 50,
+                                                              ),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog<
+                                                                        void>(
+                                                                      context:
+                                                                          context,
+                                                                      barrierDismissible:
+                                                                          true,
+                                                                      // user must tap button!
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return AlertDialog(
+                                                                          shape:
+                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+                                                                          backgroundColor: Color.fromARGB(
+                                                                              255,
+                                                                              48,
+                                                                              48,
+                                                                              54),
+                                                                          title:
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(left: 12, top: 10),
                                                                             child:
-                                                                            Column(
-                                                                              mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                SizedBox(
-                                                                                  height: 10,
-                                                                                ),
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.only(left: 4.0, bottom: 20),
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
-                                                                                    width: 350,
-                                                                                    height: 50,
-                                                                                    padding: EdgeInsets.only(left: 4),
-                                                                                    child: TextFormField(
-                                                                                      style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                      decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
-                                                                                      keyboardType: TextInputType.visiblePassword,
-                                                                                      obscureText: false,
-                                                                                      onChanged: (value) {
-                                                                                        Task = value;
-                                                                                      },
-                                                                                    ),
+                                                                                const Text(
+                                                                              'Update Task',
+                                                                              style: TextStyle(color: Color.fromARGB(255, 250, 251, 252), fontSize: 28),
+                                                                            ),
+                                                                          ),
+                                                                          content:
+                                                                              SingleChildScrollView(
+                                                                            child:
+                                                                                Material(
+                                                                              color: Color.fromARGB(255, 48, 48, 54),
+                                                                              child: Column(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  SizedBox(
+                                                                                    height: 10,
                                                                                   ),
-                                                                                ),
-                                                                                Padding(
-                                                                                  padding:
-                                                                                  const EdgeInsets.only(top: 10, bottom: 20),
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(
-                                                                                        border: Border.all(color: Colors.grey),
-                                                                                        borderRadius: BorderRadius.circular(5)),
-                                                                                    width: 350,
-                                                                                    height: 50,
-                                                                                    padding: EdgeInsets.only(left: 4),
-                                                                                    child: TextFormField(
-                                                                                      style: TextStyle(
-                                                                                          fontSize: 18, color: Colors.white),
-                                                                                      decoration: InputDecoration(
-                                                                                          border: InputBorder.none,
-                                                                                          hintText: "Details here",
-                                                                                          hintStyle:
-                                                                                          TextStyle(color: Colors.grey)),
-                                                                                      keyboardType: TextInputType.visiblePassword,
-                                                                                      obscureText: false,
-                                                                                      onChanged: (value) {
-                                                                                        tdet = value;
-                                                                                      },
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                                  children: [
-                                                                                    Padding(
-                                                                                      padding: EdgeInsets.only(bottom: 10),
-                                                                                      child: MaterialButton(
-                                                                                        onPressed: () {
-                                                                                          _selectDateTime(context);
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.only(left: 4.0, bottom: 20),
+                                                                                    child: Container(
+                                                                                      decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
+                                                                                      width: 350,
+                                                                                      height: 50,
+                                                                                      padding: EdgeInsets.only(left: 4),
+                                                                                      child: TextFormField(
+                                                                                        style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        keyboardType: TextInputType.visiblePassword,
+                                                                                        obscureText: false,
+                                                                                        onChanged: (value) {
+                                                                                          Task = value;
                                                                                         },
-                                                                                        color: Colors.blue[900],
-                                                                                        child: Text(
-                                                                                          "End Date & Time",
-                                                                                          style: TextStyle(color: Colors.white),
-                                                                                        ),
-                                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                                                                                       ),
                                                                                     ),
-                                                                                  ],
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  width: 30,
-                                                                                ),
-                                                                                Text(
-                                                                                  "Set Priority",
-                                                                                  style: TextStyle(color: Colors.white, fontSize: 18),
-                                                                                ),
-                                                                                StatefulBuilder(
-                                                                                  builder: (context, setState) => Slider(
-                                                                                    value: _priority,
-                                                                                    max: 9,
-                                                                                    divisions: 9,
-                                                                                    label: "Priority:${(_priority + 1).round().toString()}",
-                                                                                    onChanged: (double value) {
-                                                                                      // print("$value");
-                                                                                      setState(() {
-                                                                                        _priority = value;
-                                                                                      });
-                                                                                      //print(_priority.round());
-                                                                                    },
                                                                                   ),
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  width: 20,
-                                                                                ),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                                  children: [
-                                                                                    Column(
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      children: <Widget>[
-                                                                                        IconButton(
-                                                                                          icon: const Icon(
-                                                                                            Icons.image,
-                                                                                            color: Colors.white,
-                                                                                          ),
-                                                                                          tooltip: 'Add image to task',
-                                                                                          onPressed: () {},
-                                                                                        ),
-                                                                                        Text(
-                                                                                          'Picture',
-                                                                                          style: TextStyle(color: Colors.white),
-                                                                                        )
-                                                                                      ],
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.only(top: 10, bottom: 20),
+                                                                                    child: Container(
+                                                                                      decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                                                      width: 350,
+                                                                                      height: 50,
+                                                                                      padding: EdgeInsets.only(left: 4),
+                                                                                      child: TextFormField(
+                                                                                        style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Details here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        keyboardType: TextInputType.visiblePassword,
+                                                                                        obscureText: false,
+                                                                                        onChanged: (value) {
+                                                                                          tdet = value;
+                                                                                        },
+                                                                                      ),
                                                                                     ),
-                                                                                    Column(
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      children: <Widget>[
-                                                                                        IconButton(
-                                                                                          icon: const Icon(
-                                                                                            Icons.person_add,
-                                                                                            color: Colors.white,
-                                                                                          ),
-                                                                                          tooltip: 'Add collaborators',
+                                                                                  ),
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                    children: [
+                                                                                      Padding(
+                                                                                        padding: EdgeInsets.only(bottom: 10),
+                                                                                        child: MaterialButton(
                                                                                           onPressed: () {
-                                                                                            showModalBottomSheet(
-                                                                                                context: context,
-                                                                                                builder: (BuildContext bc) {
-                                                                                                  return StreamBuilder<QuerySnapshot>(
-                                                                                                      stream: firestoreInstance.collection("Users").snapshots(),
-                                                                                                      builder: (context, snapshot) {
-                                                                                                        return Padding(
-                                                                                                          padding: const EdgeInsets.all(10),
-                                                                                                          child: Column(
-                                                                                                            children: [
-                                                                                                              const SizedBox(
-                                                                                                                height: 20,
-                                                                                                              ),
-                                                                                                              TextField(
-                                                                                                                onChanged: (value) => _runFilter(value),
-                                                                                                                decoration: const InputDecoration(
-                                                                                                                    labelText: 'Search', suffixIcon: Icon(Icons.search)),
-                                                                                                              ),
-                                                                                                              const SizedBox(
-                                                                                                                height: 20,
-                                                                                                              ),
-                                                                                                              Expanded(
-                                                                                                                child: _foundUsers.isNotEmpty
-                                                                                                                    ? RefreshIndicator(
-                                                                                                                  onRefresh: refreshList,
-                                                                                                                  backgroundColor: Colors.blue[900],
-                                                                                                                  color: Colors.white,
-                                                                                                                  child: StreamBuilder<QuerySnapshot>(
-                                                                                                                      stream: firestoreInstance.collection('Users').snapshots(),
-                                                                                                                      builder: (context, snapshot) {
-                                                                                                                        return ListView.builder(
-                                                                                                                          shrinkWrap: true,
-                                                                                                                          itemCount: _foundUsers.length,
-                                                                                                                          itemBuilder: (context, index) => Card(
-                                                                                                                            key: ValueKey(_foundUsers[index]["id"]),
-                                                                                                                            color: Colors.grey,
-                                                                                                                            elevation: 4,
-                                                                                                                            margin: const EdgeInsets.symmetric(vertical: 10),
-                                                                                                                            child: ListTile(
-                                                                                                                              leading: IconButton(
-                                                                                                                                onPressed: () {
-                                                                                                                                  setState(() {
-                                                                                                                                    all =
-                                                                                                                                        all + 1;
-                                                                                                                                    if (_priority.toInt() >=
-                                                                                                                                        0 &&
-                                                                                                                                        _priority.toInt() <
-                                                                                                                                            4) {
-                                                                                                                                      setState(
-                                                                                                                                              () {
-                                                                                                                                            priority =
-                                                                                                                                            "green";
-                                                                                                                                          });
-                                                                                                                                    } else if (_priority.toInt() >=
-                                                                                                                                        4 &&
-                                                                                                                                        _priority.toInt() <=
-                                                                                                                                            7) {
-                                                                                                                                      setState(
-                                                                                                                                              () {
-                                                                                                                                            priority =
-                                                                                                                                            "yellow";
-                                                                                                                                          });
-                                                                                                                                    } else {
-                                                                                                                                      setState(
-                                                                                                                                              () {
-                                                                                                                                            priority =
-                                                                                                                                            "red";
-                                                                                                                                          });
-                                                                                                                                    }
-                                                                                                                                  });
-
-                                                                                                                                  firestoreInstance
-                                                                                                                                      .collection(
-                                                                                                                                      "Users")
-                                                                                                                                      .doc(
-                                                                                                                                      '${uids[index]}')
-                                                                                                                                      .collection(
-                                                                                                                                      'Task')
-                                                                                                                                      .doc(
-                                                                                                                                      '$dateTime')
-                                                                                                                                      .set({
-                                                                                                                                    'Task': Task,'Date':dateTime, 'Priority': priority, 'status': false, 'sdate': _sdate, 'meet': meet,'Details':tdet,
-                                                                                                                                  });
-                                                                                                                                },
-                                                                                                                                icon: Icon(
-                                                                                                                                    Icons.add),
-                                                                                                                              ),
-                                                                                                                              title: Text(_foundUsers[index]['username']),
-                                                                                                                              subtitle: Text(
-                                                                                                                                  '${_foundUsers[index]["desig"]}'),
-                                                                                                                              trailing: IconButton(icon: Icon(Icons.chat,color: Colors.white,),onPressed: (){
-                                                                                                                                _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
-                                                                                                                              },),
-                                                                                                                            ),
-                                                                                                                          ),
-                                                                                                                        );
-                                                                                                                      }
-                                                                                                                  ),
-                                                                                                                )
-                                                                                                                    : const Text(
-                                                                                                                  'No results found',
-                                                                                                                  style: TextStyle(fontSize: 24),
+                                                                                            _selectDateTime(context);
+                                                                                          },
+                                                                                          color: Colors.blue[900],
+                                                                                          child: Text(
+                                                                                            "End Date & Time",
+                                                                                            style: TextStyle(color: Colors.white),
+                                                                                          ),
+                                                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 30,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Set Priority",
+                                                                                    style: TextStyle(color: Colors.white, fontSize: 18),
+                                                                                  ),
+                                                                                  StatefulBuilder(
+                                                                                    builder: (context, setState) => Slider(
+                                                                                      value: _priority,
+                                                                                      max: 9,
+                                                                                      divisions: 9,
+                                                                                      label: "Priority:${(_priority + 1).round().toString()}",
+                                                                                      onChanged: (double value) {
+                                                                                        // print("$value");
+                                                                                        setState(() {
+                                                                                          _priority = value;
+                                                                                        });
+                                                                                        //print(_priority.round());
+                                                                                      },
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 20,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                    children: [
+                                                                                      Column(
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        children: <Widget>[
+                                                                                          IconButton(
+                                                                                            icon: const Icon(
+                                                                                              Icons.image,
+                                                                                              color: Colors.white,
+                                                                                            ),
+                                                                                            tooltip: 'Add image to task',
+                                                                                            onPressed: () {},
+                                                                                          ),
+                                                                                          Text(
+                                                                                            'Picture',
+                                                                                            style: TextStyle(color: Colors.white),
+                                                                                          )
+                                                                                        ],
+                                                                                      ),
+                                                                                      Column(
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        children: <Widget>[
+                                                                                          IconButton(
+                                                                                            icon: const Icon(
+                                                                                              Icons.person_add,
+                                                                                              color: Colors.white,
+                                                                                            ),
+                                                                                            tooltip: 'Add collaborators',
+                                                                                            onPressed: () {
+                                                                                              showModalBottomSheet(
+                                                                                                  context: context,
+                                                                                                  builder: (BuildContext bc) {
+                                                                                                    return StreamBuilder<QuerySnapshot>(
+                                                                                                        stream: firestoreInstance.collection("Users").snapshots(),
+                                                                                                        builder: (context, snapshot) {
+                                                                                                          return Padding(
+                                                                                                            padding: const EdgeInsets.all(10),
+                                                                                                            child: Column(
+                                                                                                              children: [
+                                                                                                                const SizedBox(
+                                                                                                                  height: 20,
                                                                                                                 ),
-                                                                                                              ),
-                                                                                                            ],
-                                                                                                          ),
-                                                                                                        );
-                                                                                                      });
-                                                                                                });
-                                                                                          },
-                                                                                        ),
-                                                                                        Text(
-                                                                                          'Collaborate',
-                                                                                          style: TextStyle(color: Colors.white),
-                                                                                        )
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      children: <Widget>[
-                                                                                        IconButton(
-                                                                                          icon: const Icon(
-                                                                                            Icons.calendar_today,
-                                                                                            color: Colors.white,
-                                                                                          ),
-                                                                                          tooltip: 'Add meet',
-                                                                                          onPressed: () {
-                                                                                            /*_launchInWebViewOrVC(
-                                                                        _url);*/
-                                                                                            setState(() {
-                                                                                              mcreate = true;
-                                                                                              print("meet$mcreate");
-                                                                                            });
-                                                                                          },
-                                                                                        ),
-                                                                                        Text(
-                                                                                          'Meeting',
-                                                                                          style: TextStyle(color: Colors.white),
-                                                                                        )
-                                                                                      ],
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.only(top: 40),
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                                                                                    width: 350,
-                                                                                    height: 50,
-                                                                                    padding: EdgeInsets.only(left: 4),
-                                                                                    child: TextFormField(
-                                                                                      style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                      decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
-                                                                                      keyboardType: TextInputType.visiblePassword,
-                                                                                      obscureText: false,
-                                                                                      onChanged: (value) {
-                                                                                        meet = value;
-                                                                                      },
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        actions: <
-                                                                            Widget>[
-                                                                          MaterialButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              setState(
-                                                                                      () {
-                                                                                    all =
-                                                                                        all - 1;
-                                                                                    if (_priority.toInt() >= 0 &&
-                                                                                        _priority.toInt() < 4) {
-                                                                                      setState(() {
-                                                                                        priority = "green";
-                                                                                      });
-                                                                                    } else if (_priority.toInt() >= 4 &&
-                                                                                        _priority.toInt() <= 7) {
-                                                                                      setState(() {
-                                                                                        priority = "yellow";
-                                                                                      });
-                                                                                    } else {
-                                                                                      setState(() {
-                                                                                        priority = "red";
-                                                                                      });
-                                                                                    }
-                                                                                  });
-                                                                              firestoreInstance
-                                                                                  .collection("Users")
-                                                                                  .doc('$uid')
-                                                                                  .collection('Task')
-                                                                                  .doc('${date[index]}')
-                                                                                  .update({'Task': Task, 'Date': dateTime, 'Priority': priority, 'status': false, 'meet': meet,'Details':tdet,
-                                                                              });
-                                                                              firestoreInstance
-                                                                                  .collection("Users").doc("$uid").update({'number': all
-                                                                              });
-                                                                              refreshList();
-                                                                              Navigator.pop(
-                                                                                  context);
-
-                                                                            },
-                                                                            color: Colors
-                                                                                .blue[900],
-                                                                            child:
-                                                                            Text(
-                                                                              "Update",
-                                                                              style:
-                                                                              TextStyle(color: Colors.white),
-                                                                            ),
-                                                                            shape: RoundedRectangleBorder(
-                                                                                borderRadius:
-                                                                                BorderRadius.circular(20.0)),
-                                                                          ),
-                                                                          MaterialButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              setState(
-                                                                                      () {
-                                                                                    all =
-                                                                                        all - 1;
-                                                                                  });
-                                                                              firestoreInstance
-                                                                                  .collection("Users")
-                                                                                  .doc('$uid')
-                                                                                  .collection('Task')
-                                                                                  .doc('${date[index]}')
-                                                                                  .delete();
-                                                                              firestoreInstance
-                                                                                  .collection(
-                                                                                  "Users")
-                                                                                  .doc(
-                                                                                  '$uid')
-                                                                                  .update({
-                                                                                'number':
-                                                                                all
-                                                                              });
-                                                                              Navigator.pop(
-                                                                                  context);
-                                                                              refreshList();
-                                                                            },
-                                                                            color: Colors
-                                                                                .blue[900],
-                                                                            child:
-                                                                            Text(
-                                                                              "Mark as Done",
-                                                                              style:
-                                                                              TextStyle(color: Colors.white),
-                                                                            ),
-                                                                            shape: RoundedRectangleBorder(
-                                                                                borderRadius:
-                                                                                BorderRadius.circular(20.0)),
-                                                                          ),
-                                                                          SizedBox(
-                                                                              height:
-                                                                              40)
-                                                                        ],
-                                                                        elevation:
-                                                                        24,
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons.edit,
-                                                                  color:
-                                                                  Colors.white,
-                                                                )),
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  showDialog<void>(
-                                                                    context:
-                                                                    context,
-                                                                    barrierDismissible:
-                                                                    false, // user must tap button!
-                                                                    builder:
-                                                                        (BuildContext
-                                                                    context) {
-                                                                      return AlertDialog(
-                                                                        title: const Text(
-                                                                            'Details'),
-                                                                        content:
-                                                                        SingleChildScrollView(
-                                                                          child:
-                                                                          ListBody(
-                                                                            children: <
-                                                                                Widget>[
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Task: ${task[index]}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Details: ${tdetail[index]}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Image:"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child: TextButton(
-                                                                                    onPressed: () {
-                                                                                      _launchmeet("https://${meetl[index]}");
-                                                                                    },
-                                                                                    child: Text("Meet Link: ${(meetl[index])}")),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        actions: <
-                                                                            Widget>[
-                                                                          TextButton(
-                                                                            child: const Text(
-                                                                                'Accept'),
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.of(context)
-                                                                                  .pop();
-                                                                            },
-                                                                          ),
-                                                                        ],
-                                                                        elevation:
-                                                                        24,
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons
-                                                                      .remove_red_eye,
-                                                                  color:
-                                                                  Colors.white,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-
-                                              //
-                                            ),
-                                          );
-                                        } else {
-                                          return Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(
-                                                        8, 200, 8, 8),
-                                                    child: Image(
-                                                      image: AssetImage("assets/2.png"),
-                                                      height: 150,
-                                                      width: 200,
-                                                      color:
-                                                      Colors.white.withOpacity(0.5),
-                                                      colorBlendMode:
-                                                      BlendMode.modulate,
-                                                    ),
-                                                  )),
-                                              Text(
-                                                "No Up-Comming Tasks",
-                                                style: TextStyle(
-                                                    color: Colors.white
-                                                        .withOpacity(0.7),
-                                                    fontSize: 22),
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                      });
-                                }),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        RefreshIndicator(
-                          onRefresh: refreshList,
-                          backgroundColor: Colors.purple,
-                          color: Colors.white,
-                          child: Container(
-                            height: 660,
-                            child: StreamBuilder<QuerySnapshot>(
-                                stream: firestoreInstance
-                                    .collection("Users")
-                                    .doc('$uid')
-                                    .collection('Task')
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  return ListView.builder(
-                                      itemCount: task.length,
-                                      itemBuilder: (context, int index) {
-                                        if (date[index]
-                                            .difference(DateTime.now())
-                                            .isNegative ==
-                                            true) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: OutlinedButton(
-                                              child: Card(
-                                                clipBehavior: Clip.antiAlias,
-                                                elevation: 20,
-                                                margin: EdgeInsets.all(0),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(20)),
-                                                child: ConstrainedBox(
-                                                  constraints: BoxConstraints(
-                                                    minHeight: height(0.13),
-                                                    minWidth: width(1),
-                                                  ),
-                                                  child: Container(
-                                                    // height: 90,
-                                                    // width: width(1),
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: pcol1[index],
-                                                          fit: BoxFit.cover),
-                                                      borderRadius:
-                                                      BorderRadius.circular(18),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                      children: [
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10,
-                                                                  right: 10),
-                                                              child: Text(
-                                                                "${task[index]}",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                    height(
-                                                                        0.024),
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                              ),
-                                                            ),
-
-                                                            Padding(
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10,
-                                                                  bottom: 10),
-                                                              child: Text(
-                                                                "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                    height(
-                                                                        0.02),
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                              ),
-                                                            ),
-                                                            //Text("${Status[index]}"),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 100,
-                                                        ),
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                          children: [
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  showDialog<void>(
-                                                                    context:
-                                                                    context,
-                                                                    barrierDismissible:
-                                                                    false, // user must tap button!
-                                                                    builder:
-                                                                        (BuildContext
-                                                                    context) {
-                                                                      return AlertDialog(
-                                                                        title: const Text(
-                                                                            'Details'),
-                                                                        content:
-                                                                        SingleChildScrollView(
-                                                                          child:
-                                                                          ListBody(
-                                                                            children: <
-                                                                                Widget>[
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Task: ${task[index]}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Details: ${tdet[index]}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Image:"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child: TextButton(
-                                                                                    onPressed: () {
-                                                                                      _launchmeet("https://${meetl[index]}");
-                                                                                    },
-                                                                                    child: Text("Meet Link: ${(meetl[index])}")),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        actions: <
-                                                                            Widget>[
-                                                                          TextButton(
-                                                                            child: const Text(
-                                                                                'Accept'),
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.of(context)
-                                                                                  .pop();
-                                                                            },
-                                                                          ),
-                                                                        ],
-                                                                        elevation:
-                                                                        24,
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons
-                                                                      .remove_red_eye,
-                                                                  color:
-                                                                  Colors.white,
-                                                                )),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-
-                                              //
-                                            ),
-                                          );
-                                        } else {
-                                          return Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(
-                                                        8, 200, 8, 8),
-                                                    child: Image(
-                                                      image: AssetImage("assets/2.png"),
-                                                      height: 150,
-                                                      width: 200,
-                                                      color:
-                                                      Colors.white.withOpacity(0.5),
-                                                      colorBlendMode:
-                                                      BlendMode.modulate,
-                                                    ),
-                                                  )),
-                                              Text(
-                                                "No Old Tasks",
-                                                style: TextStyle(
-                                                    color: Colors.white
-                                                        .withOpacity(0.7),
-                                                    fontSize: 22),
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                      });
-                                }),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        RefreshIndicator(
-                          onRefresh: refreshList,
-                          backgroundColor: Colors.purple,
-                          color: Colors.white,
-                          child: Container(
-                            height: 660,
-                            child: StreamBuilder<QuerySnapshot>(
-                                stream: firestoreInstance
-                                    .collection("Users")
-                                    .doc('$uid')
-                                    .collection('Task')
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  return ListView.builder(
-                                      itemCount: task.length,
-                                      itemBuilder: (context, int index) {
-                                        if (task[index].isEmpty != true) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: OutlinedButton(
-                                              child: Card(
-                                                clipBehavior: Clip.antiAlias,
-                                                elevation: 20,
-                                                margin: EdgeInsets.all(0),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.circular(20)),
-                                                child: ConstrainedBox(
-                                                  constraints: BoxConstraints(
-                                                    minHeight: height(0.13),
-                                                    minWidth: width(1),
-                                                  ),
-                                                  child: Container(
-                                                    // height: 90,
-                                                    // width: width(1),
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: pcol1[index],
-                                                          fit: BoxFit.cover),
-                                                      borderRadius:
-                                                      BorderRadius.circular(18),
-                                                    ),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                      children: [
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10,
-                                                                  right: 10),
-                                                              child: Text(
-                                                                "${task[index]}",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                    height(
-                                                                        0.024),
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                              ),
-                                                            ),
-
-                                                            Padding(
-                                                              padding:
-                                                              EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10,
-                                                                  bottom: 10),
-                                                              child: Text(
-                                                                "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                    height(
-                                                                        0.02),
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                              ),
-                                                            ),
-                                                            //Text("${Status[index]}"),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 100,
-                                                        ),
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                          children: [
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  showDialog<void>(
-                                                                    context:
-                                                                    context,
-                                                                    barrierDismissible:
-                                                                    true,
-                                                                    // user must tap button!
-                                                                    builder:
-                                                                        (BuildContext
-                                                                    context) {
-                                                                      return AlertDialog(
-                                                                        backgroundColor:
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            48,
-                                                                            48,
-                                                                            54),
-                                                                        title:
-                                                                        const Text(
-                                                                          'Update Task',
-                                                                          style: TextStyle(
-                                                                              color: Color.fromARGB(
-                                                                                  255,
-                                                                                  250,
-                                                                                  251,
-                                                                                  252),
-                                                                              fontSize:
-                                                                              22),
-                                                                        ),
-                                                                        content:
-                                                                        SingleChildScrollView(
-                                                                          child:
-                                                                          Material(
-                                                                            color: Color.fromARGB(
-                                                                                255,
-                                                                                48,
-                                                                                48,
-                                                                                54),
-                                                                            child:
-                                                                            Column(
-                                                                              mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                // SizedBox(
-                                                                                //   height: 20,
-                                                                                // ),
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.only(left: 4),
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
-                                                                                    width: 350,
-                                                                                    height: 50,
-                                                                                    child: TextFormField(
-                                                                                      style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                      decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
-                                                                                      keyboardType: TextInputType.visiblePassword,
-                                                                                      obscureText: false,
-                                                                                      onChanged: (value) {
-                                                                                        Task = value;
-                                                                                      },
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                Padding(
-                                                                                  padding:
-                                                                                  const EdgeInsets.only(top: 10, bottom: 20),
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(
-                                                                                        border: Border.all(color: Colors.grey),
-                                                                                        borderRadius: BorderRadius.circular(5)),
-                                                                                    width: 350,
-                                                                                    height: 50,
-                                                                                    padding: EdgeInsets.only(left: 4),
-                                                                                    child: TextFormField(
-                                                                                      style: TextStyle(
-                                                                                          fontSize: 18, color: Colors.white),
-                                                                                      decoration: InputDecoration(
-                                                                                          border: InputBorder.none,
-                                                                                          hintText: "Details here",
-                                                                                          hintStyle:
-                                                                                          TextStyle(color: Colors.grey)),
-                                                                                      keyboardType: TextInputType.visiblePassword,
-                                                                                      obscureText: false,
-                                                                                      onChanged: (value) {
-                                                                                        tdet = value;
-                                                                                      },
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.only(top: 50),
-                                                                                  child: MaterialButton(
-                                                                                    onPressed: () {
-                                                                                      _selectDateTime(context);
-                                                                                    },
-                                                                                    color: Colors.blue[900],
-                                                                                    child: Text(
-                                                                                      "End Date & Time",
-                                                                                      style: TextStyle(color: Colors.white),
-                                                                                    ),
-                                                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                                                                                  ),
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  width: 30,
-                                                                                ),
-                                                                                Text(
-                                                                                  "Set Priority",
-                                                                                  style: TextStyle(color: Colors.white, fontSize: 18),
-                                                                                ),
-                                                                                StatefulBuilder(
-                                                                                  builder: (context, setState) => Slider(
-                                                                                    value: _priority,
-                                                                                    max: 9,
-                                                                                    divisions: 9,
-                                                                                    label: "Priority:${(_priority + 1).round().toString()}",
-                                                                                    onChanged: (double value) {
-                                                                                      // print("$value");
-                                                                                      setState(() {
-                                                                                        _priority = value;
-                                                                                      });
-                                                                                      //print(_priority.round());
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  width: 20,
-                                                                                ),
-                                                                                Row(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                                  children: [
-                                                                                    Column(
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      children: <Widget>[
-                                                                                        IconButton(
-                                                                                          icon: const Icon(
-                                                                                            Icons.image,
-                                                                                            color: Colors.white,
-                                                                                          ),
-                                                                                          tooltip: 'Add image to task',
-                                                                                          onPressed: () {},
-                                                                                        ),
-                                                                                        Text(
-                                                                                          'Picture',
-                                                                                          style: TextStyle(color: Colors.white),
-                                                                                        )
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      children: <Widget>[
-                                                                                        IconButton(
-                                                                                          icon: const Icon(
-                                                                                            Icons.person_add,
-                                                                                            color: Colors.white,
-                                                                                          ),
-                                                                                          tooltip: 'Add collaborators',
-                                                                                          onPressed: () {
-                                                                                            showModalBottomSheet(
-                                                                                                context: context,
-                                                                                                builder: (BuildContext bc) {
-                                                                                                  return StreamBuilder<QuerySnapshot>(
-                                                                                                      stream: firestoreInstance.collection("Users").snapshots(),
-                                                                                                      builder: (context, snapshot) {
-                                                                                                        return Padding(
-                                                                                                          padding: const EdgeInsets.all(10),
-                                                                                                          child: Column(
-                                                                                                            children: [
-                                                                                                              const SizedBox(
-                                                                                                                height: 20,
-                                                                                                              ),
-                                                                                                              TextField(
-                                                                                                                onChanged: (value) => _runFilter(value),
-                                                                                                                decoration: const InputDecoration(
-                                                                                                                    labelText: 'Search', suffixIcon: Icon(Icons.search)),
-                                                                                                              ),
-                                                                                                              const SizedBox(
-                                                                                                                height: 20,
-                                                                                                              ),
-                                                                                                              Expanded(
-                                                                                                                child: _foundUsers.isNotEmpty
-                                                                                                                    ? RefreshIndicator(
-                                                                                                                  onRefresh: refreshList,
-                                                                                                                  backgroundColor: Colors.blue[900],
-                                                                                                                  color: Colors.white,
-                                                                                                                  child: StreamBuilder<QuerySnapshot>(
-                                                                                                                      stream: firestoreInstance.collection('Users').snapshots(),
-                                                                                                                      builder: (context, snapshot) {
-                                                                                                                        return ListView.builder(
-                                                                                                                          shrinkWrap: true,
-                                                                                                                          itemCount: _foundUsers.length,
-                                                                                                                          itemBuilder: (context, index) => Card(
-                                                                                                                            key: ValueKey(_foundUsers[index]["id"]),
-                                                                                                                            color: Colors.grey,
-                                                                                                                            elevation: 4,
-                                                                                                                            margin: const EdgeInsets.symmetric(vertical: 10),
-                                                                                                                            child: ListTile(
-                                                                                                                              leading: IconButton(
-                                                                                                                                onPressed: () {
-                                                                                                                                  setState(() {
-                                                                                                                                    all =
-                                                                                                                                        all + 1;
-                                                                                                                                    if (_priority.toInt() >=
-                                                                                                                                        0 &&
-                                                                                                                                        _priority.toInt() <
-                                                                                                                                            4) {
-                                                                                                                                      setState(
-                                                                                                                                              () {
-                                                                                                                                            priority =
-                                                                                                                                            "green";
-                                                                                                                                          });
-                                                                                                                                    } else if (_priority.toInt() >=
-                                                                                                                                        4 &&
-                                                                                                                                        _priority.toInt() <=
-                                                                                                                                            7) {
-                                                                                                                                      setState(
-                                                                                                                                              () {
-                                                                                                                                            priority =
-                                                                                                                                            "yellow";
-                                                                                                                                          });
-                                                                                                                                    } else {
-                                                                                                                                      setState(
-                                                                                                                                              () {
-                                                                                                                                            priority =
-                                                                                                                                            "red";
-                                                                                                                                          });
-                                                                                                                                    }
-                                                                                                                                  });
-
-                                                                                                                                  firestoreInstance
-                                                                                                                                      .collection(
-                                                                                                                                      "Users")
-                                                                                                                                      .doc(
-                                                                                                                                      '${uids[index]}')
-                                                                                                                                      .collection(
-                                                                                                                                      'Task')
-                                                                                                                                      .doc(
-                                                                                                                                      '$dateTime')
-                                                                                                                                      .set({
-                                                                                                                                    'Task': Task,'Date':dateTime, 'Priority': priority, 'status': false, 'sdate': _sdate, 'meet': meet,'Details':tdet,
-                                                                                                                                  });
-                                                                                                                                },
-                                                                                                                                icon: Icon(
-                                                                                                                                    Icons.add),
-                                                                                                                              ),
-                                                                                                                              title: Text(_foundUsers[index]['username']),
-                                                                                                                              subtitle: Text(
-                                                                                                                                  '${_foundUsers[index]["desig"]}'),
-                                                                                                                              trailing: IconButton(icon: Icon(Icons.chat,color: Colors.white,),onPressed: (){
-                                                                                                                                _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
-                                                                                                                              },),
-                                                                                                                            ),
-                                                                                                                          ),
-                                                                                                                        );
-                                                                                                                      }
-                                                                                                                  ),
-                                                                                                                )
-                                                                                                                    : const Text(
-                                                                                                                  'No results found',
-                                                                                                                  style: TextStyle(fontSize: 24),
+                                                                                                                TextField(
+                                                                                                                  onChanged: (value) => _runFilter(value),
+                                                                                                                  decoration: const InputDecoration(labelText: 'Search', suffixIcon: Icon(Icons.search)),
                                                                                                                 ),
-                                                                                                              ),
-                                                                                                            ],
-                                                                                                          ),
-                                                                                                        );
-                                                                                                      });
-                                                                                                });
-                                                                                          },
-                                                                                        ),
-                                                                                        Text(
-                                                                                          'Collaborate',
-                                                                                          style: TextStyle(color: Colors.white),
-                                                                                        )
-                                                                                      ],
-                                                                                    ),
-                                                                                    Column(
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      children: <Widget>[
-                                                                                        IconButton(
-                                                                                          icon: const Icon(
-                                                                                            Icons.calendar_today,
-                                                                                            color: Colors.white,
+                                                                                                                const SizedBox(
+                                                                                                                  height: 20,
+                                                                                                                ),
+                                                                                                                Expanded(
+                                                                                                                  child: _foundUsers.isNotEmpty
+                                                                                                                      ? RefreshIndicator(
+                                                                                                                          onRefresh: refreshList,
+                                                                                                                          backgroundColor: Colors.blue[900],
+                                                                                                                          color: Colors.white,
+                                                                                                                          child: StreamBuilder<QuerySnapshot>(
+                                                                                                                              stream: firestoreInstance.collection('Users').snapshots(),
+                                                                                                                              builder: (context, snapshot) {
+                                                                                                                                return ListView.builder(
+                                                                                                                                  shrinkWrap: true,
+                                                                                                                                  itemCount: _foundUsers.length,
+                                                                                                                                  itemBuilder: (context, index) => Card(
+                                                                                                                                    key: ValueKey(_foundUsers[index]["id"]),
+                                                                                                                                    color: Colors.grey,
+                                                                                                                                    elevation: 4,
+                                                                                                                                    margin: const EdgeInsets.symmetric(vertical: 10),
+                                                                                                                                    child: ListTile(
+                                                                                                                                      leading: IconButton(
+                                                                                                                                        onPressed: () {
+                                                                                                                                          setState(() {
+                                                                                                                                            all = all + 1;
+                                                                                                                                            if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                                                                              setState(() {
+                                                                                                                                                priority = "green";
+                                                                                                                                              });
+                                                                                                                                            } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                                                                              setState(() {
+                                                                                                                                                priority = "yellow";
+                                                                                                                                              });
+                                                                                                                                            } else {
+                                                                                                                                              setState(() {
+                                                                                                                                                priority = "red";
+                                                                                                                                              });
+                                                                                                                                            }
+                                                                                                                                          });
+
+                                                                                                                                          firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
+                                                                                                                                            'Task': Task,
+                                                                                                                                            'Date': dateTime,
+                                                                                                                                            'Priority': priority,
+                                                                                                                                            'status': false,
+                                                                                                                                            'sdate': _sdate,
+                                                                                                                                            'meet': meet,
+                                                                                                                                            'Details': tdet,
+                                                                                                                                          });
+                                                                                                                                        },
+                                                                                                                                        icon: Icon(Icons.add),
+                                                                                                                                      ),
+                                                                                                                                      title: Text(_foundUsers[index]['username']),
+                                                                                                                                      subtitle: Text('${_foundUsers[index]["desig"]}'),
+                                                                                                                                      trailing: IconButton(
+                                                                                                                                        icon: Icon(
+                                                                                                                                          Icons.chat,
+                                                                                                                                          color: Colors.white,
+                                                                                                                                        ),
+                                                                                                                                        onPressed: () {
+                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
+                                                                                                                                        },
+                                                                                                                                      ),
+                                                                                                                                    ),
+                                                                                                                                  ),
+                                                                                                                                );
+                                                                                                                              }),
+                                                                                                                        )
+                                                                                                                      : const Text(
+                                                                                                                          'No results found',
+                                                                                                                          style: TextStyle(fontSize: 24),
+                                                                                                                        ),
+                                                                                                                ),
+                                                                                                              ],
+                                                                                                            ),
+                                                                                                          );
+                                                                                                        });
+                                                                                                  });
+                                                                                            },
                                                                                           ),
-                                                                                          tooltip: 'Add meet',
-                                                                                          onPressed: () {
-                                                                                            /*_launchInWebViewOrVC(
+                                                                                          Text(
+                                                                                            'Collaborate',
+                                                                                            style: TextStyle(color: Colors.white),
+                                                                                          )
+                                                                                        ],
+                                                                                      ),
+                                                                                      Column(
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        children: <Widget>[
+                                                                                          IconButton(
+                                                                                            icon: const Icon(
+                                                                                              Icons.calendar_today,
+                                                                                              color: Colors.white,
+                                                                                            ),
+                                                                                            tooltip: 'Add meet',
+                                                                                            onPressed: () {
+                                                                                              /*_launchInWebViewOrVC(
                                                                         _url);*/
-                                                                                            setState(() {
-                                                                                              mcreate = true;
-                                                                                              print("meet$mcreate");
-                                                                                            });
-                                                                                          },
-                                                                                        ),
-                                                                                        Text(
-                                                                                          'Meeting',
-                                                                                          style: TextStyle(color: Colors.white),
-                                                                                        )
-                                                                                      ],
+                                                                                              setState(() {
+                                                                                                mcreate = true;
+                                                                                                print("meet$mcreate");
+                                                                                              });
+                                                                                            },
+                                                                                          ),
+                                                                                          Text(
+                                                                                            'Meeting',
+                                                                                            style: TextStyle(color: Colors.white),
+                                                                                          )
+                                                                                        ],
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  Padding(
+                                                                                    padding: EdgeInsets.only(top: 40),
+                                                                                    child: Container(
+                                                                                      decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                                                      width: 350,
+                                                                                      height: 50,
+                                                                                      padding: EdgeInsets.only(left: 4),
+                                                                                      child: TextFormField(
+                                                                                        style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        keyboardType: TextInputType.visiblePassword,
+                                                                                        obscureText: false,
+                                                                                        onChanged: (value) {
+                                                                                          meet = value;
+                                                                                        },
+                                                                                      ),
                                                                                     ),
-                                                                                  ],
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          actions: <
+                                                                              Widget>[
+                                                                            MaterialButton(
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  all = all - 1;
+                                                                                  if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                    setState(() {
+                                                                                      priority = "green";
+                                                                                    });
+                                                                                  } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                    setState(() {
+                                                                                      priority = "yellow";
+                                                                                    });
+                                                                                  } else {
+                                                                                    setState(() {
+                                                                                      priority = "red";
+                                                                                    });
+                                                                                  }
+                                                                                });
+                                                                                firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').update({
+                                                                                  'Task': Task,
+                                                                                  'Date': dateTime,
+                                                                                  'Priority': priority,
+                                                                                  'status': false,
+                                                                                  'meet': meet,
+                                                                                  'Details': tdet,
+                                                                                });
+                                                                                firestoreInstance.collection("Users").doc("$uid").update({
+                                                                                  'number': all
+                                                                                });
+                                                                                refreshList();
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              color: Colors.blue[900],
+                                                                              child: Text(
+                                                                                "Update",
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                                            ),
+                                                                            MaterialButton(
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  all = all - 1;
+                                                                                });
+                                                                                firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').delete();
+                                                                                firestoreInstance.collection("Users").doc('$uid').update({
+                                                                                  'number': all
+                                                                                });
+                                                                                Navigator.pop(context);
+                                                                                refreshList();
+                                                                              },
+                                                                              color: Colors.blue[900],
+                                                                              child: Text(
+                                                                                "Mark as Done",
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                                            ),
+                                                                            SizedBox(height: 40)
+                                                                          ],
+                                                                          elevation:
+                                                                              24,
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons.edit,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog<
+                                                                        void>(
+                                                                      context:
+                                                                          context,
+                                                                      barrierDismissible:
+                                                                          false, // user must tap button!
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return AlertDialog(
+                                                                          title:
+                                                                              const Text('Details'),
+                                                                          content:
+                                                                              SingleChildScrollView(
+                                                                            child:
+                                                                                ListBody(
+                                                                              children: <Widget>[
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Text("Task: ${task[index]}"),
                                                                                 ),
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                                                                                    width: 350,
-                                                                                    height: 50,
-                                                                                    padding: EdgeInsets.only(left: 4),
-                                                                                    child: TextFormField(
-                                                                                      style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                      decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
-                                                                                      keyboardType: TextInputType.visiblePassword,
-                                                                                      obscureText: false,
-                                                                                      onChanged: (value) {
-                                                                                        meet = value;
+                                                                                  child: Text("Details: ${tdetail[index]}"),
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Text("Image:"),
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: TextButton(
+                                                                                      onPressed: () {
+                                                                                        _launchmeet("https://${meetl[index]}");
                                                                                       },
-                                                                                    ),
-                                                                                  ),
+                                                                                      child: Text("Meet Link: ${(meetl[index])}")),
                                                                                 ),
                                                                               ],
                                                                             ),
                                                                           ),
-                                                                        ),
-                                                                        actions: <
-                                                                            Widget>[
-                                                                          MaterialButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              setState(
-                                                                                      () {
-                                                                                    all =
-                                                                                        all - 1;
-                                                                                    if (_priority.toInt() >= 0 &&
-                                                                                        _priority.toInt() < 4) {
-                                                                                      setState(() {
-                                                                                        priority = "green";
-                                                                                      });
-                                                                                    } else if (_priority.toInt() >= 4 &&
-                                                                                        _priority.toInt() <= 7) {
-                                                                                      setState(() {
-                                                                                        priority = "yellow";
-                                                                                      });
-                                                                                    } else {
-                                                                                      setState(() {
-                                                                                        priority = "red";
-                                                                                      });
-                                                                                    }
-                                                                                  });
-                                                                              firestoreInstance
-                                                                                  .collection("Users")
-                                                                                  .doc('$uid')
-                                                                                  .collection('Task')
-                                                                                  .doc('${date[index]}')
-                                                                                  .update({
-                                                                                'Task':
-                                                                                Task,
-                                                                                'Date':
-                                                                                dateTime,
-                                                                                'Priority':
-                                                                                priority,
-                                                                                'status':
-                                                                                false,
-                                                                                'meet':
-                                                                                meet,
-                                                                              });
-                                                                              firestoreInstance
-                                                                                  .collection(
-                                                                                  "Users")
-                                                                                  .doc(
-                                                                                  "$uid")
-                                                                                  .update({
-                                                                                'number':
-                                                                                all
-                                                                              });
-                                                                              Navigator.pop(
-                                                                                  context);
-                                                                              setState(
-                                                                                      () {
-                                                                                    date.clear();
-                                                                                    task.clear();
-                                                                                    Status.clear();
-                                                                                  });
-                                                                              getdat();
-                                                                            },
-                                                                            color: Colors
-                                                                                .blue[900],
-                                                                            child:
-                                                                            Text(
-                                                                              "Update",
-                                                                              style:
-                                                                              TextStyle(color: Colors.white),
+                                                                          actions: <
+                                                                              Widget>[
+                                                                            TextButton(
+                                                                              child: const Text('Accept'),
+                                                                              onPressed: () {
+                                                                                Navigator.of(context).pop();
+                                                                              },
                                                                             ),
-                                                                            shape: RoundedRectangleBorder(
-                                                                                borderRadius:
-                                                                                BorderRadius.circular(20.0)),
-                                                                          ),
-                                                                          MaterialButton(
-                                                                            onPressed:
-                                                                                () {
-                                                                              setState(
-                                                                                      () {
-                                                                                    all =
-                                                                                        all - 1;
-                                                                                  });
-                                                                              firestoreInstance
-                                                                                  .collection("Users")
-                                                                                  .doc('$uid')
-                                                                                  .collection('Task')
-                                                                                  .doc('${date[index]}')
-                                                                                  .delete();
-                                                                              firestoreInstance
-                                                                                  .collection(
-                                                                                  "Users")
-                                                                                  .doc(
-                                                                                  '$uid')
-                                                                                  .update({
-                                                                                'number':
-                                                                                all
-                                                                              });
-                                                                              Navigator.pop(
-                                                                                  context);
-                                                                              refreshList();
-                                                                            },
-                                                                            color: Colors
-                                                                                .blue[900],
-                                                                            child:
-                                                                            Text(
-                                                                              "Mark as Done",
-                                                                              style:
-                                                                              TextStyle(color: Colors.white),
-                                                                            ),
-                                                                            shape: RoundedRectangleBorder(
-                                                                                borderRadius:
-                                                                                BorderRadius.circular(20.0)),
-                                                                          ),
-                                                                        ],
-                                                                        elevation:
-                                                                        24,
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons.edit,
-                                                                  color:
-                                                                  Colors.white,
-                                                                )),
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  showDialog<void>(
-                                                                    context:
-                                                                    context,
-                                                                    barrierDismissible:
-                                                                    false, // user must tap button!
-                                                                    builder:
-                                                                        (BuildContext
-                                                                    context) {
-                                                                      return AlertDialog(
-                                                                        title: const Text(
-                                                                            'Details'),
-                                                                        content:
-                                                                        SingleChildScrollView(
-                                                                          child:
-                                                                          ListBody(
-                                                                            children: <
-                                                                                Widget>[
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Task: ${task[index]}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Details: ${tdet[index]}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child:
-                                                                                Text("Image:"),
-                                                                              ),
-                                                                              Padding(
-                                                                                padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                                child: TextButton(
-                                                                                    onPressed: () {
-                                                                                      _launchmeet("https://${meetl[index]}");
-                                                                                    },
-                                                                                    child: Text("Meet Link: ${(meetl[index])}")),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ),
-                                                                        actions: <
-                                                                            Widget>[
-                                                                          TextButton(
-                                                                            child: const Text(
-                                                                                'Accept'),
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.of(context)
-                                                                                  .pop();
-                                                                            },
-                                                                          ),
-                                                                        ],
-                                                                        elevation:
-                                                                        24,
-                                                                      );
-                                                                    },
-                                                                  );
-                                                                },
-                                                                icon: Icon(
-                                                                  Icons
-                                                                      .remove_red_eye,
-                                                                  color:
-                                                                  Colors.white,
-                                                                )),
-                                                          ],
+                                                                          ],
+                                                                          elevation:
+                                                                              24,
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .remove_red_eye,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                            ],
+                                                          ),
                                                         ),
+                                                        //Text("${Status[index]}"),
                                                       ],
                                                     ),
-                                                  ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        /////////////////////////////////////////////////////////////////////////////
+                                                        // IconButton(
+                                                        //     onPressed: () {
+                                                        //       showDialog<void>(
+                                                        //         context:
+                                                        //             context,
+                                                        //         barrierDismissible:
+                                                        //             true,
+                                                        //         // user must tap button!
+                                                        //         builder:
+                                                        //             (BuildContext
+                                                        //                 context) {
+                                                        //           return AlertDialog(
+                                                        //             shape: RoundedRectangleBorder(
+                                                        //                 borderRadius:
+                                                        //                     BorderRadius.circular(40.0)),
+                                                        //             backgroundColor:
+                                                        //                 Color.fromARGB(
+                                                        //                     255,
+                                                        //                     48,
+                                                        //                     48,
+                                                        //                     54),
+                                                        //             title:
+                                                        //                 Padding(
+                                                        //               padding: const EdgeInsets
+                                                        //                       .only(
+                                                        //                   left:
+                                                        //                       12,
+                                                        //                   top:
+                                                        //                       10),
+                                                        //               child:
+                                                        //                   const Text(
+                                                        //                 'Update Task',
+                                                        //                 style: TextStyle(
+                                                        //                     color: Color.fromARGB(
+                                                        //                         255,
+                                                        //                         250,
+                                                        //                         251,
+                                                        //                         252),
+                                                        //                     fontSize:
+                                                        //                         28),
+                                                        //               ),
+                                                        //             ),
+                                                        //             content:
+                                                        //                 SingleChildScrollView(
+                                                        //               child:
+                                                        //                   Material(
+                                                        //                 color: Color.fromARGB(
+                                                        //                     255,
+                                                        //                     48,
+                                                        //                     48,
+                                                        //                     54),
+                                                        //                 child:
+                                                        //                     Column(
+                                                        //                   mainAxisAlignment:
+                                                        //                       MainAxisAlignment.spaceBetween,
+                                                        //                   children: [
+                                                        //                     SizedBox(
+                                                        //                       height: 10,
+                                                        //                     ),
+                                                        //                     Padding(
+                                                        //                       padding: const EdgeInsets.only(left: 4.0, bottom: 20),
+                                                        //                       child: Container(
+                                                        //                         decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
+                                                        //                         width: 350,
+                                                        //                         height: 50,
+                                                        //                         padding: EdgeInsets.only(left: 4),
+                                                        //                         child: TextFormField(
+                                                        //                           style: TextStyle(fontSize: 18, color: Colors.white),
+                                                        //                           decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
+                                                        //                           keyboardType: TextInputType.visiblePassword,
+                                                        //                           obscureText: false,
+                                                        //                           onChanged: (value) {
+                                                        //                             Task = value;
+                                                        //                           },
+                                                        //                         ),
+                                                        //                       ),
+                                                        //                     ),
+                                                        //                     Padding(
+                                                        //                       padding: const EdgeInsets.only(top: 10, bottom: 20),
+                                                        //                       child: Container(
+                                                        //                         decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                        //                         width: 350,
+                                                        //                         height: 50,
+                                                        //                         padding: EdgeInsets.only(left: 4),
+                                                        //                         child: TextFormField(
+                                                        //                           style: TextStyle(fontSize: 18, color: Colors.white),
+                                                        //                           decoration: InputDecoration(border: InputBorder.none, hintText: "Details here", hintStyle: TextStyle(color: Colors.grey)),
+                                                        //                           keyboardType: TextInputType.visiblePassword,
+                                                        //                           obscureText: false,
+                                                        //                           onChanged: (value) {
+                                                        //                             tdet = value;
+                                                        //                           },
+                                                        //                         ),
+                                                        //                       ),
+                                                        //                     ),
+                                                        //                     Row(
+                                                        //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                        //                       children: [
+                                                        //                         Padding(
+                                                        //                           padding: EdgeInsets.only(bottom: 10),
+                                                        //                           child: MaterialButton(
+                                                        //                             onPressed: () {
+                                                        //                               _selectDateTime(context);
+                                                        //                             },
+                                                        //                             color: Colors.blue[900],
+                                                        //                             child: Text(
+                                                        //                               "End Date & Time",
+                                                        //                               style: TextStyle(color: Colors.white),
+                                                        //                             ),
+                                                        //                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                                                        //                           ),
+                                                        //                         ),
+                                                        //                       ],
+                                                        //                     ),
+                                                        //                     SizedBox(
+                                                        //                       width: 30,
+                                                        //                     ),
+                                                        //                     Text(
+                                                        //                       "Set Priority",
+                                                        //                       style: TextStyle(color: Colors.white, fontSize: 18),
+                                                        //                     ),
+                                                        //                     StatefulBuilder(
+                                                        //                       builder: (context, setState) => Slider(
+                                                        //                         value: _priority,
+                                                        //                         max: 9,
+                                                        //                         divisions: 9,
+                                                        //                         label: "Priority:${(_priority + 1).round().toString()}",
+                                                        //                         onChanged: (double value) {
+                                                        //                           // print("$value");
+                                                        //                           setState(() {
+                                                        //                             _priority = value;
+                                                        //                           });
+                                                        //                           //print(_priority.round());
+                                                        //                         },
+                                                        //                       ),
+                                                        //                     ),
+                                                        //                     SizedBox(
+                                                        //                       width: 20,
+                                                        //                     ),
+                                                        //                     Row(
+                                                        //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                        //                       children: [
+                                                        //                         Column(
+                                                        //                           mainAxisSize: MainAxisSize.min,
+                                                        //                           children: <Widget>[
+                                                        //                             IconButton(
+                                                        //                               icon: const Icon(
+                                                        //                                 Icons.image,
+                                                        //                                 color: Colors.white,
+                                                        //                               ),
+                                                        //                               tooltip: 'Add image to task',
+                                                        //                               onPressed: () {},
+                                                        //                             ),
+                                                        //                             Text(
+                                                        //                               'Picture',
+                                                        //                               style: TextStyle(color: Colors.white),
+                                                        //                             )
+                                                        //                           ],
+                                                        //                         ),
+                                                        //                         Column(
+                                                        //                           mainAxisSize: MainAxisSize.min,
+                                                        //                           children: <Widget>[
+                                                        //                             IconButton(
+                                                        //                               icon: const Icon(
+                                                        //                                 Icons.person_add,
+                                                        //                                 color: Colors.white,
+                                                        //                               ),
+                                                        //                               tooltip: 'Add collaborators',
+                                                        //                               onPressed: () {
+                                                        //                                 showModalBottomSheet(
+                                                        //                                     context: context,
+                                                        //                                     builder: (BuildContext bc) {
+                                                        //                                       return StreamBuilder<QuerySnapshot>(
+                                                        //                                           stream: firestoreInstance.collection("Users").snapshots(),
+                                                        //                                           builder: (context, snapshot) {
+                                                        //                                             return Padding(
+                                                        //                                               padding: const EdgeInsets.all(10),
+                                                        //                                               child: Column(
+                                                        //                                                 children: [
+                                                        //                                                   const SizedBox(
+                                                        //                                                     height: 20,
+                                                        //                                                   ),
+                                                        //                                                   TextField(
+                                                        //                                                     onChanged: (value) => _runFilter(value),
+                                                        //                                                     decoration: const InputDecoration(labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                                                        //                                                   ),
+                                                        //                                                   const SizedBox(
+                                                        //                                                     height: 20,
+                                                        //                                                   ),
+                                                        //                                                   Expanded(
+                                                        //                                                     child: _foundUsers.isNotEmpty
+                                                        //                                                         ? RefreshIndicator(
+                                                        //                                                             onRefresh: refreshList,
+                                                        //                                                             backgroundColor: Colors.blue[900],
+                                                        //                                                             color: Colors.white,
+                                                        //                                                             child: StreamBuilder<QuerySnapshot>(
+                                                        //                                                                 stream: firestoreInstance.collection('Users').snapshots(),
+                                                        //                                                                 builder: (context, snapshot) {
+                                                        //                                                                   return ListView.builder(
+                                                        //                                                                     shrinkWrap: true,
+                                                        //                                                                     itemCount: _foundUsers.length,
+                                                        //                                                                     itemBuilder: (context, index) => Card(
+                                                        //                                                                       key: ValueKey(_foundUsers[index]["id"]),
+                                                        //                                                                       color: Colors.grey,
+                                                        //                                                                       elevation: 4,
+                                                        //                                                                       margin: const EdgeInsets.symmetric(vertical: 10),
+                                                        //                                                                       child: ListTile(
+                                                        //                                                                         leading: IconButton(
+                                                        //                                                                           onPressed: () {
+                                                        //                                                                             setState(() {
+                                                        //                                                                               all = all + 1;
+                                                        //                                                                               if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                        //                                                                                 setState(() {
+                                                        //                                                                                   priority = "green";
+                                                        //                                                                                 });
+                                                        //                                                                               } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                        //                                                                                 setState(() {
+                                                        //                                                                                   priority = "yellow";
+                                                        //                                                                                 });
+                                                        //                                                                               } else {
+                                                        //                                                                                 setState(() {
+                                                        //                                                                                   priority = "red";
+                                                        //                                                                                 });
+                                                        //                                                                               }
+                                                        //                                                                             });
+
+                                                        //                                                                             firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
+                                                        //                                                                               'Task': Task,
+                                                        //                                                                               'Date': dateTime,
+                                                        //                                                                               'Priority': priority,
+                                                        //                                                                               'status': false,
+                                                        //                                                                               'sdate': _sdate,
+                                                        //                                                                               'meet': meet,
+                                                        //                                                                               'Details': tdet,
+                                                        //                                                                             });
+                                                        //                                                                           },
+                                                        //                                                                           icon: Icon(Icons.add),
+                                                        //                                                                         ),
+                                                        //                                                                         title: Text(_foundUsers[index]['username']),
+                                                        //                                                                         subtitle: Text('${_foundUsers[index]["desig"]}'),
+                                                        //                                                                         trailing: IconButton(
+                                                        //                                                                           icon: Icon(
+                                                        //                                                                             Icons.chat,
+                                                        //                                                                             color: Colors.white,
+                                                        //                                                                           ),
+                                                        //                                                                           onPressed: () {
+                                                        //                                                                             _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
+                                                        //                                                                           },
+                                                        //                                                                         ),
+                                                        //                                                                       ),
+                                                        //                                                                     ),
+                                                        //                                                                   );
+                                                        //                                                                 }),
+                                                        //                                                           )
+                                                        //                                                         : const Text(
+                                                        //                                                             'No results found',
+                                                        //                                                             style: TextStyle(fontSize: 24),
+                                                        //                                                           ),
+                                                        //                                                   ),
+                                                        //                                                 ],
+                                                        //                                               ),
+                                                        //                                             );
+                                                        //                                           });
+                                                        //                                     });
+                                                        //                               },
+                                                        //                             ),
+                                                        //                             Text(
+                                                        //                               'Collaborate',
+                                                        //                               style: TextStyle(color: Colors.white),
+                                                        //                             )
+                                                        //                           ],
+                                                        //                         ),
+                                                        //                         Column(
+                                                        //                           mainAxisSize: MainAxisSize.min,
+                                                        //                           children: <Widget>[
+                                                        //                             IconButton(
+                                                        //                               icon: const Icon(
+                                                        //                                 Icons.calendar_today,
+                                                        //                                 color: Colors.white,
+                                                        //                               ),
+                                                        //                               tooltip: 'Add meet',
+                                                        //                               onPressed: () {
+                                                        //                                 /*_launchInWebViewOrVC(
+                                                        //                 _url);*/
+                                                        //                                 setState(() {
+                                                        //                                   mcreate = true;
+                                                        //                                   print("meet$mcreate");
+                                                        //                                 });
+                                                        //                               },
+                                                        //                             ),
+                                                        //                             Text(
+                                                        //                               'Meeting',
+                                                        //                               style: TextStyle(color: Colors.white),
+                                                        //                             )
+                                                        //                           ],
+                                                        //                         ),
+                                                        //                       ],
+                                                        //                     ),
+                                                        //                     Padding(
+                                                        //                       padding: EdgeInsets.only(top: 40),
+                                                        //                       child: Container(
+                                                        //                         decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                        //                         width: 350,
+                                                        //                         height: 50,
+                                                        //                         padding: EdgeInsets.only(left: 4),
+                                                        //                         child: TextFormField(
+                                                        //                           style: TextStyle(fontSize: 18, color: Colors.white),
+                                                        //                           decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
+                                                        //                           keyboardType: TextInputType.visiblePassword,
+                                                        //                           obscureText: false,
+                                                        //                           onChanged: (value) {
+                                                        //                             meet = value;
+                                                        //                           },
+                                                        //                         ),
+                                                        //                       ),
+                                                        //                     ),
+                                                        //                   ],
+                                                        //                 ),
+                                                        //               ),
+                                                        //             ),
+                                                        //             actions: <
+                                                        //                 Widget>[
+                                                        //               MaterialButton(
+                                                        //                 onPressed:
+                                                        //                     () {
+                                                        //                   setState(
+                                                        //                       () {
+                                                        //                     all =
+                                                        //                         all - 1;
+                                                        //                     if (_priority.toInt() >= 0 &&
+                                                        //                         _priority.toInt() < 4) {
+                                                        //                       setState(() {
+                                                        //                         priority = "green";
+                                                        //                       });
+                                                        //                     } else if (_priority.toInt() >= 4 &&
+                                                        //                         _priority.toInt() <= 7) {
+                                                        //                       setState(() {
+                                                        //                         priority = "yellow";
+                                                        //                       });
+                                                        //                     } else {
+                                                        //                       setState(() {
+                                                        //                         priority = "red";
+                                                        //                       });
+                                                        //                     }
+                                                        //                   });
+                                                        //                   firestoreInstance
+                                                        //                       .collection("Users")
+                                                        //                       .doc('$uid')
+                                                        //                       .collection('Task')
+                                                        //                       .doc('${date[index]}')
+                                                        //                       .update({
+                                                        //                     'Task':
+                                                        //                         Task,
+                                                        //                     'Date':
+                                                        //                         dateTime,
+                                                        //                     'Priority':
+                                                        //                         priority,
+                                                        //                     'status':
+                                                        //                         false,
+                                                        //                     'meet':
+                                                        //                         meet,
+                                                        //                     'Details':
+                                                        //                         tdet,
+                                                        //                   });
+                                                        //                   firestoreInstance
+                                                        //                       .collection(
+                                                        //                           "Users")
+                                                        //                       .doc(
+                                                        //                           "$uid")
+                                                        //                       .update({
+                                                        //                     'number':
+                                                        //                         all
+                                                        //                   });
+                                                        //                   refreshList();
+                                                        //                   Navigator.pop(
+                                                        //                       context);
+                                                        //                 },
+                                                        //                 color: Colors
+                                                        //                     .blue[900],
+                                                        //                 child:
+                                                        //                     Text(
+                                                        //                   "Update",
+                                                        //                   style:
+                                                        //                       TextStyle(color: Colors.white),
+                                                        //                 ),
+                                                        //                 shape: RoundedRectangleBorder(
+                                                        //                     borderRadius:
+                                                        //                         BorderRadius.circular(20.0)),
+                                                        //               ),
+                                                        //               MaterialButton(
+                                                        //                 onPressed:
+                                                        //                     () {
+                                                        //                   setState(
+                                                        //                       () {
+                                                        //                     all =
+                                                        //                         all - 1;
+                                                        //                   });
+                                                        //                   firestoreInstance
+                                                        //                       .collection("Users")
+                                                        //                       .doc('$uid')
+                                                        //                       .collection('Task')
+                                                        //                       .doc('${date[index]}')
+                                                        //                       .delete();
+                                                        //                   firestoreInstance
+                                                        //                       .collection(
+                                                        //                           "Users")
+                                                        //                       .doc(
+                                                        //                           '$uid')
+                                                        //                       .update({
+                                                        //                     'number':
+                                                        //                         all
+                                                        //                   });
+                                                        //                   Navigator.pop(
+                                                        //                       context);
+                                                        //                   refreshList();
+                                                        //                 },
+                                                        //                 color: Colors
+                                                        //                     .blue[900],
+                                                        //                 child:
+                                                        //                     Text(
+                                                        //                   "Mark as Done",
+                                                        //                   style:
+                                                        //                       TextStyle(color: Colors.white),
+                                                        //                 ),
+                                                        //                 shape: RoundedRectangleBorder(
+                                                        //                     borderRadius:
+                                                        //                         BorderRadius.circular(20.0)),
+                                                        //               ),
+                                                        //               SizedBox(
+                                                        //                   height:
+                                                        //                       40)
+                                                        //             ],
+                                                        //             elevation:
+                                                        //                 24,
+                                                        //           );
+                                                        //         },
+                                                        //       );
+                                                        //     },
+                                                        //     icon: Icon(
+                                                        //       Icons.edit,
+                                                        //       color:
+                                                        //           Colors.white,
+                                                        //     )),
+                                                        // IconButton(
+                                                        //     onPressed: () {
+                                                        //       showDialog<void>(
+                                                        //         context:
+                                                        //             context,
+                                                        //         barrierDismissible:
+                                                        //             false, // user must tap button!
+                                                        //         builder:
+                                                        //             (BuildContext
+                                                        //                 context) {
+                                                        //           return AlertDialog(
+                                                        //             title: const Text(
+                                                        //                 'Details'),
+                                                        //             content:
+                                                        //                 SingleChildScrollView(
+                                                        //               child:
+                                                        //                   ListBody(
+                                                        //                 children: <
+                                                        //                     Widget>[
+                                                        //                   Padding(
+                                                        //                     padding:
+                                                        //                         const EdgeInsets.all(8.0),
+                                                        //                     child:
+                                                        //                         Text("Task: ${task[index]}"),
+                                                        //                   ),
+                                                        //                   Padding(
+                                                        //                     padding:
+                                                        //                         const EdgeInsets.all(8.0),
+                                                        //                     child:
+                                                        //                         Text("Details: ${tdetail[index]}"),
+                                                        //                   ),
+                                                        //                   Padding(
+                                                        //                     padding:
+                                                        //                         const EdgeInsets.all(8.0),
+                                                        //                     child:
+                                                        //                         Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
+                                                        //                   ),
+                                                        //                   Padding(
+                                                        //                     padding:
+                                                        //                         const EdgeInsets.all(8.0),
+                                                        //                     child:
+                                                        //                         Text("Image:"),
+                                                        //                   ),
+                                                        //                   Padding(
+                                                        //                     padding:
+                                                        //                         const EdgeInsets.all(8.0),
+                                                        //                     child: TextButton(
+                                                        //                         onPressed: () {
+                                                        //                           _launchmeet("https://${meetl[index]}");
+                                                        //                         },
+                                                        //                         child: Text("Meet Link: ${(meetl[index])}")),
+                                                        //                   ),
+                                                        //                 ],
+                                                        //               ),
+                                                        //             ),
+                                                        //             actions: <
+                                                        //                 Widget>[
+                                                        //               TextButton(
+                                                        //                 child: const Text(
+                                                        //                     'Accept'),
+                                                        //                 onPressed:
+                                                        //                     () {
+                                                        //                   Navigator.of(context)
+                                                        //                       .pop();
+                                                        //                 },
+                                                        //               ),
+                                                        //             ],
+                                                        //             elevation:
+                                                        //                 24,
+                                                        //           );
+                                                        //         },
+                                                        //       );
+                                                        //     },
+                                                        //     icon: Icon(
+                                                        //       Icons
+                                                        //           .remove_red_eye,
+                                                        //       color:
+                                                        //           Colors.white,
+                                                        //     )),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              onPressed: () {},
-
-                                              //
                                             ),
-                                          );
-                                        } else {
-                                          return Column(
-                                            mainAxisAlignment:
+                                          ),
+                                          onPressed: () {},
+
+                                          //
+                                        ),
+                                      );
+                                    } else {
+                                      return Column(
+                                        mainAxisAlignment:
                                             MainAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.fromLTRB(
-                                                        8, 200, 8, 8),
-                                                    child: Image(
-                                                      image: AssetImage("assets/2.png"),
-                                                      height: 150,
-                                                      width: 200,
-                                                      color:
-                                                      Colors.white.withOpacity(0.5),
-                                                      colorBlendMode:
-                                                      BlendMode.modulate,
-                                                    ),
-                                                  )),
-                                              Text(
-                                                "History Cleared",
-                                                style: TextStyle(
-                                                    color: Colors.white
-                                                        .withOpacity(0.7),
-                                                    fontSize: 22),
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                      });
-                                }),
-                          ),
-                        ),
-                      ],
+                                        children: [
+                                          Center(
+                                              child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 200, 8, 8),
+                                            child: Image(
+                                              image: AssetImage("assets/2.png"),
+                                              height: 150,
+                                              width: 200,
+                                              color:
+                                                  Colors.white.withOpacity(0.5),
+                                              colorBlendMode:
+                                                  BlendMode.modulate,
+                                            ),
+                                          )),
+                                          Text(
+                                            "No Up-Comming Tasks",
+                                            style: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
+                                                fontSize: 22),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  });
+                            }),
+                      ),
                     ),
-                  ),
-                ],
-              )),
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: refreshList,
+                      backgroundColor: Colors.purple,
+                      color: Colors.white,
+                      child: Container(
+                        height: 660,
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: firestoreInstance
+                                .collection("Users")
+                                .doc('$uid')
+                                .collection('Task')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              return ListView.builder(
+                                  itemCount: task.length,
+                                  itemBuilder: (context, int index) {
+                                    if (date[index]
+                                            .difference(DateTime.now())
+                                            .isNegative ==
+                                        true) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: OutlinedButton(
+                                          child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            elevation: 20,
+                                            margin: EdgeInsets.all(0),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                minHeight: height(0.13),
+                                                minWidth: width(1),
+                                              ),
+                                              child: Container(
+                                                // height: 90,
+                                                // width: width(1),
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: pcol1[index],
+                                                      fit: BoxFit.cover),
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Flexible(
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 20,
+                                                                    left: 10,
+                                                                    right: 10),
+                                                            child: Text(
+                                                              "${task[index]}",
+                                                              softWrap: false,
+                                                              maxLines: 10,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      height(
+                                                                          0.024),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 20,
+                                                                  left: 10,
+                                                                  bottom: 10),
+                                                          child: Text(
+                                                            "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                    height(
+                                                                        0.02),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                        //Text("${Status[index]}"),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              showDialog<void>(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    false, // user must tap button!
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title: const Text(
+                                                                        'Details'),
+                                                                    content:
+                                                                        SingleChildScrollView(
+                                                                      child:
+                                                                          ListBody(
+                                                                        children: <
+                                                                            Widget>[
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Task: ${task[index]}"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Details: ${tdet[index]}"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Image:"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child: TextButton(
+                                                                                onPressed: () {
+                                                                                  _launchmeet("https://${meetl[index]}");
+                                                                                },
+                                                                                child: Text("Meet Link: ${(meetl[index])}")),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        child: const Text(
+                                                                            'Accept'),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                    elevation:
+                                                                        24,
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .remove_red_eye,
+                                                              color:
+                                                                  Colors.white,
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onPressed: () {},
+
+                                          //
+                                        ),
+                                      );
+                                    } else {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                              child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 200, 8, 8),
+                                            child: Image(
+                                              image: AssetImage("assets/2.png"),
+                                              height: 150,
+                                              width: 200,
+                                              color:
+                                                  Colors.white.withOpacity(0.5),
+                                              colorBlendMode:
+                                                  BlendMode.modulate,
+                                            ),
+                                          )),
+                                          Text(
+                                            "No Old Tasks",
+                                            style: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
+                                                fontSize: 22),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  });
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: refreshList,
+                      backgroundColor: Colors.purple,
+                      color: Colors.white,
+                      child: Container(
+                        height: 660,
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: firestoreInstance
+                                .collection("Users")
+                                .doc('$uid')
+                                .collection('Task')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              return ListView.builder(
+                                  itemCount: task.length,
+                                  itemBuilder: (context, int index) {
+                                    if (task[index].isEmpty != true) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: OutlinedButton(
+                                          child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            elevation: 20,
+                                            margin: EdgeInsets.all(0),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                minHeight: height(0.13),
+                                                minWidth: width(1),
+                                              ),
+                                              child: Container(
+                                                // height: 90,
+                                                // width: width(1),
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: pcol1[index],
+                                                      fit: BoxFit.cover),
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 20,
+                                                                  left: 10,
+                                                                  right: 10),
+                                                          child: Text(
+                                                            "${task[index]}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                    height(
+                                                                        0.024),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+
+                                                        Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 20,
+                                                                  left: 10,
+                                                                  bottom: 10),
+                                                          child: Text(
+                                                            "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                    height(
+                                                                        0.02),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                        //Text("${Status[index]}"),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceAround,
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              showDialog<void>(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    true,
+                                                                // user must tap button!
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    backgroundColor:
+                                                                        Color.fromARGB(
+                                                                            255,
+                                                                            48,
+                                                                            48,
+                                                                            54),
+                                                                    title:
+                                                                        const Text(
+                                                                      'Update Task',
+                                                                      style: TextStyle(
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              250,
+                                                                              251,
+                                                                              252),
+                                                                          fontSize:
+                                                                              22),
+                                                                    ),
+                                                                    content:
+                                                                        SingleChildScrollView(
+                                                                      child:
+                                                                          Material(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            48,
+                                                                            48,
+                                                                            54),
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            // SizedBox(
+                                                                            //   height: 20,
+                                                                            // ),
+                                                                            Padding(
+                                                                              padding: EdgeInsets.only(left: 4),
+                                                                              child: Container(
+                                                                                decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
+                                                                                width: 350,
+                                                                                height: 50,
+                                                                                child: TextFormField(
+                                                                                  style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                  decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                  keyboardType: TextInputType.visiblePassword,
+                                                                                  obscureText: false,
+                                                                                  onChanged: (value) {
+                                                                                    Task = value;
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(top: 10, bottom: 20),
+                                                                              child: Container(
+                                                                                decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                                                width: 350,
+                                                                                height: 50,
+                                                                                padding: EdgeInsets.only(left: 4),
+                                                                                child: TextFormField(
+                                                                                  style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                  decoration: InputDecoration(border: InputBorder.none, hintText: "Details here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                  keyboardType: TextInputType.visiblePassword,
+                                                                                  obscureText: false,
+                                                                                  onChanged: (value) {
+                                                                                    tdet = value;
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(top: 50),
+                                                                              child: MaterialButton(
+                                                                                onPressed: () {
+                                                                                  _selectDateTime(context);
+                                                                                },
+                                                                                color: Colors.blue[900],
+                                                                                child: Text(
+                                                                                  "End Date & Time",
+                                                                                  style: TextStyle(color: Colors.white),
+                                                                                ),
+                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 30,
+                                                                            ),
+                                                                            Text(
+                                                                              "Set Priority",
+                                                                              style: TextStyle(color: Colors.white, fontSize: 18),
+                                                                            ),
+                                                                            StatefulBuilder(
+                                                                              builder: (context, setState) => Slider(
+                                                                                value: _priority,
+                                                                                max: 9,
+                                                                                divisions: 9,
+                                                                                label: "Priority:${(_priority + 1).round().toString()}",
+                                                                                onChanged: (double value) {
+                                                                                  // print("$value");
+                                                                                  setState(() {
+                                                                                    _priority = value;
+                                                                                  });
+                                                                                  //print(_priority.round());
+                                                                                },
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 20,
+                                                                            ),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                              children: [
+                                                                                Column(
+                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                  children: <Widget>[
+                                                                                    IconButton(
+                                                                                      icon: const Icon(
+                                                                                        Icons.image,
+                                                                                        color: Colors.white,
+                                                                                      ),
+                                                                                      tooltip: 'Add image to task',
+                                                                                      onPressed: () {},
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Picture',
+                                                                                      style: TextStyle(color: Colors.white),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                                Column(
+                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                  children: <Widget>[
+                                                                                    IconButton(
+                                                                                      icon: const Icon(
+                                                                                        Icons.person_add,
+                                                                                        color: Colors.white,
+                                                                                      ),
+                                                                                      tooltip: 'Add collaborators',
+                                                                                      onPressed: () {
+                                                                                        showModalBottomSheet(
+                                                                                            context: context,
+                                                                                            builder: (BuildContext bc) {
+                                                                                              return StreamBuilder<QuerySnapshot>(
+                                                                                                  stream: firestoreInstance.collection("Users").snapshots(),
+                                                                                                  builder: (context, snapshot) {
+                                                                                                    return Padding(
+                                                                                                      padding: const EdgeInsets.all(10),
+                                                                                                      child: Column(
+                                                                                                        children: [
+                                                                                                          const SizedBox(
+                                                                                                            height: 20,
+                                                                                                          ),
+                                                                                                          TextField(
+                                                                                                            onChanged: (value) => _runFilter(value),
+                                                                                                            decoration: const InputDecoration(labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                                                                                                          ),
+                                                                                                          const SizedBox(
+                                                                                                            height: 20,
+                                                                                                          ),
+                                                                                                          Expanded(
+                                                                                                            child: _foundUsers.isNotEmpty
+                                                                                                                ? RefreshIndicator(
+                                                                                                                    onRefresh: refreshList,
+                                                                                                                    backgroundColor: Colors.blue[900],
+                                                                                                                    color: Colors.white,
+                                                                                                                    child: StreamBuilder<QuerySnapshot>(
+                                                                                                                        stream: firestoreInstance.collection('Users').snapshots(),
+                                                                                                                        builder: (context, snapshot) {
+                                                                                                                          return ListView.builder(
+                                                                                                                            shrinkWrap: true,
+                                                                                                                            itemCount: _foundUsers.length,
+                                                                                                                            itemBuilder: (context, index) => Card(
+                                                                                                                              key: ValueKey(_foundUsers[index]["id"]),
+                                                                                                                              color: Colors.grey,
+                                                                                                                              elevation: 4,
+                                                                                                                              margin: const EdgeInsets.symmetric(vertical: 10),
+                                                                                                                              child: ListTile(
+                                                                                                                                leading: IconButton(
+                                                                                                                                  onPressed: () {
+                                                                                                                                    setState(() {
+                                                                                                                                      all = all + 1;
+                                                                                                                                      if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                                                                        setState(() {
+                                                                                                                                          priority = "green";
+                                                                                                                                        });
+                                                                                                                                      } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                                                                        setState(() {
+                                                                                                                                          priority = "yellow";
+                                                                                                                                        });
+                                                                                                                                      } else {
+                                                                                                                                        setState(() {
+                                                                                                                                          priority = "red";
+                                                                                                                                        });
+                                                                                                                                      }
+                                                                                                                                    });
+
+                                                                                                                                    firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
+                                                                                                                                      'Task': Task,
+                                                                                                                                      'Date': dateTime,
+                                                                                                                                      'Priority': priority,
+                                                                                                                                      'status': false,
+                                                                                                                                      'sdate': _sdate,
+                                                                                                                                      'meet': meet,
+                                                                                                                                      'Details': tdet,
+                                                                                                                                    });
+                                                                                                                                  },
+                                                                                                                                  icon: Icon(Icons.add),
+                                                                                                                                ),
+                                                                                                                                title: Text(_foundUsers[index]['username']),
+                                                                                                                                subtitle: Text('${_foundUsers[index]["desig"]}'),
+                                                                                                                                trailing: IconButton(
+                                                                                                                                  icon: Icon(
+                                                                                                                                    Icons.chat,
+                                                                                                                                    color: Colors.white,
+                                                                                                                                  ),
+                                                                                                                                  onPressed: () {
+                                                                                                                                    _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
+                                                                                                                                  },
+                                                                                                                                ),
+                                                                                                                              ),
+                                                                                                                            ),
+                                                                                                                          );
+                                                                                                                        }),
+                                                                                                                  )
+                                                                                                                : const Text(
+                                                                                                                    'No results found',
+                                                                                                                    style: TextStyle(fontSize: 24),
+                                                                                                                  ),
+                                                                                                          ),
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                    );
+                                                                                                  });
+                                                                                            });
+                                                                                      },
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Collaborate',
+                                                                                      style: TextStyle(color: Colors.white),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                                Column(
+                                                                                  mainAxisSize: MainAxisSize.min,
+                                                                                  children: <Widget>[
+                                                                                    IconButton(
+                                                                                      icon: const Icon(
+                                                                                        Icons.calendar_today,
+                                                                                        color: Colors.white,
+                                                                                      ),
+                                                                                      tooltip: 'Add meet',
+                                                                                      onPressed: () {
+                                                                                        /*_launchInWebViewOrVC(
+                                                                        _url);*/
+                                                                                        setState(() {
+                                                                                          mcreate = true;
+                                                                                          print("meet$mcreate");
+                                                                                        });
+                                                                                      },
+                                                                                    ),
+                                                                                    Text(
+                                                                                      'Meeting',
+                                                                                      style: TextStyle(color: Colors.white),
+                                                                                    )
+                                                                                  ],
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.all(8.0),
+                                                                              child: Container(
+                                                                                decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                                                width: 350,
+                                                                                height: 50,
+                                                                                padding: EdgeInsets.only(left: 4),
+                                                                                child: TextFormField(
+                                                                                  style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                  decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                  keyboardType: TextInputType.visiblePassword,
+                                                                                  obscureText: false,
+                                                                                  onChanged: (value) {
+                                                                                    meet = value;
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      MaterialButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            all =
+                                                                                all - 1;
+                                                                            if (_priority.toInt() >= 0 &&
+                                                                                _priority.toInt() < 4) {
+                                                                              setState(() {
+                                                                                priority = "green";
+                                                                              });
+                                                                            } else if (_priority.toInt() >= 4 &&
+                                                                                _priority.toInt() <= 7) {
+                                                                              setState(() {
+                                                                                priority = "yellow";
+                                                                              });
+                                                                            } else {
+                                                                              setState(() {
+                                                                                priority = "red";
+                                                                              });
+                                                                            }
+                                                                          });
+                                                                          firestoreInstance
+                                                                              .collection("Users")
+                                                                              .doc('$uid')
+                                                                              .collection('Task')
+                                                                              .doc('${date[index]}')
+                                                                              .update({
+                                                                            'Task':
+                                                                                Task,
+                                                                            'Date':
+                                                                                dateTime,
+                                                                            'Priority':
+                                                                                priority,
+                                                                            'status':
+                                                                                false,
+                                                                            'meet':
+                                                                                meet,
+                                                                          });
+                                                                          firestoreInstance
+                                                                              .collection(
+                                                                                  "Users")
+                                                                              .doc(
+                                                                                  "$uid")
+                                                                              .update({
+                                                                            'number':
+                                                                                all
+                                                                          });
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          setState(
+                                                                              () {
+                                                                            date.clear();
+                                                                            task.clear();
+                                                                            Status.clear();
+                                                                          });
+                                                                          getdat();
+                                                                        },
+                                                                        color: Colors
+                                                                            .blue[900],
+                                                                        child:
+                                                                            Text(
+                                                                          "Update",
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
+                                                                        ),
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(20.0)),
+                                                                      ),
+                                                                      MaterialButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            all =
+                                                                                all - 1;
+                                                                          });
+                                                                          firestoreInstance
+                                                                              .collection("Users")
+                                                                              .doc('$uid')
+                                                                              .collection('Task')
+                                                                              .doc('${date[index]}')
+                                                                              .delete();
+                                                                          firestoreInstance
+                                                                              .collection(
+                                                                                  "Users")
+                                                                              .doc(
+                                                                                  '$uid')
+                                                                              .update({
+                                                                            'number':
+                                                                                all
+                                                                          });
+                                                                          Navigator.pop(
+                                                                              context);
+                                                                          refreshList();
+                                                                        },
+                                                                        color: Colors
+                                                                            .blue[900],
+                                                                        child:
+                                                                            Text(
+                                                                          "Mark as Done",
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
+                                                                        ),
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(20.0)),
+                                                                      ),
+                                                                    ],
+                                                                    elevation:
+                                                                        24,
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.edit,
+                                                              color:
+                                                                  Colors.white,
+                                                            )),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              showDialog<void>(
+                                                                context:
+                                                                    context,
+                                                                barrierDismissible:
+                                                                    false, // user must tap button!
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return AlertDialog(
+                                                                    title: const Text(
+                                                                        'Details'),
+                                                                    content:
+                                                                        SingleChildScrollView(
+                                                                      child:
+                                                                          ListBody(
+                                                                        children: <
+                                                                            Widget>[
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Task: ${task[index]}"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Details: ${tdet[index]}"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                                Text("Image:"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.all(8.0),
+                                                                            child: TextButton(
+                                                                                onPressed: () {
+                                                                                  _launchmeet("https://${meetl[index]}");
+                                                                                },
+                                                                                child: Text("Meet Link: ${(meetl[index])}")),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        child: const Text(
+                                                                            'Accept'),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                    elevation:
+                                                                        24,
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .remove_red_eye,
+                                                              color:
+                                                                  Colors.white,
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onPressed: () {},
+
+                                          //
+                                        ),
+                                      );
+                                    } else {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                              child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 200, 8, 8),
+                                            child: Image(
+                                              image: AssetImage("assets/2.png"),
+                                              height: 150,
+                                              width: 200,
+                                              color:
+                                                  Colors.white.withOpacity(0.5),
+                                              colorBlendMode:
+                                                  BlendMode.modulate,
+                                            ),
+                                          )),
+                                          Text(
+                                            "History Cleared",
+                                            style: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
+                                                fontSize: 22),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  });
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
           floatingActionButton: FloatingActionButton(
             //Floating action button on Scaffold
 
@@ -2074,7 +2519,7 @@ class _homeState extends State<home> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(top: 10, bottom: 20),
+                                    const EdgeInsets.only(top: 10, bottom: 20),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
@@ -2089,7 +2534,7 @@ class _homeState extends State<home> {
                                         border: InputBorder.none,
                                         hintText: "Title here",
                                         hintStyle:
-                                        TextStyle(color: Colors.grey)),
+                                            TextStyle(color: Colors.grey)),
                                     keyboardType: TextInputType.visiblePassword,
                                     obscureText: false,
                                     onChanged: (value) {
@@ -2100,7 +2545,7 @@ class _homeState extends State<home> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(top: 10, bottom: 20),
+                                    const EdgeInsets.only(top: 10, bottom: 20),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey),
@@ -2115,7 +2560,7 @@ class _homeState extends State<home> {
                                         border: InputBorder.none,
                                         hintText: "Details here",
                                         hintStyle:
-                                        TextStyle(color: Colors.grey)),
+                                            TextStyle(color: Colors.grey)),
                                     keyboardType: TextInputType.visiblePassword,
                                     obscureText: false,
                                     onChanged: (value) {
@@ -2126,7 +2571,7 @@ class _homeState extends State<home> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   MaterialButton(
                                     onPressed: () {
@@ -2139,7 +2584,7 @@ class _homeState extends State<home> {
                                     ),
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                        BorderRadius.circular(10.0)),
+                                            BorderRadius.circular(10.0)),
                                   ),
                                 ],
                               ),
@@ -2157,7 +2602,7 @@ class _homeState extends State<home> {
                                   max: 9,
                                   divisions: 9,
                                   label:
-                                  "Priority:${(_priority + 1).round().toString()}",
+                                      "Priority:${(_priority + 1).round().toString()}",
                                   onChanged: (double value) {
                                     // print("$value");
                                     setState(() {
@@ -2172,7 +2617,7 @@ class _homeState extends State<home> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -2201,109 +2646,129 @@ class _homeState extends State<home> {
                                           showModalBottomSheet(
                                               context: context,
                                               builder: (BuildContext bc) {
-
                                                 return Padding(
-                                                  padding: const EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   child: Column(
                                                     children: [
                                                       const SizedBox(
                                                         height: 20,
                                                       ),
                                                       TextField(
-                                                        onChanged: (value) => _runFilter(value),
-                                                        decoration: const InputDecoration(
-                                                            labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                                                        onChanged: (value) =>
+                                                            _runFilter(value),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                labelText:
+                                                                    'Search',
+                                                                suffixIcon:
+                                                                    Icon(Icons
+                                                                        .search)),
                                                       ),
                                                       const SizedBox(
                                                         height: 20,
                                                       ),
                                                       Expanded(
-                                                        child: _foundUsers.isNotEmpty
+                                                        child: _foundUsers
+                                                                .isNotEmpty
                                                             ? RefreshIndicator(
-                                                          onRefresh: refreshList,
-                                                          backgroundColor: Colors.blue[900],
-                                                          color: Colors.white,
-                                                          child: StreamBuilder<QuerySnapshot>(
-                                                              stream: firestoreInstance.collection('Users').snapshots(),
-                                                              builder: (context, snapshot) {
-                                                                return ListView.builder(
-                                                                  shrinkWrap: true,
-                                                                  itemCount: _foundUsers.length,
-                                                                  itemBuilder: (context, index) => Card(
-                                                                    key: ValueKey(_foundUsers[index]["id"]),
-                                                                    color: Colors.grey,
-                                                                    elevation: 4,
-                                                                    margin: const EdgeInsets.symmetric(vertical: 10),
-                                                                    child: ListTile(
-                                                                      leading: IconButton(
-                                                                        onPressed: () {
-                                                                          setState(() {
-                                                                            all =
-                                                                                all + 1;
-                                                                            if (_priority.toInt() >=
-                                                                                0 &&
-                                                                                _priority.toInt() <
-                                                                                    4) {
-                                                                              setState(
-                                                                                      () {
-                                                                                    priority =
-                                                                                    "green";
-                                                                                  });
-                                                                            } else if (_priority.toInt() >=
-                                                                                4 &&
-                                                                                _priority.toInt() <=
-                                                                                    7) {
-                                                                              setState(
-                                                                                      () {
-                                                                                    priority =
-                                                                                    "yellow";
-                                                                                  });
-                                                                            } else {
-                                                                              setState(
-                                                                                      () {
-                                                                                    priority =
-                                                                                    "red";
-                                                                                  });
-                                                                            }
-                                                                          });
+                                                                onRefresh:
+                                                                    refreshList,
+                                                                backgroundColor:
+                                                                    Colors.blue[
+                                                                        900],
+                                                                color: Colors
+                                                                    .white,
+                                                                child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                    stream: firestoreInstance
+                                                                        .collection(
+                                                                            'Users')
+                                                                        .snapshots(),
+                                                                    builder:
+                                                                        (context,
+                                                                            snapshot) {
+                                                                      return ListView
+                                                                          .builder(
+                                                                        shrinkWrap:
+                                                                            true,
+                                                                        itemCount:
+                                                                            _foundUsers.length,
+                                                                        itemBuilder:
+                                                                            (context, index) =>
+                                                                                Card(
+                                                                          key: ValueKey(_foundUsers[index]
+                                                                              [
+                                                                              "id"]),
+                                                                          color:
+                                                                              Colors.grey,
+                                                                          elevation:
+                                                                              4,
+                                                                          margin:
+                                                                              const EdgeInsets.symmetric(vertical: 10),
+                                                                          child:
+                                                                              ListTile(
+                                                                            leading:
+                                                                                IconButton(
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  all = all + 1;
+                                                                                  if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                    setState(() {
+                                                                                      priority = "green";
+                                                                                    });
+                                                                                  } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                    setState(() {
+                                                                                      priority = "yellow";
+                                                                                    });
+                                                                                  } else {
+                                                                                    setState(() {
+                                                                                      priority = "red";
+                                                                                    });
+                                                                                  }
+                                                                                });
 
-                                                                          firestoreInstance
-                                                                              .collection(
-                                                                              "Users")
-                                                                              .doc(
-                                                                              '${uids[index]}')
-                                                                              .collection(
-                                                                              'Task')
-                                                                              .doc(
-                                                                              '$dateTime')
-                                                                              .set({
-                                                                            'Task': Task,'Date':dateTime, 'Priority': priority, 'status': false, 'sdate': _sdate, 'meet': meet,'Details':tdet,
-                                                                          });
-                                                                        },
-                                                                        icon: Icon(
-                                                                            Icons.add),
-                                                                      ),
-                                                                      title: Text(_foundUsers[index]['username']),
-                                                                      subtitle: Text(
-                                                                          '${_foundUsers[index]["desig"]}'),
-                                                                      trailing: IconButton(icon: Icon(Icons.chat,color: Colors.white,),onPressed: (){
-                                                                        _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
-                                                                      },),
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              }
-                                                          ),
-                                                        )
+                                                                                firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
+                                                                                  'Task': Task,
+                                                                                  'Date': dateTime,
+                                                                                  'Priority': priority,
+                                                                                  'status': false,
+                                                                                  'sdate': _sdate,
+                                                                                  'meet': meet,
+                                                                                  'Details': tdet,
+                                                                                });
+                                                                              },
+                                                                              icon: Icon(Icons.add),
+                                                                            ),
+                                                                            title:
+                                                                                Text(_foundUsers[index]['username']),
+                                                                            subtitle:
+                                                                                Text('${_foundUsers[index]["desig"]}'),
+                                                                            trailing:
+                                                                                IconButton(
+                                                                              icon: Icon(
+                                                                                Icons.chat,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
+                                                                              },
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    }),
+                                                              )
                                                             : const Text(
-                                                          'No results found',
-                                                          style: TextStyle(fontSize: 24),
-                                                        ),
+                                                                'No results found',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        24),
+                                                              ),
                                                       ),
                                                     ],
                                                   ),
                                                 );
-
                                               });
                                         },
                                       ),
@@ -2348,7 +2813,7 @@ class _homeState extends State<home> {
                                         border: InputBorder.none,
                                         hintText: "Paste meet link here",
                                         hintStyle:
-                                        TextStyle(color: Colors.grey)),
+                                            TextStyle(color: Colors.grey)),
                                     keyboardType: TextInputType.visiblePassword,
                                     obscureText: false,
                                     onChanged: (value) {
@@ -2367,7 +2832,11 @@ class _homeState extends State<home> {
                         padding: EdgeInsets.only(bottom: 30, right: 15),
                         child: MaterialButton(
                           onPressed: () {
-                            if(Task.isNotEmpty && dateTime.difference(DateTime.now()).isNegative!=true){
+                            if (Task.isNotEmpty &&
+                                dateTime
+                                        .difference(DateTime.now())
+                                        .isNegative !=
+                                    true) {
                               showNotification();
                               setState(() {
                                 all = all + 1;
@@ -2395,7 +2864,7 @@ class _homeState extends State<home> {
                                   .doc('$dateTime')
                                   .set({
                                 'Task': Task,
-                                'Details':tdet,
+                                'Details': tdet,
                                 'Date': dateTime,
                                 'Priority': priority,
                                 'status': false,
@@ -2408,13 +2877,15 @@ class _homeState extends State<home> {
                                   .update({'number': all});
                               refreshList();
                               Navigator.pop(context);
-                            }
-                            else{
-                              showDialog(context: context, builder: (BuildContext bs){
-                                return AlertDialog(
-                                  title: Text("Title and New date time needed"),
-                                );
-                              });
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext bs) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          "Title and New date time needed"),
+                                    );
+                                  });
                             }
                           },
                           color: Colors.blue[900],
@@ -2436,13 +2907,13 @@ class _homeState extends State<home> {
             child: Icon(Icons.add), //icon inside button
           ),
           floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
+              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomAppBar(
-            //bottom navigation bar on scaffold
+              //bottom navigation bar on scaffold
               color: Color.fromARGB(255, 83, 82, 82),
               shape: CircularNotchedRectangle(), //shape of notch
               notchMargin:
-              5, //notch margin between floating button and bottom appbar
+                  5, //notch margin between floating button and bottom appbar
               child: Container(
                 height: height(0.078),
                 child: Row(
