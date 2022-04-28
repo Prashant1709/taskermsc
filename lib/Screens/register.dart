@@ -516,7 +516,10 @@ class _RegisterState extends State<Register> {
                                 }
                               }
                             },
-                            color: Colors.blue[900],
+                            color: Color.fromRGBO(103, 199, 195, 1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Center(
                                 child: Text("REGISTER",
                                     style: TextStyle(
@@ -591,7 +594,6 @@ class _RegisterState extends State<Register> {
                       ],
                     ),
                   ),
-                  Padding(padding: EdgeInsets.only(top: 30)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

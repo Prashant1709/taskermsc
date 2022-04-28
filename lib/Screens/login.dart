@@ -42,7 +42,7 @@ class _loginState extends State<login> {
             child: Container(
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width * 0.04),
-              child: Column(
+              child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
@@ -153,7 +153,8 @@ class _loginState extends State<login> {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(top: 60)),
+                        Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height *
+                            0.322,)),
                         Container(
                           height: MediaQuery.of(context).size.height * 0.062,
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -261,7 +262,10 @@ class _loginState extends State<login> {
                                 print(e);
                               }
                             },
-                            color: Colors.blue[900],
+                            color: Color.fromRGBO(103, 199, 195, 1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
