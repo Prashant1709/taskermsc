@@ -426,6 +426,35 @@ class _homeState extends State<home> {
                 ),
                 ListTile(
                   leading: Icon(
+                    Icons.person,
+                    color: Colors.teal,
+                  ),
+                  title: Text("About Us"),
+                  onTap: () {
+                    showDialog(context: context, builder: (BuildContext bs){
+                      return AlertDialog(
+                        title: Text("Page under development"),
+                      );
+                    });//exit(0);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.lock,
+                    color: Colors.teal,
+                  ),
+                  title: Text("Terms&Cond"),
+                  onTap: () {
+                    showDialog(context: context, builder: (BuildContext bs){
+                      return AlertDialog(
+                        title: Text("Page under development"),
+                      );
+                    });//exit(0);
+                    //exit(0);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
                     Icons.exit_to_app,
                     color: Colors.teal,
                   ),
@@ -437,7 +466,7 @@ class _homeState extends State<home> {
                   },
                 ),
                 Text(
-                  "© MSC KIIT",
+                  "v 1.0  © MSC KIIT",
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -608,7 +637,7 @@ class _homeState extends State<home> {
                                                                                       padding: EdgeInsets.only(left: 4),
                                                                                       child: TextFormField(
                                                                                         style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Title here(<25 chars)", hintStyle: TextStyle(color: Colors.grey)),
                                                                                         keyboardType: TextInputType.visiblePassword,
                                                                                         obscureText: false,
                                                                                         onChanged: (value) {
@@ -774,6 +803,9 @@ class _homeState extends State<home> {
                                                                                                                                             'sdate': _sdate,
                                                                                                                                             'meet': meet,
                                                                                                                                             'Details': tdet,
+                                                                                                                                          });
+                                                                                                                                          showDialog(context: context, builder: (BuildContext bs){
+                                                                                                                                            return AlertDialog(title: Text("Task Assigned to ${_foundUsers[index]['username']}"),);
                                                                                                                                           });
                                                                                                                                         },
                                                                                                                                         icon: Icon(Icons.add),
@@ -1007,536 +1039,7 @@ class _homeState extends State<home> {
                                                         //Text("${Status[index]}"),
                                                       ],
                                                     ),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        /////////////////////////////////////////////////////////////////////////////
-                                                        // IconButton(
-                                                        //     onPressed: () {
-                                                        //       showDialog<void>(
-                                                        //         context:
-                                                        //             context,
-                                                        //         barrierDismissible:
-                                                        //             true,
-                                                        //         // user must tap button!
-                                                        //         builder:
-                                                        //             (BuildContext
-                                                        //                 context) {
-                                                        //           return AlertDialog(
-                                                        //             shape: RoundedRectangleBorder(
-                                                        //                 borderRadius:
-                                                        //                     BorderRadius.circular(40.0)),
-                                                        //             backgroundColor:
-                                                        //                 Color.fromARGB(
-                                                        //                     255,
-                                                        //                     48,
-                                                        //                     48,
-                                                        //                     54),
-                                                        //             title:
-                                                        //                 Padding(
-                                                        //               padding: const EdgeInsets
-                                                        //                       .only(
-                                                        //                   left:
-                                                        //                       12,
-                                                        //                   top:
-                                                        //                       10),
-                                                        //               child:
-                                                        //                   const Text(
-                                                        //                 'Update Task',
-                                                        //                 style: TextStyle(
-                                                        //                     color: Color.fromARGB(
-                                                        //                         255,
-                                                        //                         250,
-                                                        //                         251,
-                                                        //                         252),
-                                                        //                     fontSize:
-                                                        //                         28),
-                                                        //               ),
-                                                        //             ),
-                                                        //             content:
-                                                        //                 SingleChildScrollView(
-                                                        //               child:
-                                                        //                   Material(
-                                                        //                 color: Color.fromARGB(
-                                                        //                     255,
-                                                        //                     48,
-                                                        //                     48,
-                                                        //                     54),
-                                                        //                 child:
-                                                        //                     Column(
-                                                        //                   mainAxisAlignment:
-                                                        //                       MainAxisAlignment.spaceBetween,
-                                                        //                   children: [
-                                                        //                     SizedBox(
-                                                        //                       height: 10,
-                                                        //                     ),
-                                                        //                     Padding(
-                                                        //                       padding: const EdgeInsets.only(left: 4.0, bottom: 20),
-                                                        //                       child: Container(
-                                                        //                         decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
-                                                        //                         width: 350,
-                                                        //                         height: 50,
-                                                        //                         padding: EdgeInsets.only(left: 4),
-                                                        //                         child: TextFormField(
-                                                        //                           style: TextStyle(fontSize: 18, color: Colors.white),
-                                                        //                           decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
-                                                        //                           keyboardType: TextInputType.visiblePassword,
-                                                        //                           obscureText: false,
-                                                        //                           onChanged: (value) {
-                                                        //                             Task = value;
-                                                        //                           },
-                                                        //                         ),
-                                                        //                       ),
-                                                        //                     ),
-                                                        //                     Padding(
-                                                        //                       padding: const EdgeInsets.only(top: 10, bottom: 20),
-                                                        //                       child: Container(
-                                                        //                         decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                                                        //                         width: 350,
-                                                        //                         height: 50,
-                                                        //                         padding: EdgeInsets.only(left: 4),
-                                                        //                         child: TextFormField(
-                                                        //                           style: TextStyle(fontSize: 18, color: Colors.white),
-                                                        //                           decoration: InputDecoration(border: InputBorder.none, hintText: "Details here", hintStyle: TextStyle(color: Colors.grey)),
-                                                        //                           keyboardType: TextInputType.visiblePassword,
-                                                        //                           obscureText: false,
-                                                        //                           onChanged: (value) {
-                                                        //                             tdet = value;
-                                                        //                           },
-                                                        //                         ),
-                                                        //                       ),
-                                                        //                     ),
-                                                        //                     Row(
-                                                        //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                        //                       children: [
-                                                        //                         Padding(
-                                                        //                           padding: EdgeInsets.only(bottom: 10),
-                                                        //                           child: MaterialButton(
-                                                        //                             onPressed: () {
-                                                        //                               _selectDateTime(context);
-                                                        //                             },
-                                                        //                             color: Colors.blue[900],
-                                                        //                             child: Text(
-                                                        //                               "End Date & Time",
-                                                        //                               style: TextStyle(color: Colors.white),
-                                                        //                             ),
-                                                        //                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                                                        //                           ),
-                                                        //                         ),
-                                                        //                       ],
-                                                        //                     ),
-                                                        //                     SizedBox(
-                                                        //                       width: 30,
-                                                        //                     ),
-                                                        //                     Text(
-                                                        //                       "Set Priority",
-                                                        //                       style: TextStyle(color: Colors.white, fontSize: 18),
-                                                        //                     ),
-                                                        //                     StatefulBuilder(
-                                                        //                       builder: (context, setState) => Slider(
-                                                        //                         value: _priority,
-                                                        //                         max: 9,
-                                                        //                         divisions: 9,
-                                                        //                         label: "Priority:${(_priority + 1).round().toString()}",
-                                                        //                         onChanged: (double value) {
-                                                        //                           // print("$value");
-                                                        //                           setState(() {
-                                                        //                             _priority = value;
-                                                        //                           });
-                                                        //                           //print(_priority.round());
-                                                        //                         },
-                                                        //                       ),
-                                                        //                     ),
-                                                        //                     SizedBox(
-                                                        //                       width: 20,
-                                                        //                     ),
-                                                        //                     Row(
-                                                        //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                        //                       children: [
-                                                        //                         Column(
-                                                        //                           mainAxisSize: MainAxisSize.min,
-                                                        //                           children: <Widget>[
-                                                        //                             IconButton(
-                                                        //                               icon: const Icon(
-                                                        //                                 Icons.image,
-                                                        //                                 color: Colors.white,
-                                                        //                               ),
-                                                        //                               tooltip: 'Add image to task',
-                                                        //                               onPressed: () {},
-                                                        //                             ),
-                                                        //                             Text(
-                                                        //                               'Picture',
-                                                        //                               style: TextStyle(color: Colors.white),
-                                                        //                             )
-                                                        //                           ],
-                                                        //                         ),
-                                                        //                         Column(
-                                                        //                           mainAxisSize: MainAxisSize.min,
-                                                        //                           children: <Widget>[
-                                                        //                             IconButton(
-                                                        //                               icon: const Icon(
-                                                        //                                 Icons.person_add,
-                                                        //                                 color: Colors.white,
-                                                        //                               ),
-                                                        //                               tooltip: 'Add collaborators',
-                                                        //                               onPressed: () {
-                                                        //                                 showModalBottomSheet(
-                                                        //                                     context: context,
-                                                        //                                     builder: (BuildContext bc) {
-                                                        //                                       return StreamBuilder<QuerySnapshot>(
-                                                        //                                           stream: firestoreInstance.collection("Users").snapshots(),
-                                                        //                                           builder: (context, snapshot) {
-                                                        //                                             return Padding(
-                                                        //                                               padding: const EdgeInsets.all(10),
-                                                        //                                               child: Column(
-                                                        //                                                 children: [
-                                                        //                                                   const SizedBox(
-                                                        //                                                     height: 20,
-                                                        //                                                   ),
-                                                        //                                                   TextField(
-                                                        //                                                     onChanged: (value) => _runFilter(value),
-                                                        //                                                     decoration: const InputDecoration(labelText: 'Search', suffixIcon: Icon(Icons.search)),
-                                                        //                                                   ),
-                                                        //                                                   const SizedBox(
-                                                        //                                                     height: 20,
-                                                        //                                                   ),
-                                                        //                                                   Expanded(
-                                                        //                                                     child: _foundUsers.isNotEmpty
-                                                        //                                                         ? RefreshIndicator(
-                                                        //                                                             onRefresh: refreshList,
-                                                        //                                                             backgroundColor: Colors.blue[900],
-                                                        //                                                             color: Colors.white,
-                                                        //                                                             child: StreamBuilder<QuerySnapshot>(
-                                                        //                                                                 stream: firestoreInstance.collection('Users').snapshots(),
-                                                        //                                                                 builder: (context, snapshot) {
-                                                        //                                                                   return ListView.builder(
-                                                        //                                                                     shrinkWrap: true,
-                                                        //                                                                     itemCount: _foundUsers.length,
-                                                        //                                                                     itemBuilder: (context, index) => Card(
-                                                        //                                                                       key: ValueKey(_foundUsers[index]["id"]),
-                                                        //                                                                       color: Colors.grey,
-                                                        //                                                                       elevation: 4,
-                                                        //                                                                       margin: const EdgeInsets.symmetric(vertical: 10),
-                                                        //                                                                       child: ListTile(
-                                                        //                                                                         leading: IconButton(
-                                                        //                                                                           onPressed: () {
-                                                        //                                                                             setState(() {
-                                                        //                                                                               all = all + 1;
-                                                        //                                                                               if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
-                                                        //                                                                                 setState(() {
-                                                        //                                                                                   priority = "green";
-                                                        //                                                                                 });
-                                                        //                                                                               } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
-                                                        //                                                                                 setState(() {
-                                                        //                                                                                   priority = "yellow";
-                                                        //                                                                                 });
-                                                        //                                                                               } else {
-                                                        //                                                                                 setState(() {
-                                                        //                                                                                   priority = "red";
-                                                        //                                                                                 });
-                                                        //                                                                               }
-                                                        //                                                                             });
 
-                                                        //                                                                             firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
-                                                        //                                                                               'Task': Task,
-                                                        //                                                                               'Date': dateTime,
-                                                        //                                                                               'Priority': priority,
-                                                        //                                                                               'status': false,
-                                                        //                                                                               'sdate': _sdate,
-                                                        //                                                                               'meet': meet,
-                                                        //                                                                               'Details': tdet,
-                                                        //                                                                             });
-                                                        //                                                                           },
-                                                        //                                                                           icon: Icon(Icons.add),
-                                                        //                                                                         ),
-                                                        //                                                                         title: Text(_foundUsers[index]['username']),
-                                                        //                                                                         subtitle: Text('${_foundUsers[index]["desig"]}'),
-                                                        //                                                                         trailing: IconButton(
-                                                        //                                                                           icon: Icon(
-                                                        //                                                                             Icons.chat,
-                                                        //                                                                             color: Colors.white,
-                                                        //                                                                           ),
-                                                        //                                                                           onPressed: () {
-                                                        //                                                                             _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
-                                                        //                                                                           },
-                                                        //                                                                         ),
-                                                        //                                                                       ),
-                                                        //                                                                     ),
-                                                        //                                                                   );
-                                                        //                                                                 }),
-                                                        //                                                           )
-                                                        //                                                         : const Text(
-                                                        //                                                             'No results found',
-                                                        //                                                             style: TextStyle(fontSize: 24),
-                                                        //                                                           ),
-                                                        //                                                   ),
-                                                        //                                                 ],
-                                                        //                                               ),
-                                                        //                                             );
-                                                        //                                           });
-                                                        //                                     });
-                                                        //                               },
-                                                        //                             ),
-                                                        //                             Text(
-                                                        //                               'Collaborate',
-                                                        //                               style: TextStyle(color: Colors.white),
-                                                        //                             )
-                                                        //                           ],
-                                                        //                         ),
-                                                        //                         Column(
-                                                        //                           mainAxisSize: MainAxisSize.min,
-                                                        //                           children: <Widget>[
-                                                        //                             IconButton(
-                                                        //                               icon: const Icon(
-                                                        //                                 Icons.calendar_today,
-                                                        //                                 color: Colors.white,
-                                                        //                               ),
-                                                        //                               tooltip: 'Add meet',
-                                                        //                               onPressed: () {
-                                                        //                                 /*_launchInWebViewOrVC(
-                                                        //                 _url);*/
-                                                        //                                 setState(() {
-                                                        //                                   mcreate = true;
-                                                        //                                   print("meet$mcreate");
-                                                        //                                 });
-                                                        //                               },
-                                                        //                             ),
-                                                        //                             Text(
-                                                        //                               'Meeting',
-                                                        //                               style: TextStyle(color: Colors.white),
-                                                        //                             )
-                                                        //                           ],
-                                                        //                         ),
-                                                        //                       ],
-                                                        //                     ),
-                                                        //                     Padding(
-                                                        //                       padding: EdgeInsets.only(top: 40),
-                                                        //                       child: Container(
-                                                        //                         decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                                                        //                         width: 350,
-                                                        //                         height: 50,
-                                                        //                         padding: EdgeInsets.only(left: 4),
-                                                        //                         child: TextFormField(
-                                                        //                           style: TextStyle(fontSize: 18, color: Colors.white),
-                                                        //                           decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
-                                                        //                           keyboardType: TextInputType.visiblePassword,
-                                                        //                           obscureText: false,
-                                                        //                           onChanged: (value) {
-                                                        //                             meet = value;
-                                                        //                           },
-                                                        //                         ),
-                                                        //                       ),
-                                                        //                     ),
-                                                        //                   ],
-                                                        //                 ),
-                                                        //               ),
-                                                        //             ),
-                                                        //             actions: <
-                                                        //                 Widget>[
-                                                        //               MaterialButton(
-                                                        //                 onPressed:
-                                                        //                     () {
-                                                        //                   setState(
-                                                        //                       () {
-                                                        //                     all =
-                                                        //                         all - 1;
-                                                        //                     if (_priority.toInt() >= 0 &&
-                                                        //                         _priority.toInt() < 4) {
-                                                        //                       setState(() {
-                                                        //                         priority = "green";
-                                                        //                       });
-                                                        //                     } else if (_priority.toInt() >= 4 &&
-                                                        //                         _priority.toInt() <= 7) {
-                                                        //                       setState(() {
-                                                        //                         priority = "yellow";
-                                                        //                       });
-                                                        //                     } else {
-                                                        //                       setState(() {
-                                                        //                         priority = "red";
-                                                        //                       });
-                                                        //                     }
-                                                        //                   });
-                                                        //                   firestoreInstance
-                                                        //                       .collection("Users")
-                                                        //                       .doc('$uid')
-                                                        //                       .collection('Task')
-                                                        //                       .doc('${date[index]}')
-                                                        //                       .update({
-                                                        //                     'Task':
-                                                        //                         Task,
-                                                        //                     'Date':
-                                                        //                         dateTime,
-                                                        //                     'Priority':
-                                                        //                         priority,
-                                                        //                     'status':
-                                                        //                         false,
-                                                        //                     'meet':
-                                                        //                         meet,
-                                                        //                     'Details':
-                                                        //                         tdet,
-                                                        //                   });
-                                                        //                   firestoreInstance
-                                                        //                       .collection(
-                                                        //                           "Users")
-                                                        //                       .doc(
-                                                        //                           "$uid")
-                                                        //                       .update({
-                                                        //                     'number':
-                                                        //                         all
-                                                        //                   });
-                                                        //                   refreshList();
-                                                        //                   Navigator.pop(
-                                                        //                       context);
-                                                        //                 },
-                                                        //                 color: Colors
-                                                        //                     .blue[900],
-                                                        //                 child:
-                                                        //                     Text(
-                                                        //                   "Update",
-                                                        //                   style:
-                                                        //                       TextStyle(color: Colors.white),
-                                                        //                 ),
-                                                        //                 shape: RoundedRectangleBorder(
-                                                        //                     borderRadius:
-                                                        //                         BorderRadius.circular(20.0)),
-                                                        //               ),
-                                                        //               MaterialButton(
-                                                        //                 onPressed:
-                                                        //                     () {
-                                                        //                   setState(
-                                                        //                       () {
-                                                        //                     all =
-                                                        //                         all - 1;
-                                                        //                   });
-                                                        //                   firestoreInstance
-                                                        //                       .collection("Users")
-                                                        //                       .doc('$uid')
-                                                        //                       .collection('Task')
-                                                        //                       .doc('${date[index]}')
-                                                        //                       .delete();
-                                                        //                   firestoreInstance
-                                                        //                       .collection(
-                                                        //                           "Users")
-                                                        //                       .doc(
-                                                        //                           '$uid')
-                                                        //                       .update({
-                                                        //                     'number':
-                                                        //                         all
-                                                        //                   });
-                                                        //                   Navigator.pop(
-                                                        //                       context);
-                                                        //                   refreshList();
-                                                        //                 },
-                                                        //                 color: Colors
-                                                        //                     .blue[900],
-                                                        //                 child:
-                                                        //                     Text(
-                                                        //                   "Mark as Done",
-                                                        //                   style:
-                                                        //                       TextStyle(color: Colors.white),
-                                                        //                 ),
-                                                        //                 shape: RoundedRectangleBorder(
-                                                        //                     borderRadius:
-                                                        //                         BorderRadius.circular(20.0)),
-                                                        //               ),
-                                                        //               SizedBox(
-                                                        //                   height:
-                                                        //                       40)
-                                                        //             ],
-                                                        //             elevation:
-                                                        //                 24,
-                                                        //           );
-                                                        //         },
-                                                        //       );
-                                                        //     },
-                                                        //     icon: Icon(
-                                                        //       Icons.edit,
-                                                        //       color:
-                                                        //           Colors.white,
-                                                        //     )),
-                                                        // IconButton(
-                                                        //     onPressed: () {
-                                                        //       showDialog<void>(
-                                                        //         context:
-                                                        //             context,
-                                                        //         barrierDismissible:
-                                                        //             false, // user must tap button!
-                                                        //         builder:
-                                                        //             (BuildContext
-                                                        //                 context) {
-                                                        //           return AlertDialog(
-                                                        //             title: const Text(
-                                                        //                 'Details'),
-                                                        //             content:
-                                                        //                 SingleChildScrollView(
-                                                        //               child:
-                                                        //                   ListBody(
-                                                        //                 children: <
-                                                        //                     Widget>[
-                                                        //                   Padding(
-                                                        //                     padding:
-                                                        //                         const EdgeInsets.all(8.0),
-                                                        //                     child:
-                                                        //                         Text("Task: ${task[index]}"),
-                                                        //                   ),
-                                                        //                   Padding(
-                                                        //                     padding:
-                                                        //                         const EdgeInsets.all(8.0),
-                                                        //                     child:
-                                                        //                         Text("Details: ${tdetail[index]}"),
-                                                        //                   ),
-                                                        //                   Padding(
-                                                        //                     padding:
-                                                        //                         const EdgeInsets.all(8.0),
-                                                        //                     child:
-                                                        //                         Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
-                                                        //                   ),
-                                                        //                   Padding(
-                                                        //                     padding:
-                                                        //                         const EdgeInsets.all(8.0),
-                                                        //                     child:
-                                                        //                         Text("Image:"),
-                                                        //                   ),
-                                                        //                   Padding(
-                                                        //                     padding:
-                                                        //                         const EdgeInsets.all(8.0),
-                                                        //                     child: TextButton(
-                                                        //                         onPressed: () {
-                                                        //                           _launchmeet("https://${meetl[index]}");
-                                                        //                         },
-                                                        //                         child: Text("Meet Link: ${(meetl[index])}")),
-                                                        //                   ),
-                                                        //                 ],
-                                                        //               ),
-                                                        //             ),
-                                                        //             actions: <
-                                                        //                 Widget>[
-                                                        //               TextButton(
-                                                        //                 child: const Text(
-                                                        //                     'Accept'),
-                                                        //                 onPressed:
-                                                        //                     () {
-                                                        //                   Navigator.of(context)
-                                                        //                       .pop();
-                                                        //                 },
-                                                        //               ),
-                                                        //             ],
-                                                        //             elevation:
-                                                        //                 24,
-                                                        //           );
-                                                        //         },
-                                                        //       );
-                                                        //     },
-                                                        //     icon: Icon(
-                                                        //       Icons
-                                                        //           .remove_red_eye,
-                                                        //       color:
-                                                        //           Colors.white,
-                                                        //     )),
-                                                      ],
-                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -1985,7 +1488,7 @@ class _homeState extends State<home> {
                                                                                 height: 50,
                                                                                 child: TextFormField(
                                                                                   style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                  decoration: InputDecoration(border: InputBorder.none, hintText: "Title here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                  decoration: InputDecoration(border: InputBorder.none, hintText: "Title here(<25 chars)", hintStyle: TextStyle(color: Colors.grey)),
                                                                                   keyboardType: TextInputType.visiblePassword,
                                                                                   obscureText: false,
                                                                                   onChanged: (value) {
@@ -2146,6 +1649,9 @@ class _homeState extends State<home> {
                                                                                                                                       'sdate': _sdate,
                                                                                                                                       'meet': meet,
                                                                                                                                       'Details': tdet,
+                                                                                                                                    });
+                                                                                                                                    showDialog(context: context, builder: (BuildContext bs){
+                                                                                                                                      return AlertDialog(title: Text("Task Assigned to ${_foundUsers[index]['username']}"),);
                                                                                                                                     });
                                                                                                                                   },
                                                                                                                                   icon: Icon(Icons.add),
@@ -2532,7 +2038,7 @@ class _homeState extends State<home> {
                                         fontSize: 18, color: Colors.white),
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: "Title here",
+                                        hintText: "Title here(<25 chars)",
                                         hintStyle:
                                             TextStyle(color: Colors.grey)),
                                     keyboardType: TextInputType.visiblePassword,
@@ -2737,6 +2243,9 @@ class _homeState extends State<home> {
                                                                                   'meet': meet,
                                                                                   'Details': tdet,
                                                                                 });
+                                                                                showDialog(context: context, builder: (BuildContext bs){
+                                                                                  return AlertDialog(title: Text("Task Assigned to ${_foundUsers[index]['username']}"),);
+                                                                                });
                                                                               },
                                                                               icon: Icon(Icons.add),
                                                                             ),
@@ -2832,11 +2341,7 @@ class _homeState extends State<home> {
                         padding: EdgeInsets.only(bottom: 30, right: 15),
                         child: MaterialButton(
                           onPressed: () {
-                            if (Task.isNotEmpty &&
-                                dateTime
-                                        .difference(DateTime.now())
-                                        .isNegative !=
-                                    true) {
+                            if (Task.isNotEmpty&&Task.length<25 &&dateTime.difference(DateTime.now()).isNegative !=true) {
                               showNotification();
                               setState(() {
                                 all = all + 1;
@@ -2883,7 +2388,7 @@ class _homeState extends State<home> {
                                   builder: (BuildContext bs) {
                                     return AlertDialog(
                                       title: Text(
-                                          "Title and New date time needed"),
+                                          "Title and New date time needed or Title length to be less than 25 charachters"),
                                     );
                                   });
                             }
