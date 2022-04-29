@@ -42,7 +42,8 @@ class _loginState extends State<login> {
             child: Container(
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width * 0.04),
-              child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
@@ -153,8 +154,10 @@ class _loginState extends State<login> {
                             },
                           ),
                         ),
-                        Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height *
-                            0.322,)),
+                        Padding(
+                            padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.322,
+                        )),
                         Container(
                           height: MediaQuery.of(context).size.height * 0.062,
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -232,33 +235,39 @@ class _loginState extends State<login> {
                                   );
                                 }
                               } catch (e) {
-                                  showDialog<void>(
-                                    context: context,
-                                    barrierDismissible:
-                                        false, // user must tap button!
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Error'),
-                                        content: SingleChildScrollView(
-                                          child: ListBody(
-                                            children: const <Widget>[
-                                              Text(
-                                                  'Please check the credentials to proceed!\n\nPassword must be greater than 6 letters\n\nE-Mail must not have spaces'),
-                                            ],
-                                          ),
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible:
+                                      false, // user must tap button!
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 56, 52, 52),
+                                      title: const Text('Error',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: const <Widget>[
+                                            Text(
+                                                'Please check the credentials to proceed!\n\nPassword must be greater than 6 letters\n\nE-Mail must be verified',
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ],
                                         ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            child: const Text('Accept'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                        ],
-                                        elevation: 24,
-                                      );
-                                    },
-                                  );
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('Accept'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                      elevation: 24,
+                                    );
+                                  },
+                                );
                                 print(e);
                               }
                             },

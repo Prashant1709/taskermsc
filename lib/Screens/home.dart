@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -359,7 +361,7 @@ class _homeState extends State<home> {
             bottom: const TabBar(
               tabs: [
                 Tab(
-                  child: Text("Up Next"),
+                  child: Text("Current"),
                 ),
                 Tab(
                   child: Text("Pending"),
@@ -431,27 +433,59 @@ class _homeState extends State<home> {
                   ),
                   title: Text("About Us"),
                   onTap: () {
-                    showModalBottomSheet(context: context, builder: (BuildContext bs){
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Application by",style: TextStyle(fontSize: 18),),
-                          SizedBox(height: 20,),
-                          SizedBox(height: 100,width: 500,
-                          child: Row(
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext bs) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset("assets/MSC.png"),
-                              Column(crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Microsoft",style: TextStyle(fontSize:25,color: Colors.teal,fontWeight: FontWeight.bold),),
-                                Text("Student Community",style: TextStyle(fontSize:25,color: Colors.teal,fontWeight: FontWeight.bold),),
-                                Text("KiiT Chapter",style: TextStyle(fontSize:15,color: Colors.teal,fontWeight: FontWeight.bold),),
-                              ],),
+                              Text(
+                                "Application by",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                height: 100,
+                                width: 500,
+                                child: Row(
+                                  children: [
+                                    Image.asset("assets/MSC.png"),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Microsoft",
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.teal,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "Student Community",
+                                          style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.teal,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "KiiT Chapter",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.teal,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
                             ],
-                          ),)
-                        ],
-                      );
-                    },isScrollControlled: true);
+                          );
+                        },
+                        isScrollControlled: true);
                   },
                 ),
                 ListTile(
@@ -461,11 +495,13 @@ class _homeState extends State<home> {
                   ),
                   title: Text("Terms&Cond"),
                   onTap: () {
-                    showDialog(context: context, builder: (BuildContext bs){
-                      return AlertDialog(
-                        title: Text("Page under development"),
-                      );
-                    });//exit(0);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext bs) {
+                          return AlertDialog(
+                            title: Text("Page under development"),
+                          );
+                        }); //exit(0);
                     //exit(0);
                   },
                 ),
@@ -523,7 +559,7 @@ class _homeState extends State<home> {
                                             margin: EdgeInsets.all(0),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                BorderRadius.circular(20)),
+                                                    BorderRadius.circular(20)),
                                             child: ConstrainedBox(
                                               constraints: BoxConstraints(
                                                 minHeight: height(0.13),
@@ -537,35 +573,35 @@ class _homeState extends State<home> {
                                                       image: pcol1[index],
                                                       fit: BoxFit.cover),
                                                   borderRadius:
-                                                  BorderRadius.circular(18),
+                                                      BorderRadius.circular(18),
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceEvenly,
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: [
                                                     Column(
                                                       crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                          EdgeInsets.only(
-                                                              top: 20,
-                                                              left: 10,
-                                                              right: 10),
+                                                              EdgeInsets.only(
+                                                                  top: 20,
+                                                                  left: 10,
+                                                                  right: 10),
                                                           child: Text(
                                                             "${task[index]}",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize:
-                                                                height(
-                                                                    0.024),
+                                                                    height(
+                                                                        0.024),
                                                                 fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                                    FontWeight
+                                                                        .bold),
                                                           ),
                                                         ),
                                                         Padding(
@@ -731,6 +767,7 @@ class _homeState extends State<home> {
                                                                                             tooltip: 'Add collaborators',
                                                                                             onPressed: () {
                                                                                               showModalBottomSheet(
+                                                                                                  backgroundColor: Color.fromARGB(255, 0, 0, 0),
                                                                                                   context: context,
                                                                                                   builder: (BuildContext bc) {
                                                                                                     return StreamBuilder<QuerySnapshot>(
@@ -796,9 +833,13 @@ class _homeState extends State<home> {
                                                                                                                                             'meet': meet,
                                                                                                                                             'Details': tdet,
                                                                                                                                           });
-                                                                                                                                          showDialog(context: context, builder: (BuildContext bs){
-                                                                                                                                            return AlertDialog(title: Text("Task Assigned to ${_foundUsers[index]['username']}"),);
-                                                                                                                                          });
+                                                                                                                                          showDialog(
+                                                                                                                                              context: context,
+                                                                                                                                              builder: (BuildContext bs) {
+                                                                                                                                                return AlertDialog(
+                                                                                                                                                  title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
+                                                                                                                                                );
+                                                                                                                                              });
                                                                                                                                         },
                                                                                                                                         icon: Icon(Icons.add),
                                                                                                                                       ),
@@ -1031,7 +1072,6 @@ class _homeState extends State<home> {
                                                         //Text("${Status[index]}"),
                                                       ],
                                                     ),
-
                                                   ],
                                                 ),
                                               ),
@@ -1640,9 +1680,13 @@ class _homeState extends State<home> {
                                                                                                                                       'meet': meet,
                                                                                                                                       'Details': tdet,
                                                                                                                                     });
-                                                                                                                                    showDialog(context: context, builder: (BuildContext bs){
-                                                                                                                                      return AlertDialog(title: Text("Task Assigned to ${_foundUsers[index]['username']}"),);
-                                                                                                                                    });
+                                                                                                                                    showDialog(
+                                                                                                                                        context: context,
+                                                                                                                                        builder: (BuildContext bs) {
+                                                                                                                                          return AlertDialog(
+                                                                                                                                            title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
+                                                                                                                                          );
+                                                                                                                                        });
                                                                                                                                   },
                                                                                                                                   icon: Icon(Icons.add),
                                                                                                                                 ),
@@ -2226,9 +2270,14 @@ class _homeState extends State<home> {
                                                                                   'meet': meet,
                                                                                   'Details': tdet,
                                                                                 });
-                                                                                showDialog(context: context, builder: (BuildContext bs){
-                                                                                  return AlertDialog(title: Text("Task Assigned to ${_foundUsers[index]['username']}"),);
-                                                                                });
+                                                                                showDialog(
+                                                                                    context: context,
+                                                                                    builder: (BuildContext bs) {
+                                                                                      return AlertDialog(
+                                                                                        backgroundColor: Color.fromARGB(255, 56, 52, 52),
+                                                                                        title: Text("Task Assigned to ${_foundUsers[index]['username']}", style: TextStyle(color: Colors.white)),
+                                                                                      );
+                                                                                    });
                                                                               },
                                                                               icon: Icon(Icons.add),
                                                                             ),
@@ -2324,7 +2373,12 @@ class _homeState extends State<home> {
                         padding: EdgeInsets.only(bottom: 30, right: 15),
                         child: MaterialButton(
                           onPressed: () {
-                            if (Task.isNotEmpty&&Task.length.toInt()<25&&dateTime.difference(DateTime.now()).isNegative !=true) {
+                            if (Task.isNotEmpty &&
+                                Task.length.toInt() < 25 &&
+                                dateTime
+                                        .difference(DateTime.now())
+                                        .isNegative !=
+                                    true) {
                               showNotification();
                               setState(() {
                                 all = all + 1;
@@ -2370,8 +2424,12 @@ class _homeState extends State<home> {
                                   context: context,
                                   builder: (BuildContext bs) {
                                     return AlertDialog(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 56, 52, 52),
                                       title: Text(
-                                          "Title and New date time needed or Title length to be less than 25 charachters"),
+                                          "Title and New date time needed or Title length to be less than 25 charachters",
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                     );
                                   });
                             }
