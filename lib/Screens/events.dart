@@ -239,12 +239,12 @@ class _eventState extends State<event> {
                                             },
                                           ),
                                         ),DropdownButton(
-                                          dropdownColor: Colors.teal,
+                                          dropdownColor: Colors.white,
                                           value: dropdownValue,
                                           icon: const Icon(Icons.keyboard_arrow_down),
                                           iconSize: 24,
                                           elevation: 16,
-                                          style: const TextStyle(color: Colors.black),
+                                          style: const TextStyle(color: Colors.white),
                                           underline: Container(
                                             height: 2,
                                             color: Colors.blueGrey,
@@ -421,7 +421,7 @@ class _eventState extends State<event> {
                               icon: const Icon(Icons.keyboard_arrow_down),
                               iconSize: 24,
                               elevation: 16,
-                              style: const TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.white),
                               underline: Container(
                                 height: 2,
                                 color: Colors.blueGrey,

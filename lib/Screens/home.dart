@@ -431,11 +431,27 @@ class _homeState extends State<home> {
                   ),
                   title: Text("About Us"),
                   onTap: () {
-                    showDialog(context: context, builder: (BuildContext bs){
-                      return AlertDialog(
-                        title: Text("Page under development"),
+                    showModalBottomSheet(context: context, builder: (BuildContext bs){
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Application by",style: TextStyle(fontSize: 18),),
+                          SizedBox(height: 20,),
+                          SizedBox(height: 100,width: 500,
+                          child: Row(
+                            children: [
+                              Image.asset("assets/MSC.png"),
+                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Microsoft",style: TextStyle(fontSize:25,color: Colors.teal,fontWeight: FontWeight.bold),),
+                                Text("Student Community",style: TextStyle(fontSize:25,color: Colors.teal,fontWeight: FontWeight.bold),),
+                                Text("KiiT Chapter",style: TextStyle(fontSize:15,color: Colors.teal,fontWeight: FontWeight.bold),),
+                              ],),
+                            ],
+                          ),)
+                        ],
                       );
-                    });//exit(0);
+                    },isScrollControlled: true);
                   },
                 ),
                 ListTile(
@@ -659,25 +675,6 @@ class _homeState extends State<home> {
                                                                                       ),
                                                                                     ),
                                                                                   ),
-                                                                                  Row(
-                                                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                                    children: [
-                                                                                      Padding(
-                                                                                        padding: EdgeInsets.only(bottom: 10),
-                                                                                        child: MaterialButton(
-                                                                                          onPressed: () {
-                                                                                            _selectDateTime(context);
-                                                                                          },
-                                                                                          color: Colors.blue[900],
-                                                                                          child: Text(
-                                                                                            "End Date & Time",
-                                                                                            style: TextStyle(color: Colors.white),
-                                                                                          ),
-                                                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
                                                                                   SizedBox(
                                                                                     width: 30,
                                                                                   ),
@@ -790,9 +787,9 @@ class _homeState extends State<home> {
                                                                                                                                             }
                                                                                                                                           });
 
-                                                                                                                                          firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
+                                                                                                                                          firestoreInstance.collection("Users").doc('${_foundUsers[index]['id']}').collection('Task').doc('${date[index]}').set({
                                                                                                                                             'Task': Task,
-                                                                                                                                            'Date': dateTime,
+                                                                                                                                            'Date': date[index],
                                                                                                                                             'Priority': priority,
                                                                                                                                             'status': false,
                                                                                                                                             'sdate': _sdate,
@@ -909,7 +906,7 @@ class _homeState extends State<home> {
                                                                                 });
                                                                                 firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').update({
                                                                                   'Task': Task,
-                                                                                  'Date': dateTime,
+                                                                                  //'Date': dateTime,
                                                                                   'Priority': priority,
                                                                                   'status': false,
                                                                                   'meet': meet,
@@ -1508,7 +1505,7 @@ class _homeState extends State<home> {
                                                                                 ),
                                                                               ),
                                                                             ),
-                                                                            Padding(
+                                                                            /*Padding(
                                                                               padding: const EdgeInsets.only(top: 50),
                                                                               child: MaterialButton(
                                                                                 onPressed: () {
@@ -1521,7 +1518,7 @@ class _homeState extends State<home> {
                                                                                 ),
                                                                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                                                                               ),
-                                                                            ),
+                                                                            ),*/
                                                                             SizedBox(
                                                                               width: 30,
                                                                             ),
@@ -1634,9 +1631,9 @@ class _homeState extends State<home> {
                                                                                                                                       }
                                                                                                                                     });
 
-                                                                                                                                    firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
+                                                                                                                                    firestoreInstance.collection("Users").doc('${_foundUsers[index]['id']}').collection('Task').doc('${date[index]}').set({
                                                                                                                                       'Task': Task,
-                                                                                                                                      'Date': dateTime,
+                                                                                                                                      'Date': date[index],
                                                                                                                                       'Priority': priority,
                                                                                                                                       'status': false,
                                                                                                                                       'sdate': _sdate,
@@ -1764,8 +1761,7 @@ class _homeState extends State<home> {
                                                                               .update({
                                                                             'Task':
                                                                                 Task,
-                                                                            'Date':
-                                                                                dateTime,
+                                                                            //'Date':dateTime,
                                                                             'Priority':
                                                                                 priority,
                                                                             'status':
@@ -1784,13 +1780,7 @@ class _homeState extends State<home> {
                                                                           });
                                                                           Navigator.pop(
                                                                               context);
-                                                                          setState(
-                                                                              () {
-                                                                            date.clear();
-                                                                            task.clear();
-                                                                            Status.clear();
-                                                                          });
-                                                                          getdat();
+                                                                          refreshList();
                                                                         },
                                                                         color: Colors
                                                                             .blue[900],
@@ -2227,7 +2217,7 @@ class _homeState extends State<home> {
                                                                                   }
                                                                                 });
 
-                                                                                firestoreInstance.collection("Users").doc('${uids[index]}').collection('Task').doc('$dateTime').set({
+                                                                                firestoreInstance.collection("Users").doc('${_foundUsers[index]["id"]}').collection('Task').doc('$dateTime').set({
                                                                                   'Task': Task,
                                                                                   'Date': dateTime,
                                                                                   'Priority': priority,
@@ -2334,7 +2324,7 @@ class _homeState extends State<home> {
                         padding: EdgeInsets.only(bottom: 30, right: 15),
                         child: MaterialButton(
                           onPressed: () {
-                            if (Task.isNotEmpty&&Task.length<25 &&dateTime.difference(DateTime.now()).isNegative !=true) {
+                            if (Task.isNotEmpty&&Task.length.toInt()<25&&dateTime.difference(DateTime.now()).isNegative !=true) {
                               showNotification();
                               setState(() {
                                 all = all + 1;
