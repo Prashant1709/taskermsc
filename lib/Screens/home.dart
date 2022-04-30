@@ -364,7 +364,7 @@ class _homeState extends State<home> {
                   child: Text("Current"),
                 ),
                 Tab(
-                  child: Text("Pending"),
+                  child: Text("Missing"),
                 ),
                 Tab(
                   child: Text("All"),
@@ -374,14 +374,16 @@ class _homeState extends State<home> {
             ),
           ),
           drawer: Drawer(
+            backgroundColor: Color.fromARGB(255, 36, 40, 42),
             child: ListView(
+              padding: EdgeInsets.zero,
               children: [
                 DrawerHeader(
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
                             "https://www.linkpicture.com/q/dark_blue_1.jpg"),
-                        fit: BoxFit.fill),
+                        fit: BoxFit.cover),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -423,7 +425,7 @@ class _homeState extends State<home> {
                     Icons.home,
                     color: Colors.teal,
                   ),
-                  title: Text("Home"),
+                  title: Text("Home", style: TextStyle(color: Colors.white)),
                   onTap: () {},
                 ),
                 ListTile(
@@ -431,7 +433,8 @@ class _homeState extends State<home> {
                     Icons.person,
                     color: Colors.teal,
                   ),
-                  title: Text("About Us"),
+                  title:
+                      Text("About Us", style: TextStyle(color: Colors.white)),
                   onTap: () {
                     showModalBottomSheet(
                         context: context,
@@ -493,7 +496,8 @@ class _homeState extends State<home> {
                     Icons.lock,
                     color: Colors.teal,
                   ),
-                  title: Text("Terms&Cond"),
+                  title:
+                      Text("Terms&Cond", style: TextStyle(color: Colors.white)),
                   onTap: () {
                     showDialog(
                         context: context,
@@ -510,17 +514,16 @@ class _homeState extends State<home> {
                     Icons.exit_to_app,
                     color: Colors.teal,
                   ),
-                  title: Text("Logout"),
+                  title: Text("Logout", style: TextStyle(color: Colors.white)),
                   onTap: () {
                     _auth.signOut();
                     Navigator.pop(context);
                     //exit(0);
                   },
                 ),
-                Text(
-                  "v 1.0  © MSC KIIT",
-                  textAlign: TextAlign.center,
-                ),
+                Text("v 1.0  © MSC KIIT",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white)),
               ],
             ),
           ),
@@ -739,23 +742,6 @@ class _homeState extends State<home> {
                                                                                   Row(
                                                                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                                     children: [
-                                                                                      Column(
-                                                                                        mainAxisSize: MainAxisSize.min,
-                                                                                        children: <Widget>[
-                                                                                          IconButton(
-                                                                                            icon: const Icon(
-                                                                                              Icons.image,
-                                                                                              color: Colors.white,
-                                                                                            ),
-                                                                                            tooltip: 'Add image to task',
-                                                                                            onPressed: () {},
-                                                                                          ),
-                                                                                          Text(
-                                                                                            'Picture',
-                                                                                            style: TextStyle(color: Colors.white),
-                                                                                          )
-                                                                                        ],
-                                                                                      ),
                                                                                       Column(
                                                                                         mainAxisSize: MainAxisSize.min,
                                                                                         children: <Widget>[
@@ -1011,8 +997,14 @@ class _homeState extends State<home> {
                                                                           (BuildContext
                                                                               context) {
                                                                         return AlertDialog(
-                                                                          title:
-                                                                              const Text('Details'),
+                                                                          backgroundColor: Color.fromARGB(
+                                                                              255,
+                                                                              71,
+                                                                              71,
+                                                                              79),
+                                                                          title: const Text(
+                                                                              'Details',
+                                                                              style: TextStyle(color: Colors.white)),
                                                                           content:
                                                                               SingleChildScrollView(
                                                                             child:
@@ -1020,19 +1012,15 @@ class _homeState extends State<home> {
                                                                               children: <Widget>[
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
-                                                                                  child: Text("Task: ${task[index]}"),
+                                                                                  child: Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
                                                                                 ),
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
-                                                                                  child: Text("Details: ${tdetail[index]}"),
+                                                                                  child: Text("Details: ${tdetail[index]}", style: TextStyle(color: Colors.white)),
                                                                                 ),
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
-                                                                                  child: Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
-                                                                                ),
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: Text("Image:"),
+                                                                                  child: Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
                                                                                 ),
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
@@ -1242,8 +1230,17 @@ class _homeState extends State<home> {
                                                                     (BuildContext
                                                                         context) {
                                                                   return AlertDialog(
+                                                                    backgroundColor:
+                                                                        Color.fromARGB(
+                                                                            255,
+                                                                            71,
+                                                                            71,
+                                                                            79),
                                                                     title: const Text(
-                                                                        'Details'),
+                                                                        'Details',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white)),
                                                                     content:
                                                                         SingleChildScrollView(
                                                                       child:
@@ -1254,19 +1251,19 @@ class _homeState extends State<home> {
                                                                             padding:
                                                                                 const EdgeInsets.all(8.0),
                                                                             child:
-                                                                                Text("Task: ${task[index]}"),
+                                                                                Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
                                                                           ),
                                                                           Padding(
                                                                             padding:
                                                                                 const EdgeInsets.all(8.0),
                                                                             child:
-                                                                                Text("Details: ${tdet[index]}"),
+                                                                                Text("Details: ${tdet[index]}", style: TextStyle(color: Colors.white)),
                                                                           ),
                                                                           Padding(
                                                                             padding:
                                                                                 const EdgeInsets.all(8.0),
                                                                             child:
-                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
+                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
                                                                           ),
                                                                           Padding(
                                                                             padding:
@@ -1592,23 +1589,6 @@ class _homeState extends State<home> {
                                                                                   children: <Widget>[
                                                                                     IconButton(
                                                                                       icon: const Icon(
-                                                                                        Icons.image,
-                                                                                        color: Colors.white,
-                                                                                      ),
-                                                                                      tooltip: 'Add image to task',
-                                                                                      onPressed: () {},
-                                                                                    ),
-                                                                                    Text(
-                                                                                      'Picture',
-                                                                                      style: TextStyle(color: Colors.white),
-                                                                                    )
-                                                                                  ],
-                                                                                ),
-                                                                                Column(
-                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                  children: <Widget>[
-                                                                                    IconButton(
-                                                                                      icon: const Icon(
                                                                                         Icons.person_add,
                                                                                         color: Colors.white,
                                                                                       ),
@@ -1900,8 +1880,17 @@ class _homeState extends State<home> {
                                                                     (BuildContext
                                                                         context) {
                                                                   return AlertDialog(
+                                                                    backgroundColor:
+                                                                        Color.fromARGB(
+                                                                            255,
+                                                                            71,
+                                                                            71,
+                                                                            79),
                                                                     title: const Text(
-                                                                        'Details'),
+                                                                        'Details',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.white)),
                                                                     content:
                                                                         SingleChildScrollView(
                                                                       child:
@@ -1912,19 +1901,19 @@ class _homeState extends State<home> {
                                                                             padding:
                                                                                 const EdgeInsets.all(8.0),
                                                                             child:
-                                                                                Text("Task: ${task[index]}"),
+                                                                                Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
                                                                           ),
                                                                           Padding(
                                                                             padding:
                                                                                 const EdgeInsets.all(8.0),
                                                                             child:
-                                                                                Text("Details: ${tdet[index]}"),
+                                                                                Text("Details: ${tdet[index]}", style: TextStyle(color: Colors.white)),
                                                                           ),
                                                                           Padding(
                                                                             padding:
                                                                                 const EdgeInsets.all(8.0),
                                                                             child:
-                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}"),
+                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
                                                                           ),
                                                                           Padding(
                                                                             padding:
@@ -2152,21 +2141,6 @@ class _homeState extends State<home> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      IconButton(
-                                        icon: const Icon(Icons.image),
-                                        color: Colors.white,
-                                        tooltip: 'Add image to task',
-                                        onPressed: () {},
-                                      ),
-                                      Text('Picture',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ))
-                                    ],
-                                  ),
                                   Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
