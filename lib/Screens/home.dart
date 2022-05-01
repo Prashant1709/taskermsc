@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -457,58 +457,455 @@ class _homeState extends State<home> {
                         backgroundColor: Color.fromARGB(255, 56, 61, 65),
                         context: context,
                         builder: (BuildContext bs) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Application by",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.white),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                height: 100,
-                                width: 500,
-                                child: Row(
-                                  children: [
-                                    Image.asset("assets/MSC.png"),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      // ignore: prefer_const_literals_to_create_immutables
-                                      children: [
-                                        Text(
-                                          "Microsoft",
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.teal,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "Student Community",
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.teal,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "KiiT Chapter",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.teal,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SizedBox(height: height(0.1)),
+
+                                SizedBox(
+                                  height: 20,
                                 ),
-                              ),
-                              Text(
-                                  "\n\nDev Team \n 1. Prashant Upadhyay-Backend,UI and Managenment \n 2. Shashank Deepak- UI/UX \n 3. Ankit Kumar and Pranshu Sarthak-Testing and Bug finding \n 4. Rakshita-Creatives,images and Logo \n 5. Bibek-UI Revamp",
-                                  style: TextStyle(color: Colors.white)),
-                            ],
+                                SizedBox(
+                                  // height: 100,
+                                  // width: 500,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        height: height(0.25),
+                                        child: Center(
+                                          child: Image.asset("assets/MSC.png"),
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        // ignore: prefer_const_literals_to_create_immutables
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 57.0),
+                                            child: Text(
+                                              "Microsoft",
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  color: Colors.teal,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          Text(
+                                            "Student Community",
+                                            style: TextStyle(
+                                                fontSize: 25,
+                                                color: Colors.teal,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 63.0),
+                                            child: Text(
+                                              "KiiT Chapter",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.teal,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height(0.05),
+                                ),
+                                //Divider(color: Colors.blue, thickness: 2),
+
+                                Center(
+                                    child: Text("Developer Team",
+                                        style: TextStyle(
+                                            color: Colors.cyan, fontSize: 30))),
+                                SizedBox(
+                                  height: height(0.02),
+                                ),
+
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color: Color.fromARGB(246, 2, 105,
+                                            184)), //rgba(2, 105, 184, 1)
+                                    height: height(0.1),
+                                    width: width(0.85),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        //•
+
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text("Prashant Upadhyay",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            // SizedBox(
+                                            //   width: width(0.18),
+                                            // ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Text(
+                                                      "• Backend   • UI   • Management",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                ),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     )),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     ))
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                SizedBox(
+                                  height: height(0.015),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color:
+                                            Color.fromARGB(246, 2, 105, 184)),
+                                    height: height(0.1),
+                                    width: width(0.85),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        //•
+
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text("Shashank Deepak",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            // SizedBox(
+                                            //   width: width(0.18),
+                                            // ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Text(
+                                                      "• UI / UX • Debugging  ",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                ),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     )),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     ))
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                SizedBox(
+                                  height: height(0.015),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color:
+                                            Color.fromARGB(246, 2, 105, 184)),
+                                    height: height(0.1),
+                                    width: width(0.85),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        //•
+
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text("Ankit Kumar",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            // SizedBox(
+                                            //   width: width(0.18),
+                                            // ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Text(
+                                                      "• Testing • Bug Finding",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                ),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     )),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     ))
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                SizedBox(
+                                  height: height(0.015),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color:
+                                            Color.fromARGB(246, 2, 105, 184)),
+                                    height: height(0.1),
+                                    width: width(0.85),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        //•
+
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text("Pranshu Sarthak",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            // SizedBox(
+                                            //   width: width(0.18),
+                                            // ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Text(
+                                                      "• Testing  • Bug Finding",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                ),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     )),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     ))
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                SizedBox(
+                                  height: height(0.015),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color:
+                                            Color.fromARGB(246, 2, 105, 184)),
+                                    height: height(0.1),
+                                    width: width(0.85),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        //•
+
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text("Rakshita",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            // SizedBox(
+                                            //   width: width(0.18),
+                                            // ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Text(
+                                                      "• Creative   • Logo   • Images",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                ),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     )),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     ))
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                SizedBox(
+                                  height: height(0.015),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(60),
+                                        color:
+                                            Color.fromARGB(246, 2, 105, 184)),
+                                    height: height(0.1),
+                                    width: width(0.85),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        //•
+
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 10),
+                                          child: Text("Bibek",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            // SizedBox(
+                                            //   width: width(0.18),
+                                            // ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: Text("• UI Revamp",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18,
+                                                      )),
+                                                ),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     )),
+                                                // Text("",
+                                                //     style: TextStyle(
+                                                //       color: Colors.white,
+                                                //       fontSize: 18,
+                                                //     ))
+                                              ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    )),
+                                // Padding(
+                                //   padding:
+                                //       const EdgeInsets.only(left: 20, right: 20),
+                                //   child: Text(
+                                //       "\n\nDev Team \n 1. Prashant Upadhyay-Backend,UI and Managenment \n 2. Shashank Deepak- UI/UX \n 3. Ankit Kumar and Pranshu Sarthak-Testing and Bug finding \n 4. Rakshita-Creatives,images and Logo \n 5. Bibek-UI Revamp",
+                                //       style: TextStyle(color: Colors.white)),
+                                // ),
+                              ],
+                            ),
                           );
                         },
                         isScrollControlled: true);
@@ -549,8 +946,7 @@ class _homeState extends State<home> {
                 child: Column(
                   children: [
                     Container(
-                      height: 660,
-                      constraints: BoxConstraints(minHeight: 660),
+                      height: 550,
                       child: RefreshIndicator(
                         onRefresh: refreshList,
                         backgroundColor: Colors.blue[900],
@@ -564,12 +960,12 @@ class _homeState extends State<home> {
                             builder: (context, snapshot) {
                               return ListView.builder(
                                   controller: scrollController,
-                                  itemCount:
-                                      task.isEmpty ? 0 : task.length,
+                                  itemCount: task.isEmpty ? 0 : task.length,
                                   itemBuilder: (context, int index) {
                                     if (date[index]
                                             .difference(DateTime.now())
-                                            .isNegative !=true) {
+                                            .isNegative !=
+                                        true) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: OutlinedButton(
@@ -579,8 +975,7 @@ class _homeState extends State<home> {
                                             margin: EdgeInsets.all(0),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        20)),
+                                                    BorderRadius.circular(20)),
                                             child: ConstrainedBox(
                                               constraints: BoxConstraints(
                                                 minHeight: height(0.13),
@@ -594,8 +989,7 @@ class _homeState extends State<home> {
                                                       image: pcol1[index],
                                                       fit: BoxFit.cover),
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          18),
+                                                      BorderRadius.circular(18),
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -678,15 +1072,18 @@ class _homeState extends State<home> {
                                                                               54),
                                                                           title:
                                                                               Padding(
-                                                                            padding: const EdgeInsets.only(left: 12, top: 10),
-                                                                            child: const Text(
+                                                                            padding:
+                                                                                const EdgeInsets.only(left: 12, top: 10),
+                                                                            child:
+                                                                                const Text(
                                                                               'Update Task',
                                                                               style: TextStyle(color: Color.fromARGB(255, 250, 251, 252), fontSize: 28),
                                                                             ),
                                                                           ),
                                                                           content:
                                                                               SingleChildScrollView(
-                                                                            child: Material(
+                                                                            child:
+                                                                                Material(
                                                                               color: Color.fromARGB(255, 48, 48, 54),
                                                                               child: Column(
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -929,7 +1326,8 @@ class _homeState extends State<home> {
                                                                               ),
                                                                             ),
                                                                           ),
-                                                                          actions: <Widget>[
+                                                                          actions: <
+                                                                              Widget>[
                                                                             MaterialButton(
                                                                               onPressed: () {
                                                                                 setState(() {
@@ -997,8 +1395,7 @@ class _homeState extends State<home> {
                                                                     );
                                                                   },
                                                                   icon: Icon(
-                                                                    Icons
-                                                                        .edit,
+                                                                    Icons.edit,
                                                                     color: Colors
                                                                         .white,
                                                                   )),
@@ -1020,11 +1417,13 @@ class _homeState extends State<home> {
                                                                               71,
                                                                               71,
                                                                               79),
-                                                                          title:
-                                                                              const Text('Details', style: TextStyle(color: Colors.white)),
+                                                                          title: const Text(
+                                                                              'Details',
+                                                                              style: TextStyle(color: Colors.white)),
                                                                           content:
                                                                               SingleChildScrollView(
-                                                                            child: ListBody(
+                                                                            child:
+                                                                                ListBody(
                                                                               children: <Widget>[
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
@@ -1049,7 +1448,8 @@ class _homeState extends State<home> {
                                                                               ],
                                                                             ),
                                                                           ),
-                                                                          actions: <Widget>[
+                                                                          actions: <
+                                                                              Widget>[
                                                                             TextButton(
                                                                               child: const Text('Accept'),
                                                                               onPressed: () {
@@ -1092,16 +1492,14 @@ class _homeState extends State<home> {
                                         children: [
                                           Center(
                                               child: Padding(
-                                            padding:
-                                                const EdgeInsets.fromLTRB(
-                                                    8, 200, 8, 8),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 200, 8, 8),
                                             child: Image(
-                                              image:
-                                                  AssetImage("assets/2.png"),
+                                              image: AssetImage("assets/2.png"),
                                               height: 150,
                                               width: 200,
-                                              color: Colors.white
-                                                  .withOpacity(0.5),
+                                              color:
+                                                  Colors.white.withOpacity(0.5),
                                               colorBlendMode:
                                                   BlendMode.modulate,
                                             ),
@@ -1131,7 +1529,7 @@ class _homeState extends State<home> {
                       backgroundColor: Colors.purple,
                       color: Colors.white,
                       child: Container(
-                        height: 660,
+                        height: 550,
                         child: StreamBuilder<QuerySnapshot>(
                             stream: firestoreInstance
                                 .collection("Users")
@@ -1139,255 +1537,253 @@ class _homeState extends State<home> {
                                 .collection('Task')
                                 .snapshots(),
                             builder: (context, snapshot) {
-                              return task.isEmpty ? ListView.builder(
-                                  itemCount: task.isEmpty ? 0 : task.length ,
-                                  itemBuilder: (context, int index) {
-                                    if (date[index].difference(DateTime.now()).isNegative ==true) {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: OutlinedButton(
-                                          child: Card(
-                                            clipBehavior: Clip.antiAlias,
-                                            elevation: 20,
-                                            margin: EdgeInsets.all(0),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(20)),
-                                            child: ConstrainedBox(
-                                              constraints: BoxConstraints(
-                                                minHeight: height(0.13),
-                                                minWidth: width(1),
-                                              ),
-                                              child: Container(
-                                                // height: 90,
-                                                // width: width(1),
-                                                decoration: BoxDecoration(
-                                                  image: DecorationImage(
-                                                      image: pcol1[index],
-                                                      fit: BoxFit.cover),
-                                                  borderRadius:
-                                                  BorderRadius.circular(18),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceEvenly,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                          EdgeInsets.only(
-                                                              top: 20,
-                                                              left: 10,
-                                                              right: 10),
-                                                          child: Text(
-                                                            "${task[index]}",
-                                                            softWrap: false,
-                                                            maxLines: 10,
-                                                            overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize:
-                                                                height(
-                                                                    0.024),
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                          ),
-                                                        ),
-
-                                                        Padding(
-                                                          padding:
-                                                          EdgeInsets.only(
-                                                              top: 20,
-                                                              left: 10,
-                                                              bottom: 10),
-                                                          child: Text(
-                                                            "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize:
-                                                                height(
-                                                                    0.02),
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                          ),
-                                                        ),
-                                                        //Text("${Status[index]}"),
-                                                      ],
+                              return task.isEmpty
+                                  ? ListView.builder(
+                                      itemCount: task.isEmpty ? 0 : task.length,
+                                      itemBuilder: (context, int index) {
+                                        if (date[index]
+                                                .difference(DateTime.now())
+                                                .isNegative ==
+                                            true) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: OutlinedButton(
+                                              child: Card(
+                                                clipBehavior: Clip.antiAlias,
+                                                elevation: 20,
+                                                margin: EdgeInsets.all(0),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                child: ConstrainedBox(
+                                                  constraints: BoxConstraints(
+                                                    minHeight: height(0.13),
+                                                    minWidth: width(1),
+                                                  ),
+                                                  child: Container(
+                                                    // height: 90,
+                                                    // width: width(1),
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: pcol1[index],
+                                                          fit: BoxFit.cover),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              18),
                                                     ),
-                                                    SizedBox(
-                                                      width: 100,
-                                                    ),
-                                                    Column(
+                                                    child: Row(
                                                       mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
                                                       children: [
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              showDialog<void>(
-                                                                context:
-                                                                context,
-                                                                barrierDismissible:
-                                                                false, // user must tap button!
-                                                                builder:
-                                                                    (BuildContext
-                                                                context) {
-                                                                  return AlertDialog(
-                                                                    backgroundColor:
-                                                                    Color.fromARGB(
-                                                                        255,
-                                                                        71,
-                                                                        71,
-                                                                        79),
-                                                                    title: const Text(
-                                                                        'Details',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                            Colors.white)),
-                                                                    content:
-                                                                    SingleChildScrollView(
-                                                                      child:
-                                                                      ListBody(
-                                                                        children: <
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 20,
+                                                                      left: 10,
+                                                                      right:
+                                                                          10),
+                                                              child: Text(
+                                                                "${task[index]}",
+                                                                softWrap: false,
+                                                                maxLines: 10,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        height(
+                                                                            0.024),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+
+                                                            Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 20,
+                                                                      left: 10,
+                                                                      bottom:
+                                                                          10),
+                                                              child: Text(
+                                                                "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        height(
+                                                                            0.02),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                            //Text("${Status[index]}"),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          width: 100,
+                                                        ),
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          children: [
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  showDialog<
+                                                                      void>(
+                                                                    context:
+                                                                        context,
+                                                                    barrierDismissible:
+                                                                        false, // user must tap button!
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return AlertDialog(
+                                                                        backgroundColor: Color.fromARGB(
+                                                                            255,
+                                                                            71,
+                                                                            71,
+                                                                            79),
+                                                                        title: const Text(
+                                                                            'Details',
+                                                                            style:
+                                                                                TextStyle(color: Colors.white)),
+                                                                        content:
+                                                                            SingleChildScrollView(
+                                                                          child:
+                                                                              ListBody(
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text("Details: ${tdet[index]}", style: TextStyle(color: Colors.white)),
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text("Image:"),
+                                                                              ),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      _launchmeet("https://${meetl[index]}");
+                                                                                    },
+                                                                                    child: Text("Meet Link: ${(meetl[index])}")),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        actions: <
                                                                             Widget>[
-                                                                          Padding(
-                                                                            padding:
-                                                                            const EdgeInsets.all(8.0),
+                                                                          TextButton(
                                                                             child:
-                                                                            Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                            Text("Details: ${tdet[index]}", style: TextStyle(color: Colors.white)),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                            Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                            Text("Image:"),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                            const EdgeInsets.all(8.0),
-                                                                            child: TextButton(
-                                                                                onPressed: () {
-                                                                                  _launchmeet("https://${meetl[index]}");
-                                                                                },
-                                                                                child: Text("Meet Link: ${(meetl[index])}")),
+                                                                                const Text('Accept'),
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
                                                                           ),
                                                                         ],
-                                                                      ),
-                                                                    ),
-                                                                    actions: <
-                                                                        Widget>[
-                                                                      TextButton(
-                                                                        child: const Text(
-                                                                            'Accept'),
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                      ),
-                                                                    ],
-                                                                    elevation:
-                                                                    24,
+                                                                        elevation:
+                                                                            24,
+                                                                      );
+                                                                    },
                                                                   );
                                                                 },
-                                                              );
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .remove_red_eye,
-                                                              color:
-                                                              Colors.white,
-                                                            )),
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .remove_red_eye,
+                                                                  color: Colors
+                                                                      .white,
+                                                                )),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                          onPressed: () {},
+                                              onPressed: () {},
 
-                                          //
-                                        ),
-                                      );
-                                    } else {
-                                      return Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                        children: [
-                                          Center(
-                                              child: Padding(
-                                                padding: const EdgeInsets.fromLTRB(
-                                                    8, 200, 8, 8),
+                                              //
+                                            ),
+                                          );
+                                        } else {
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Center(
+                                                  child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 200, 8, 8),
                                                 child: Image(
-                                                  image: AssetImage("assets/2.png"),
+                                                  image: AssetImage(
+                                                      "assets/2.png"),
                                                   height: 150,
                                                   width: 200,
-                                                  color:
-                                                  Colors.white.withOpacity(0.5),
+                                                  color: Colors.white
+                                                      .withOpacity(0.5),
                                                   colorBlendMode:
-                                                  BlendMode.modulate,
+                                                      BlendMode.modulate,
                                                 ),
                                               )),
-                                          Text(
-                                            "No Old Tasks",
-                                            style: TextStyle(
-                                                color: Colors.white
-                                                    .withOpacity(0.7),
-                                                fontSize: 22),
+                                              Text(
+                                                "No Old Tasks",
+                                                style: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.7),
+                                                    fontSize: 22),
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                      })
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              8, 8, 8, 8),
+                                          child: Image(
+                                            image: AssetImage("assets/2.png"),
+                                            height: 150,
+                                            width: 200,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                            colorBlendMode: BlendMode.modulate,
                                           ),
-                                        ],
-                                      );
-                                    }
-                                  }):Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        8, 8, 8, 8),
-                                    child: Image(
-                                      image: AssetImage("assets/2.png"),
-                                      height: 150,
-                                      width: 200,
-                                      color:
-                                      Colors.white.withOpacity(0.5),
-                                      colorBlendMode:
-                                      BlendMode.modulate,
-                                    ),
-                                  ),
-                                  Text(
-                                    "No Old Tasks",
-                                    style: TextStyle(
-                                        color: Colors.white
-                                            .withOpacity(0.7),
-                                        fontSize: 22),
-                                  ),
-                                ],
-                              );
+                                        ),
+                                        Text(
+                                          "No Old Tasks",
+                                          style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.7),
+                                              fontSize: 22),
+                                        ),
+                                      ],
+                                    );
                             }),
                       ),
                     ),
@@ -1402,7 +1798,7 @@ class _homeState extends State<home> {
                       backgroundColor: Colors.purple,
                       color: Colors.white,
                       child: Container(
-                        height: 660,
+                        height: 550,
                         child: StreamBuilder<QuerySnapshot>(
                             stream: firestoreInstance
                                 .collection("Users")
@@ -1411,7 +1807,7 @@ class _homeState extends State<home> {
                                 .snapshots(),
                             builder: (context, snapshot) {
                               return ListView.builder(
-                                  itemCount: task.isEmpty ? 0 : task.length ,
+                                  itemCount: task.isEmpty ? 0 : task.length,
                                   itemBuilder: (context, int index) {
                                     if (task[index].isEmpty != true) {
                                       return Padding(
