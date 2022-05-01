@@ -18,13 +18,14 @@ class _RegisterState extends State<Register> {
   bool _passwordVisible = true;
   String email = "";
   String pass = "";
+  String _prefix = '+91';
   String username = "";
   String pno = "";
   String dropdownValue = 'Select Department';
   String uid = "";
   String designation = "";
   @override
-  Future<UserCredential> signInWithGoogle() async {
+  /*Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -40,7 +41,7 @@ class _RegisterState extends State<Register> {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
+  }*/
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -183,12 +184,6 @@ class _RegisterState extends State<Register> {
                               border: InputBorder.none,
                               hintText: "Number here",
                               hintStyle: TextStyle(color: Colors.grey[700]),
-                              // prefixIcon: IconButton(
-                              //   icon: Icon(Icons.add),
-                              //   onPressed: () {},
-                              // ),
-                              // prefixText: "+91",
-                              // prefixStyle: TextStyle(color: Colors.white),
                               prefixIcon: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -203,6 +198,9 @@ class _RegisterState extends State<Register> {
                                 ],
                               ),
                             ),
+                            onChanged: (value){
+                              pno="${_prefix}${value}";
+                            },
                             keyboardType: TextInputType.number,
                           ),
                         ),
@@ -309,6 +307,7 @@ class _RegisterState extends State<Register> {
                                               _auth.currentUser
                                                   ?.updateDisplayName(username);
                                               showModalBottomSheet(
+                                                isDismissible: false,
                                                   context: context,
                                                   builder: (BuildContext bc) {
                                                     return Container(
@@ -659,36 +658,36 @@ class _RegisterState extends State<Register> {
                                     },
                                   );
                                 }
-                              } catch (e) {
+                              }on FirebaseAuthException catch (e) {
                                 print(e);
-                                if (pass.length < 6) {
+                                if(e.code == 'weak-password'){
                                   showDialog<void>(
                                     context: context,
                                     barrierDismissible:
-                                        false, // user must tap button!
+                                    false, // user must tap button!
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         backgroundColor:
-                                            Color.fromARGB(255, 56, 52, 52),
+                                        Color.fromARGB(255, 56, 52, 52),
                                         title: const Text('Error Encountered',
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 24)),
+                                                fontSize: 25)),
                                         content: SingleChildScrollView(
                                           child: ListBody(
                                             children: const <Widget>[
                                               Text(
-                                                  "Check password, min 6 charachters needed",
+                                                  "Your Password is too weak, make sure it's greater than 6 character's",
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 18)),
+                                                      fontSize: 20)),
                                             ],
                                           ),
                                         ),
                                         actions: <Widget>[
                                           TextButton(
-                                            child: const Text('Proceed',
-                                                style: TextStyle(fontSize: 16)),
+                                            child: const Text('OK',
+                                                style: TextStyle(fontSize: 18)),
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
@@ -698,15 +697,16 @@ class _RegisterState extends State<Register> {
                                       );
                                     },
                                   );
-                                } else {
+                                }
+                                else if (e.code == 'email-already-in-use'){
                                   showDialog<void>(
                                     context: context,
                                     barrierDismissible:
-                                        false, // user must tap button!
+                                    false, // user must tap button!
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         backgroundColor:
-                                            Color.fromARGB(255, 56, 52, 52),
+                                        Color.fromARGB(255, 56, 52, 52),
                                         title: const Text('Error Encountered',
                                             style: TextStyle(
                                                 color: Colors.white,
@@ -715,7 +715,7 @@ class _RegisterState extends State<Register> {
                                           child: ListBody(
                                             children: const <Widget>[
                                               Text(
-                                                  "Something looks fishy, check the details entered or your network connectivity",
+                                                  "This E-Mail is already in use, kindly login using credentials",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 20)),
@@ -737,6 +737,46 @@ class _RegisterState extends State<Register> {
                                   );
                                 }
                               }
+                              catch(e){
+                                print(e);
+                                showDialog<void>(
+                                  context: context,
+                                  barrierDismissible:
+                                  false, // user must tap button!
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor:
+                                      Color.fromARGB(255, 56, 52, 52),
+                                      title: const Text('Error Encountered',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 25)),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: const <Widget>[
+                                            Text(
+                                                "Something looks fishy, check the details entered or your network connectivity",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20)),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('OK',
+                                              style: TextStyle(fontSize: 18)),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                      elevation: 24,
+                                    );
+                                  },
+                                );
+                              }
+                              //print(pno);
                             },
                             color: Color.fromRGBO(103, 199, 195, 1),
                             shape: RoundedRectangleBorder(

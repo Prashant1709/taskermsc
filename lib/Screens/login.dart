@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
 
@@ -15,24 +14,6 @@ class _loginState extends State<login> {
   String email = "";
   String pass = "";
   String uid = "";
-  @override
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -268,7 +249,7 @@ class _loginState extends State<login> {
                                     );
                                   },
                                 );
-                                print(e);
+                                //print(e);
                               }
                             },
                             color: Color.fromRGBO(103, 199, 195, 1),

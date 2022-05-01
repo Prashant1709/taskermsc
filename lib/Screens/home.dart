@@ -111,7 +111,7 @@ class _homeState extends State<home> {
     flutterLocalNotificationsPlugin.show(
         0,
         "Tasker",
-        "New Task Created at ${DateTime.now()}",
+        "New Task Created at ${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} ${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}",
         NotificationDetails(
             android: AndroidNotificationDetails(channel.id, channel.name,
                 importance: Importance.high,
@@ -337,6 +337,18 @@ class _homeState extends State<home> {
     await Future.delayed(Duration(seconds: 1));
     _edate();
   }
+  Future<Null> refreshUser() async {
+    await Future.delayed(Duration(seconds: 2));
+    uids.clear();
+    users.clear();
+    udesig.clear();
+    uno.clear();
+    _Users.clear();
+    await Future.delayed(Duration(seconds: 1));
+    getdat();
+    await Future.delayed(Duration(seconds: 1));
+    _edate();
+  }
 
   Future<Null> refresh() async {
     await Future.delayed(Duration(seconds: 2));
@@ -346,7 +358,6 @@ class _homeState extends State<home> {
     await Future.delayed(Duration(seconds: 1));
     getdat();
   }
-
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
@@ -381,8 +392,7 @@ class _homeState extends State<home> {
                 DrawerHeader(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(
-                            "https://www.linkpicture.com/q/dark_blue_1.jpg"),
+                        image: AssetImage("assets/dark_blue.jpg"),
                         fit: BoxFit.cover),
                   ),
                   child: Column(
@@ -507,6 +517,17 @@ class _homeState extends State<home> {
                           );
                         }); //exit(0);
                     //exit(0);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.question_answer,
+                    color: Colors.teal,
+                  ),
+                  title:
+                  Text("FAQs", style: TextStyle(color: Colors.white)),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/faq');
                   },
                 ),
                 ListTile(
@@ -705,7 +726,7 @@ class _homeState extends State<home> {
                                                                                       padding: EdgeInsets.only(left: 4),
                                                                                       child: TextFormField(
                                                                                         style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Details here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Details here/Event Name", hintStyle: TextStyle(color: Colors.grey)),
                                                                                         keyboardType: TextInputType.visiblePassword,
                                                                                         obscureText: false,
                                                                                         onChanged: (value) {
@@ -821,11 +842,13 @@ class _homeState extends State<home> {
                                                                                                                                           });
                                                                                                                                           showDialog(
                                                                                                                                               context: context,
+                                                                                                                                              barrierDismissible: true,
                                                                                                                                               builder: (BuildContext bs) {
                                                                                                                                                 return AlertDialog(
                                                                                                                                                   title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
                                                                                                                                                 );
                                                                                                                                               });
+                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
                                                                                                                                         },
                                                                                                                                         icon: Icon(Icons.add),
                                                                                                                                       ),
@@ -837,7 +860,7 @@ class _homeState extends State<home> {
                                                                                                                                           color: Colors.white,
                                                                                                                                         ),
                                                                                                                                         onPressed: () {
-                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
+                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
                                                                                                                                         },
                                                                                                                                       ),
                                                                                                                                     ),
@@ -1533,7 +1556,7 @@ class _homeState extends State<home> {
                                                                                 padding: EdgeInsets.only(left: 4),
                                                                                 child: TextFormField(
                                                                                   style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                  decoration: InputDecoration(border: InputBorder.none, hintText: "Details here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                  decoration: InputDecoration(border: InputBorder.none, hintText: "Details here/Event Name", hintStyle: TextStyle(color: Colors.grey)),
                                                                                   keyboardType: TextInputType.visiblePassword,
                                                                                   obscureText: false,
                                                                                   onChanged: (value) {
@@ -1667,6 +1690,7 @@ class _homeState extends State<home> {
                                                                                                                                             title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
                                                                                                                                           );
                                                                                                                                         });
+                                                                                                                                    _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
                                                                                                                                   },
                                                                                                                                   icon: Icon(Icons.add),
                                                                                                                                 ),
@@ -2080,7 +2104,7 @@ class _homeState extends State<home> {
                                         fontSize: 18, color: Colors.white),
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: "Details here",
+                                        hintText: "Details here/Event Name",
                                         hintStyle:
                                             TextStyle(color: Colors.grey)),
                                     keyboardType: TextInputType.visiblePassword,
@@ -2149,7 +2173,7 @@ class _homeState extends State<home> {
                                         icon: const Icon(Icons.person_add),
                                         tooltip: 'Add collaborators',
                                         onPressed: () {
-                                          refreshList();
+                                          refreshUser();
                                           showModalBottomSheet(
                                               context: context,
                                               builder: (BuildContext bc) {
@@ -2246,28 +2270,27 @@ class _homeState extends State<home> {
                                                                                 });
                                                                                 showDialog(
                                                                                     context: context,
+                                                                                    barrierDismissible: true,
                                                                                     builder: (BuildContext bs) {
                                                                                       return AlertDialog(
                                                                                         backgroundColor: Color.fromARGB(255, 56, 52, 52),
                                                                                         title: Text("Task Assigned to ${_foundUsers[index]['username']}", style: TextStyle(color: Colors.white)),
                                                                                       );
                                                                                     });
+                                                                                _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
                                                                               },
-                                                                              icon: Icon(Icons.add),
-                                                                            ),
-                                                                            title:
-                                                                                Text(_foundUsers[index]['username']),
-                                                                            subtitle:
-                                                                                Text('${_foundUsers[index]["desig"]}'),
-                                                                            trailing:
-                                                                                IconButton(
-                                                                              icon: Icon(
-                                                                                Icons.chat,
-                                                                                color: Colors.white,
-                                                                              ),
-                                                                              onPressed: () {
-                                                                                _launcchat("https://wa.me/${_foundUsers[index]['phone']}");
-                                                                              },
+                                                                                  icon: Icon(Icons.add),
+                                                                                ),
+                                                                                title: Text(_foundUsers[index]['username']),
+                                                                                subtitle: Text('${_foundUsers[index]["desig"]}'),
+                                                                                trailing: IconButton(
+                                                                                  icon: Icon(
+                                                                                    Icons.chat,
+                                                                                    color: Colors.white,
+                                                                                  ),
+                                                                                  onPressed: () {
+                                                                                    _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
+                                                                                  },
                                                                             ),
                                                                           ),
                                                                         ),
