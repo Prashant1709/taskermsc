@@ -562,593 +562,14 @@ class _homeState extends State<home> {
                                 .collection('Task')
                                 .snapshots(),
                             builder: (context, snapshot) {
-                              return Expanded(
-                                child: ListView.builder(
-                                    controller: scrollController,
-                                    itemCount:
-                                        task.isEmpty ? 1 : task.length + 1,
-                                    itemBuilder: (context, int index) {
-                                      if (date[index]
-                                              .difference(DateTime.now())
-                                              .isNegative !=
-                                          true) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: OutlinedButton(
-                                            child: Card(
-                                              clipBehavior: Clip.antiAlias,
-                                              elevation: 20,
-                                              margin: EdgeInsets.all(0),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              child: ConstrainedBox(
-                                                constraints: BoxConstraints(
-                                                  minHeight: height(0.13),
-                                                  minWidth: width(1),
-                                                ),
-                                                child: Container(
-                                                  // height: 90,
-                                                  // width: width(1),
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: pcol1[index],
-                                                        fit: BoxFit.cover),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            18),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 20,
-                                                                    left: 10,
-                                                                    right: 10),
-                                                            child: Text(
-                                                              "${task[index]}",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      height(
-                                                                          0.024),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 20,
-                                                                    left: 10,
-                                                                    bottom: 10),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children: [
-                                                                Text(
-                                                                  "End Date: " +
-                                                                      "${(date[index].day)}-${(date[index].month)}-${(date[index].year)}" +
-                                                                      "\nEnd Time: "
-                                                                          "${date[index].hour}:${date[index].minute}",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          height(
-                                                                              0.02),
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold),
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 50,
-                                                                ),
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      showDialog<
-                                                                          void>(
-                                                                        context:
-                                                                            context,
-                                                                        barrierDismissible:
-                                                                            true,
-                                                                        // user must tap button!
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return AlertDialog(
-                                                                            shape:
-                                                                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
-                                                                            backgroundColor: Color.fromARGB(
-                                                                                255,
-                                                                                48,
-                                                                                48,
-                                                                                54),
-                                                                            title:
-                                                                                Padding(
-                                                                              padding: const EdgeInsets.only(left: 12, top: 10),
-                                                                              child: const Text(
-                                                                                'Update Task',
-                                                                                style: TextStyle(color: Color.fromARGB(255, 250, 251, 252), fontSize: 28),
-                                                                              ),
-                                                                            ),
-                                                                            content:
-                                                                                SingleChildScrollView(
-                                                                              child: Material(
-                                                                                color: Color.fromARGB(255, 48, 48, 54),
-                                                                                child: Column(
-                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                                  children: [
-                                                                                    SizedBox(
-                                                                                      height: 10,
-                                                                                    ),
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.only(left: 4.0, bottom: 20),
-                                                                                      child: Container(
-                                                                                        decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
-                                                                                        width: 350,
-                                                                                        height: 50,
-                                                                                        padding: EdgeInsets.only(left: 4),
-                                                                                        child: TextFormField(
-                                                                                          style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                          decoration: InputDecoration(border: InputBorder.none, hintText: "Title here(<25 chars)", hintStyle: TextStyle(color: Colors.grey)),
-                                                                                          keyboardType: TextInputType.visiblePassword,
-                                                                                          obscureText: false,
-                                                                                          onChanged: (value) {
-                                                                                            Task = value;
-                                                                                          },
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.only(top: 10, bottom: 20),
-                                                                                      child: Container(
-                                                                                        decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                                                                                        width: 350,
-                                                                                        height: 50,
-                                                                                        padding: EdgeInsets.only(left: 4),
-                                                                                        child: TextFormField(
-                                                                                          style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                          decoration: InputDecoration(border: InputBorder.none, hintText: "Details here/Event Name", hintStyle: TextStyle(color: Colors.grey)),
-                                                                                          keyboardType: TextInputType.visiblePassword,
-                                                                                          obscureText: false,
-                                                                                          onChanged: (value) {
-                                                                                            tdet = value;
-                                                                                          },
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 30,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      "Set Priority",
-                                                                                      style: TextStyle(color: Colors.white, fontSize: 18),
-                                                                                    ),
-                                                                                    StatefulBuilder(
-                                                                                      builder: (context, setState) => Slider(
-                                                                                        value: _priority,
-                                                                                        max: 9,
-                                                                                        divisions: 9,
-                                                                                        label: "Priority:${(_priority + 1).round().toString()}",
-                                                                                        onChanged: (double value) {
-                                                                                          // print("$value");
-                                                                                          setState(() {
-                                                                                            _priority = value;
-                                                                                          });
-                                                                                          //print(_priority.round());
-                                                                                        },
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 20,
-                                                                                    ),
-                                                                                    Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                                      children: [
-                                                                                        Column(
-                                                                                          mainAxisSize: MainAxisSize.min,
-                                                                                          children: <Widget>[
-                                                                                            IconButton(
-                                                                                              icon: const Icon(
-                                                                                                Icons.person_add,
-                                                                                                color: Colors.white,
-                                                                                              ),
-                                                                                              tooltip: 'Add collaborators',
-                                                                                              onPressed: () {
-                                                                                                showModalBottomSheet(
-                                                                                                    backgroundColor: Color.fromARGB(255, 0, 0, 0),
-                                                                                                    context: context,
-                                                                                                    builder: (BuildContext bc) {
-                                                                                                      return StreamBuilder<QuerySnapshot>(
-                                                                                                          stream: firestoreInstance.collection("Users").snapshots(),
-                                                                                                          builder: (context, snapshot) {
-                                                                                                            return Padding(
-                                                                                                              padding: const EdgeInsets.all(10),
-                                                                                                              child: Column(
-                                                                                                                children: [
-                                                                                                                  const SizedBox(
-                                                                                                                    height: 20,
-                                                                                                                  ),
-                                                                                                                  TextField(
-                                                                                                                    onChanged: (value) => _runFilter(value),
-                                                                                                                    decoration: const InputDecoration(labelText: 'Search', suffixIcon: Icon(Icons.search)),
-                                                                                                                  ),
-                                                                                                                  const SizedBox(
-                                                                                                                    height: 20,
-                                                                                                                  ),
-                                                                                                                  Expanded(
-                                                                                                                    child: _foundUsers.isNotEmpty
-                                                                                                                        ? RefreshIndicator(
-                                                                                                                            onRefresh: refreshList,
-                                                                                                                            backgroundColor: Colors.blue[900],
-                                                                                                                            color: Colors.white,
-                                                                                                                            child: StreamBuilder<QuerySnapshot>(
-                                                                                                                                stream: firestoreInstance.collection('Users').snapshots(),
-                                                                                                                                builder: (context, snapshot) {
-                                                                                                                                  return ListView.builder(
-                                                                                                                                    shrinkWrap: true,
-                                                                                                                                    itemCount: _foundUsers.length,
-                                                                                                                                    itemBuilder: (context, index) => Card(
-                                                                                                                                      key: ValueKey(_foundUsers[index]["id"]),
-                                                                                                                                      color: Colors.grey,
-                                                                                                                                      elevation: 4,
-                                                                                                                                      margin: const EdgeInsets.symmetric(vertical: 10),
-                                                                                                                                      child: ListTile(
-                                                                                                                                        leading: IconButton(
-                                                                                                                                          onPressed: () {
-                                                                                                                                            setState(() {
-                                                                                                                                              all = all + 1;
-                                                                                                                                              if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
-                                                                                                                                                setState(() {
-                                                                                                                                                  priority = "green";
-                                                                                                                                                });
-                                                                                                                                              } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
-                                                                                                                                                setState(() {
-                                                                                                                                                  priority = "yellow";
-                                                                                                                                                });
-                                                                                                                                              } else {
-                                                                                                                                                setState(() {
-                                                                                                                                                  priority = "red";
-                                                                                                                                                });
-                                                                                                                                              }
-                                                                                                                                            });
-
-                                                                                                                                            firestoreInstance.collection("Users").doc('${_foundUsers[index]['id']}').collection('Task').doc('${date[index]}').set({
-                                                                                                                                              'Task': Task,
-                                                                                                                                              'Date': date[index],
-                                                                                                                                              'Priority': priority,
-                                                                                                                                              'status': false,
-                                                                                                                                              'sdate': _sdate,
-                                                                                                                                              'meet': meet,
-                                                                                                                                              'Details': tdet,
-                                                                                                                                            });
-                                                                                                                                            showDialog(
-                                                                                                                                                context: context,
-                                                                                                                                                barrierDismissible: true,
-                                                                                                                                                builder: (BuildContext bs) {
-                                                                                                                                                  return AlertDialog(
-                                                                                                                                                    title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
-                                                                                                                                                  );
-                                                                                                                                                });
-                                                                                                                                            _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
-                                                                                                                                          },
-                                                                                                                                          icon: Icon(Icons.add),
-                                                                                                                                        ),
-                                                                                                                                        title: Text(_foundUsers[index]['username']),
-                                                                                                                                        subtitle: Text('${_foundUsers[index]["desig"]}'),
-                                                                                                                                        trailing: IconButton(
-                                                                                                                                          icon: Icon(
-                                                                                                                                            Icons.chat,
-                                                                                                                                            color: Colors.white,
-                                                                                                                                          ),
-                                                                                                                                          onPressed: () {
-                                                                                                                                            _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
-                                                                                                                                          },
-                                                                                                                                        ),
-                                                                                                                                      ),
-                                                                                                                                    ),
-                                                                                                                                  );
-                                                                                                                                }),
-                                                                                                                          )
-                                                                                                                        : const Text(
-                                                                                                                            'No results found',
-                                                                                                                            style: TextStyle(fontSize: 24),
-                                                                                                                          ),
-                                                                                                                  ),
-                                                                                                                ],
-                                                                                                              ),
-                                                                                                            );
-                                                                                                          });
-                                                                                                    });
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Collaborate',
-                                                                                              style: TextStyle(color: Colors.white),
-                                                                                            )
-                                                                                          ],
-                                                                                        ),
-                                                                                        Column(
-                                                                                          mainAxisSize: MainAxisSize.min,
-                                                                                          children: <Widget>[
-                                                                                            IconButton(
-                                                                                              icon: const Icon(
-                                                                                                Icons.calendar_today,
-                                                                                                color: Colors.white,
-                                                                                              ),
-                                                                                              tooltip: 'Add meet',
-                                                                                              onPressed: () {
-                                                                                                /*_launchInWebViewOrVC(
-                                                                          _url);*/
-                                                                                                setState(() {
-                                                                                                  mcreate = true;
-                                                                                                  print("meet$mcreate");
-                                                                                                });
-                                                                                              },
-                                                                                            ),
-                                                                                            Text(
-                                                                                              'Meeting',
-                                                                                              style: TextStyle(color: Colors.white),
-                                                                                            )
-                                                                                          ],
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                    Padding(
-                                                                                      padding: EdgeInsets.only(top: 40),
-                                                                                      child: Container(
-                                                                                        decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
-                                                                                        width: 350,
-                                                                                        height: 50,
-                                                                                        padding: EdgeInsets.only(left: 4),
-                                                                                        child: TextFormField(
-                                                                                          style: TextStyle(fontSize: 18, color: Colors.white),
-                                                                                          decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
-                                                                                          keyboardType: TextInputType.visiblePassword,
-                                                                                          obscureText: false,
-                                                                                          onChanged: (value) {
-                                                                                            meet = value;
-                                                                                          },
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                            actions: <Widget>[
-                                                                              MaterialButton(
-                                                                                onPressed: () {
-                                                                                  setState(() {
-                                                                                    all = all - 1;
-                                                                                    if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
-                                                                                      setState(() {
-                                                                                        priority = "green";
-                                                                                      });
-                                                                                    } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
-                                                                                      setState(() {
-                                                                                        priority = "yellow";
-                                                                                      });
-                                                                                    } else {
-                                                                                      setState(() {
-                                                                                        priority = "red";
-                                                                                      });
-                                                                                    }
-                                                                                  });
-                                                                                  firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').update({
-                                                                                    'Task': Task,
-                                                                                    //'Date': dateTime,
-                                                                                    'Priority': priority,
-                                                                                    'status': false,
-                                                                                    'meet': meet,
-                                                                                    'Details': tdet,
-                                                                                  });
-                                                                                  firestoreInstance.collection("Users").doc("$uid").update({
-                                                                                    'number': all
-                                                                                  });
-                                                                                  refreshList();
-                                                                                  Navigator.pop(context);
-                                                                                },
-                                                                                color: Colors.blue[900],
-                                                                                child: Text(
-                                                                                  "Update",
-                                                                                  style: TextStyle(color: Colors.white),
-                                                                                ),
-                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                                                                              ),
-                                                                              MaterialButton(
-                                                                                onPressed: () {
-                                                                                  setState(() {
-                                                                                    all = all - 1;
-                                                                                  });
-                                                                                  firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').delete();
-                                                                                  firestoreInstance.collection("Users").doc('$uid').update({
-                                                                                    'number': all
-                                                                                  });
-                                                                                  Navigator.pop(context);
-                                                                                  refreshList();
-                                                                                },
-                                                                                color: Colors.blue[900],
-                                                                                child: Text(
-                                                                                  "Mark as Done",
-                                                                                  style: TextStyle(color: Colors.white),
-                                                                                ),
-                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                                                                              ),
-                                                                              SizedBox(height: 40)
-                                                                            ],
-                                                                            elevation:
-                                                                                24,
-                                                                          );
-                                                                        },
-                                                                      );
-                                                                    },
-                                                                    icon: Icon(
-                                                                      Icons
-                                                                          .edit,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    )),
-                                                                IconButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      showDialog<
-                                                                          void>(
-                                                                        context:
-                                                                            context,
-                                                                        barrierDismissible:
-                                                                            false, // user must tap button!
-                                                                        builder:
-                                                                            (BuildContext
-                                                                                context) {
-                                                                          return AlertDialog(
-                                                                            backgroundColor: Color.fromARGB(
-                                                                                255,
-                                                                                71,
-                                                                                71,
-                                                                                79),
-                                                                            title:
-                                                                                const Text('Details', style: TextStyle(color: Colors.white)),
-                                                                            content:
-                                                                                SingleChildScrollView(
-                                                                              child: ListBody(
-                                                                                children: <Widget>[
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
-                                                                                  ),
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: Text("Details: ${tdetail[index]}", style: TextStyle(color: Colors.white)),
-                                                                                  ),
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
-                                                                                  ),
-                                                                                  Padding(
-                                                                                    padding: const EdgeInsets.all(8.0),
-                                                                                    child: TextButton(
-                                                                                        onPressed: () {
-                                                                                          _launchmeet("https://${meetl[index]}");
-                                                                                        },
-                                                                                        child: Text("Meet Link: ${(meetl[index])}")),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            actions: <Widget>[
-                                                                              TextButton(
-                                                                                child: const Text('Accept'),
-                                                                                onPressed: () {
-                                                                                  Navigator.of(context).pop();
-                                                                                },
-                                                                              ),
-                                                                            ],
-                                                                            elevation:
-                                                                                24,
-                                                                          );
-                                                                        },
-                                                                      );
-                                                                    },
-                                                                    icon: Icon(
-                                                                      Icons
-                                                                          .remove_red_eye,
-                                                                      color: Colors
-                                                                          .white,
-                                                                    )),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          //Text("${Status[index]}"),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            onPressed: () {},
-
-                                            //
-                                          ),
-                                        );
-                                      } else {
-                                        return Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Center(
-                                                child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      8, 200, 8, 8),
-                                              child: Image(
-                                                image:
-                                                    AssetImage("assets/2.png"),
-                                                height: 150,
-                                                width: 200,
-                                                color: Colors.white
-                                                    .withOpacity(0.5),
-                                                colorBlendMode:
-                                                    BlendMode.modulate,
-                                              ),
-                                            )),
-                                            Text(
-                                              "No Up-Comming Tasks",
-                                              style: TextStyle(
-                                                  color: Colors.white
-                                                      .withOpacity(0.7),
-                                                  fontSize: 22),
-                                            ),
-                                          ],
-                                        );
-                                      }
-                                    }),
-                              );
-                            }),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    RefreshIndicator(
-                      onRefresh: refreshList,
-                      backgroundColor: Colors.purple,
-                      color: Colors.white,
-                      child: Container(
-                        height: 660,
-                        child: StreamBuilder<QuerySnapshot>(
-                            stream: firestoreInstance
-                                .collection("Users")
-                                .doc('$uid')
-                                .collection('Task')
-                                .snapshots(),
-                            builder: (context, snapshot) {
                               return ListView.builder(
-                                  itemCount: task.isEmpty ? 1 : task.length + 1,
+                                  controller: scrollController,
+                                  itemCount:
+                                      task.isEmpty ? 0 : task.length,
                                   itemBuilder: (context, int index) {
                                     if (date[index]
                                             .difference(DateTime.now())
-                                            .isNegative ==
-                                        true) {
+                                            .isNegative !=true) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: OutlinedButton(
@@ -1158,7 +579,8 @@ class _homeState extends State<home> {
                                             margin: EdgeInsets.all(0),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20)),
+                                                    BorderRadius.circular(
+                                                        20)),
                                             child: ConstrainedBox(
                                               constraints: BoxConstraints(
                                                 minHeight: height(0.13),
@@ -1172,7 +594,8 @@ class _homeState extends State<home> {
                                                       image: pcol1[index],
                                                       fit: BoxFit.cover),
                                                   borderRadius:
-                                                      BorderRadius.circular(18),
+                                                      BorderRadius.circular(
+                                                          18),
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -1192,11 +615,6 @@ class _homeState extends State<home> {
                                                                   right: 10),
                                                           child: Text(
                                                             "${task[index]}",
-                                                            softWrap: false,
-                                                            maxLines: 10,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
@@ -1208,125 +626,453 @@ class _homeState extends State<home> {
                                                                         .bold),
                                                           ),
                                                         ),
-
                                                         Padding(
                                                           padding:
                                                               EdgeInsets.only(
                                                                   top: 20,
                                                                   left: 10,
                                                                   bottom: 10),
-                                                          child: Text(
-                                                            "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize:
-                                                                    height(
-                                                                        0.02),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "End Date: " +
+                                                                    "${(date[index].day)}-${(date[index].month)}-${(date[index].year)}" +
+                                                                    "\nEnd Time: "
+                                                                        "${date[index].hour}:${date[index].minute}",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        height(
+                                                                            0.02),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 50,
+                                                              ),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog<
+                                                                        void>(
+                                                                      context:
+                                                                          context,
+                                                                      barrierDismissible:
+                                                                          true,
+                                                                      // user must tap button!
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return AlertDialog(
+                                                                          shape:
+                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+                                                                          backgroundColor: Color.fromARGB(
+                                                                              255,
+                                                                              48,
+                                                                              48,
+                                                                              54),
+                                                                          title:
+                                                                              Padding(
+                                                                            padding: const EdgeInsets.only(left: 12, top: 10),
+                                                                            child: const Text(
+                                                                              'Update Task',
+                                                                              style: TextStyle(color: Color.fromARGB(255, 250, 251, 252), fontSize: 28),
+                                                                            ),
+                                                                          ),
+                                                                          content:
+                                                                              SingleChildScrollView(
+                                                                            child: Material(
+                                                                              color: Color.fromARGB(255, 48, 48, 54),
+                                                                              child: Column(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  SizedBox(
+                                                                                    height: 10,
+                                                                                  ),
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.only(left: 4.0, bottom: 20),
+                                                                                    child: Container(
+                                                                                      decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
+                                                                                      width: 350,
+                                                                                      height: 50,
+                                                                                      padding: EdgeInsets.only(left: 4),
+                                                                                      child: TextFormField(
+                                                                                        style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Title here(<25 chars)", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        keyboardType: TextInputType.visiblePassword,
+                                                                                        obscureText: false,
+                                                                                        onChanged: (value) {
+                                                                                          Task = value;
+                                                                                        },
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.only(top: 10, bottom: 20),
+                                                                                    child: Container(
+                                                                                      decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                                                      width: 350,
+                                                                                      height: 50,
+                                                                                      padding: EdgeInsets.only(left: 4),
+                                                                                      child: TextFormField(
+                                                                                        style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Details here/Event Name", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        keyboardType: TextInputType.visiblePassword,
+                                                                                        obscureText: false,
+                                                                                        onChanged: (value) {
+                                                                                          tdet = value;
+                                                                                        },
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 30,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    "Set Priority",
+                                                                                    style: TextStyle(color: Colors.white, fontSize: 18),
+                                                                                  ),
+                                                                                  StatefulBuilder(
+                                                                                    builder: (context, setState) => Slider(
+                                                                                      value: _priority,
+                                                                                      max: 9,
+                                                                                      divisions: 9,
+                                                                                      label: "Priority:${(_priority + 1).round().toString()}",
+                                                                                      onChanged: (double value) {
+                                                                                        // print("$value");
+                                                                                        setState(() {
+                                                                                          _priority = value;
+                                                                                        });
+                                                                                        //print(_priority.round());
+                                                                                      },
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 20,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                                    children: [
+                                                                                      Column(
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        children: <Widget>[
+                                                                                          IconButton(
+                                                                                            icon: const Icon(
+                                                                                              Icons.person_add,
+                                                                                              color: Colors.white,
+                                                                                            ),
+                                                                                            tooltip: 'Add collaborators',
+                                                                                            onPressed: () {
+                                                                                              showModalBottomSheet(
+                                                                                                  backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                                                                                                  context: context,
+                                                                                                  builder: (BuildContext bc) {
+                                                                                                    return StreamBuilder<QuerySnapshot>(
+                                                                                                        stream: firestoreInstance.collection("Users").snapshots(),
+                                                                                                        builder: (context, snapshot) {
+                                                                                                          return Padding(
+                                                                                                            padding: const EdgeInsets.all(10),
+                                                                                                            child: Column(
+                                                                                                              children: [
+                                                                                                                const SizedBox(
+                                                                                                                  height: 20,
+                                                                                                                ),
+                                                                                                                TextField(
+                                                                                                                  onChanged: (value) => _runFilter(value),
+                                                                                                                  decoration: const InputDecoration(labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                                                                                                                ),
+                                                                                                                const SizedBox(
+                                                                                                                  height: 20,
+                                                                                                                ),
+                                                                                                                Expanded(
+                                                                                                                  child: _foundUsers.isNotEmpty
+                                                                                                                      ? RefreshIndicator(
+                                                                                                                          onRefresh: refreshList,
+                                                                                                                          backgroundColor: Colors.blue[900],
+                                                                                                                          color: Colors.white,
+                                                                                                                          child: StreamBuilder<QuerySnapshot>(
+                                                                                                                              stream: firestoreInstance.collection('Users').snapshots(),
+                                                                                                                              builder: (context, snapshot) {
+                                                                                                                                return ListView.builder(
+                                                                                                                                  shrinkWrap: true,
+                                                                                                                                  itemCount: _foundUsers.length,
+                                                                                                                                  itemBuilder: (context, index) => Card(
+                                                                                                                                    key: ValueKey(_foundUsers[index]["id"]),
+                                                                                                                                    color: Colors.grey,
+                                                                                                                                    elevation: 4,
+                                                                                                                                    margin: const EdgeInsets.symmetric(vertical: 10),
+                                                                                                                                    child: ListTile(
+                                                                                                                                      leading: IconButton(
+                                                                                                                                        onPressed: () {
+                                                                                                                                          setState(() {
+                                                                                                                                            all = all + 1;
+                                                                                                                                            if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                                                                              setState(() {
+                                                                                                                                                priority = "green";
+                                                                                                                                              });
+                                                                                                                                            } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                                                                              setState(() {
+                                                                                                                                                priority = "yellow";
+                                                                                                                                              });
+                                                                                                                                            } else {
+                                                                                                                                              setState(() {
+                                                                                                                                                priority = "red";
+                                                                                                                                              });
+                                                                                                                                            }
+                                                                                                                                          });
+
+                                                                                                                                          firestoreInstance.collection("Users").doc('${_foundUsers[index]['id']}').collection('Task').doc('${date[index]}').set({
+                                                                                                                                            'Task': Task,
+                                                                                                                                            'Date': date[index],
+                                                                                                                                            'Priority': priority,
+                                                                                                                                            'status': false,
+                                                                                                                                            'sdate': _sdate,
+                                                                                                                                            'meet': meet,
+                                                                                                                                            'Details': tdet,
+                                                                                                                                          });
+                                                                                                                                          showDialog(
+                                                                                                                                              context: context,
+                                                                                                                                              barrierDismissible: true,
+                                                                                                                                              builder: (BuildContext bs) {
+                                                                                                                                                return AlertDialog(
+                                                                                                                                                  title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
+                                                                                                                                                );
+                                                                                                                                              });
+                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
+                                                                                                                                        },
+                                                                                                                                        icon: Icon(Icons.add),
+                                                                                                                                      ),
+                                                                                                                                      title: Text(_foundUsers[index]['username']),
+                                                                                                                                      subtitle: Text('${_foundUsers[index]["desig"]}'),
+                                                                                                                                      trailing: IconButton(
+                                                                                                                                        icon: Icon(
+                                                                                                                                          Icons.chat,
+                                                                                                                                          color: Colors.white,
+                                                                                                                                        ),
+                                                                                                                                        onPressed: () {
+                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
+                                                                                                                                        },
+                                                                                                                                      ),
+                                                                                                                                    ),
+                                                                                                                                  ),
+                                                                                                                                );
+                                                                                                                              }),
+                                                                                                                        )
+                                                                                                                      : const Text(
+                                                                                                                          'No results found',
+                                                                                                                          style: TextStyle(fontSize: 24),
+                                                                                                                        ),
+                                                                                                                ),
+                                                                                                              ],
+                                                                                                            ),
+                                                                                                          );
+                                                                                                        });
+                                                                                                  });
+                                                                                            },
+                                                                                          ),
+                                                                                          Text(
+                                                                                            'Collaborate',
+                                                                                            style: TextStyle(color: Colors.white),
+                                                                                          )
+                                                                                        ],
+                                                                                      ),
+                                                                                      Column(
+                                                                                        mainAxisSize: MainAxisSize.min,
+                                                                                        children: <Widget>[
+                                                                                          IconButton(
+                                                                                            icon: const Icon(
+                                                                                              Icons.calendar_today,
+                                                                                              color: Colors.white,
+                                                                                            ),
+                                                                                            tooltip: 'Add meet',
+                                                                                            onPressed: () {
+                                                                                              /*_launchInWebViewOrVC(
+                                                                        _url);*/
+                                                                                              setState(() {
+                                                                                                mcreate = true;
+                                                                                                print("meet$mcreate");
+                                                                                              });
+                                                                                            },
+                                                                                          ),
+                                                                                          Text(
+                                                                                            'Meeting',
+                                                                                            style: TextStyle(color: Colors.white),
+                                                                                          )
+                                                                                        ],
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                  Padding(
+                                                                                    padding: EdgeInsets.only(top: 40),
+                                                                                    child: Container(
+                                                                                      decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                                                      width: 350,
+                                                                                      height: 50,
+                                                                                      padding: EdgeInsets.only(left: 4),
+                                                                                      child: TextFormField(
+                                                                                        style: TextStyle(fontSize: 18, color: Colors.white),
+                                                                                        decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
+                                                                                        keyboardType: TextInputType.visiblePassword,
+                                                                                        obscureText: false,
+                                                                                        onChanged: (value) {
+                                                                                          meet = value;
+                                                                                        },
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          actions: <Widget>[
+                                                                            MaterialButton(
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  all = all - 1;
+                                                                                  if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                    setState(() {
+                                                                                      priority = "green";
+                                                                                    });
+                                                                                  } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                    setState(() {
+                                                                                      priority = "yellow";
+                                                                                    });
+                                                                                  } else {
+                                                                                    setState(() {
+                                                                                      priority = "red";
+                                                                                    });
+                                                                                  }
+                                                                                });
+                                                                                firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').update({
+                                                                                  'Task': Task,
+                                                                                  //'Date': dateTime,
+                                                                                  'Priority': priority,
+                                                                                  'status': false,
+                                                                                  'meet': meet,
+                                                                                  'Details': tdet,
+                                                                                });
+                                                                                firestoreInstance.collection("Users").doc("$uid").update({
+                                                                                  'number': all
+                                                                                });
+                                                                                refreshList();
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              color: Colors.blue[900],
+                                                                              child: Text(
+                                                                                "Update",
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                                            ),
+                                                                            MaterialButton(
+                                                                              onPressed: () {
+                                                                                setState(() {
+                                                                                  all = all - 1;
+                                                                                });
+                                                                                firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').delete();
+                                                                                firestoreInstance.collection("Users").doc('$uid').update({
+                                                                                  'number': all
+                                                                                });
+                                                                                Navigator.pop(context);
+                                                                                refreshList();
+                                                                              },
+                                                                              color: Colors.blue[900],
+                                                                              child: Text(
+                                                                                "Mark as Done",
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                                            ),
+                                                                            SizedBox(height: 40)
+                                                                          ],
+                                                                          elevation:
+                                                                              24,
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .edit,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    showDialog<
+                                                                        void>(
+                                                                      context:
+                                                                          context,
+                                                                      barrierDismissible:
+                                                                          false, // user must tap button!
+                                                                      builder:
+                                                                          (BuildContext
+                                                                              context) {
+                                                                        return AlertDialog(
+                                                                          backgroundColor: Color.fromARGB(
+                                                                              255,
+                                                                              71,
+                                                                              71,
+                                                                              79),
+                                                                          title:
+                                                                              const Text('Details', style: TextStyle(color: Colors.white)),
+                                                                          content:
+                                                                              SingleChildScrollView(
+                                                                            child: ListBody(
+                                                                              children: <Widget>[
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Text("Details: ${tdetail[index]}", style: TextStyle(color: Colors.white)),
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
+                                                                                ),
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: TextButton(
+                                                                                      onPressed: () {
+                                                                                        _launchmeet("https://${meetl[index]}");
+                                                                                      },
+                                                                                      child: Text("Meet Link: ${(meetl[index])}")),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          actions: <Widget>[
+                                                                            TextButton(
+                                                                              child: const Text('Accept'),
+                                                                              onPressed: () {
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
+                                                                          ],
+                                                                          elevation:
+                                                                              24,
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons
+                                                                        .remove_red_eye,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  )),
+                                                            ],
                                                           ),
                                                         ),
                                                         //Text("${Status[index]}"),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      width: 100,
-                                                    ),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              showDialog<void>(
-                                                                context:
-                                                                    context,
-                                                                barrierDismissible:
-                                                                    false, // user must tap button!
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return AlertDialog(
-                                                                    backgroundColor:
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            71,
-                                                                            71,
-                                                                            79),
-                                                                    title: const Text(
-                                                                        'Details',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.white)),
-                                                                    content:
-                                                                        SingleChildScrollView(
-                                                                      child:
-                                                                          ListBody(
-                                                                        children: <
-                                                                            Widget>[
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                                Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                                Text("Details: ${tdet[index]}", style: TextStyle(color: Colors.white)),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                                Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                                Text("Image:"),
-                                                                          ),
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.all(8.0),
-                                                                            child: TextButton(
-                                                                                onPressed: () {
-                                                                                  _launchmeet("https://${meetl[index]}");
-                                                                                },
-                                                                                child: Text("Meet Link: ${(meetl[index])}")),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    actions: <
-                                                                        Widget>[
-                                                                      TextButton(
-                                                                        child: const Text(
-                                                                            'Accept'),
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                      ),
-                                                                    ],
-                                                                    elevation:
-                                                                        24,
-                                                                  );
-                                                                },
-                                                              );
-                                                            },
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .remove_red_eye,
-                                                              color:
-                                                                  Colors.white,
-                                                            )),
                                                       ],
                                                     ),
                                                   ],
@@ -1346,20 +1092,22 @@ class _homeState extends State<home> {
                                         children: [
                                           Center(
                                               child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                8, 200, 8, 8),
+                                            padding:
+                                                const EdgeInsets.fromLTRB(
+                                                    8, 200, 8, 8),
                                             child: Image(
-                                              image: AssetImage("assets/2.png"),
+                                              image:
+                                                  AssetImage("assets/2.png"),
                                               height: 150,
                                               width: 200,
-                                              color:
-                                                  Colors.white.withOpacity(0.5),
+                                              color: Colors.white
+                                                  .withOpacity(0.5),
                                               colorBlendMode:
                                                   BlendMode.modulate,
                                             ),
                                           )),
                                           Text(
-                                            "No Old Tasks",
+                                            "No Up-Comming Tasks",
                                             style: TextStyle(
                                                 color: Colors.white
                                                     .withOpacity(0.7),
@@ -1391,8 +1139,279 @@ class _homeState extends State<home> {
                                 .collection('Task')
                                 .snapshots(),
                             builder: (context, snapshot) {
+                              return task.isEmpty ? ListView.builder(
+                                  itemCount: task.isEmpty ? 0 : task.length ,
+                                  itemBuilder: (context, int index) {
+                                    if (date[index].difference(DateTime.now()).isNegative ==true) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: OutlinedButton(
+                                          child: Card(
+                                            clipBehavior: Clip.antiAlias,
+                                            elevation: 20,
+                                            margin: EdgeInsets.all(0),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                BorderRadius.circular(20)),
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                minHeight: height(0.13),
+                                                minWidth: width(1),
+                                              ),
+                                              child: Container(
+                                                // height: 90,
+                                                // width: width(1),
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: pcol1[index],
+                                                      fit: BoxFit.cover),
+                                                  borderRadius:
+                                                  BorderRadius.circular(18),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .start,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                              top: 20,
+                                                              left: 10,
+                                                              right: 10),
+                                                          child: Text(
+                                                            "${task[index]}",
+                                                            softWrap: false,
+                                                            maxLines: 10,
+                                                            overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                height(
+                                                                    0.024),
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                          ),
+                                                        ),
+
+                                                        Padding(
+                                                          padding:
+                                                          EdgeInsets.only(
+                                                              top: 20,
+                                                              left: 10,
+                                                              bottom: 10),
+                                                          child: Text(
+                                                            "${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                height(
+                                                                    0.02),
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                          ),
+                                                        ),
+                                                        //Text("${Status[index]}"),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      width: 100,
+                                                    ),
+                                                    Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              showDialog<void>(
+                                                                context:
+                                                                context,
+                                                                barrierDismissible:
+                                                                false, // user must tap button!
+                                                                builder:
+                                                                    (BuildContext
+                                                                context) {
+                                                                  return AlertDialog(
+                                                                    backgroundColor:
+                                                                    Color.fromARGB(
+                                                                        255,
+                                                                        71,
+                                                                        71,
+                                                                        79),
+                                                                    title: const Text(
+                                                                        'Details',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                            Colors.white)),
+                                                                    content:
+                                                                    SingleChildScrollView(
+                                                                      child:
+                                                                      ListBody(
+                                                                        children: <
+                                                                            Widget>[
+                                                                          Padding(
+                                                                            padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                            Text("Task: ${task[index]}", style: TextStyle(color: Colors.white)),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                            Text("Details: ${tdet[index]}", style: TextStyle(color: Colors.white)),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                            Text("Ends on: ${(date[index].day)}-${(date[index].month)}-${(date[index].year)} ${date[index].hour}:${date[index].minute}", style: TextStyle(color: Colors.white)),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                            child:
+                                                                            Text("Image:"),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                            child: TextButton(
+                                                                                onPressed: () {
+                                                                                  _launchmeet("https://${meetl[index]}");
+                                                                                },
+                                                                                child: Text("Meet Link: ${(meetl[index])}")),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    actions: <
+                                                                        Widget>[
+                                                                      TextButton(
+                                                                        child: const Text(
+                                                                            'Accept'),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                    elevation:
+                                                                    24,
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            icon: Icon(
+                                                              Icons
+                                                                  .remove_red_eye,
+                                                              color:
+                                                              Colors.white,
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onPressed: () {},
+
+                                          //
+                                        ),
+                                      );
+                                    } else {
+                                      return Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                              child: Padding(
+                                                padding: const EdgeInsets.fromLTRB(
+                                                    8, 200, 8, 8),
+                                                child: Image(
+                                                  image: AssetImage("assets/2.png"),
+                                                  height: 150,
+                                                  width: 200,
+                                                  color:
+                                                  Colors.white.withOpacity(0.5),
+                                                  colorBlendMode:
+                                                  BlendMode.modulate,
+                                                ),
+                                              )),
+                                          Text(
+                                            "No Old Tasks",
+                                            style: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.7),
+                                                fontSize: 22),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                  }):Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        8, 8, 8, 8),
+                                    child: Image(
+                                      image: AssetImage("assets/2.png"),
+                                      height: 150,
+                                      width: 200,
+                                      color:
+                                      Colors.white.withOpacity(0.5),
+                                      colorBlendMode:
+                                      BlendMode.modulate,
+                                    ),
+                                  ),
+                                  Text(
+                                    "No Old Tasks",
+                                    style: TextStyle(
+                                        color: Colors.white
+                                            .withOpacity(0.7),
+                                        fontSize: 22),
+                                  ),
+                                ],
+                              );
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    RefreshIndicator(
+                      onRefresh: refreshList,
+                      backgroundColor: Colors.purple,
+                      color: Colors.white,
+                      child: Container(
+                        height: 660,
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: firestoreInstance
+                                .collection("Users")
+                                .doc('$uid')
+                                .collection('Task')
+                                .snapshots(),
+                            builder: (context, snapshot) {
                               return ListView.builder(
-                                  itemCount: task.isEmpty ? 1 : task.length + 1,
+                                  itemCount: task.isEmpty ? 0 : task.length ,
                                   itemBuilder: (context, int index) {
                                     if (task[index].isEmpty != true) {
                                       return Padding(
