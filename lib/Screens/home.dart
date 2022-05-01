@@ -520,6 +520,29 @@ class _homeState extends State<home> {
                                   height: height(0.05),
                                 ),
                                 //Divider(color: Colors.blue, thickness: 2),
+                                Divider(color: Colors.white),
+
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                      "Microsoft Learn Student Ambassadors are a global group of on-campus ambassadors sponsored by Microsoft who are eager to help fellow students, lead in their local tech community,and develop technical and career skills for the future. ",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                                Text("\nWHAT IS MSC, KiiT Chapter ?",
+                                    style: TextStyle(color: Colors.white)),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                      "\nMicrosoft Student Community, KiiT chapter , is a technical community, under the wing of  Microsoft Learn Student Ambassadors.  Our community is dedicatedly working on elevating the coding culture at Kalinga Institute of Industrial Technology, Bhubaneswar by providing opportunities to students to work on projects and  boost their analytical and logical skills along with the coding.",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                      "\nOur Project Wing is dedicated to provide the exposure to projects, bootcamps, hackathons, and many fun activities to increase the knowledge of out fellow peers. We have a YouTube channel  where we document all our events, a great place to learn from.",
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                                Divider(color: Colors.white),
 
                                 Center(
                                     child: Text("Developer Team",
@@ -897,13 +920,36 @@ class _homeState extends State<home> {
                                         )
                                       ],
                                     )),
-                                // Padding(
-                                //   padding:
-                                //       const EdgeInsets.only(left: 20, right: 20),
-                                //   child: Text(
-                                //       "\n\nDev Team \n 1. Prashant Upadhyay-Backend,UI and Managenment \n 2. Shashank Deepak- UI/UX \n 3. Ankit Kumar and Pranshu Sarthak-Testing and Bug finding \n 4. Rakshita-Creatives,images and Logo \n 5. Bibek-UI Revamp",
-                                //       style: TextStyle(color: Colors.white)),
-                                // ),
+                                /*Microsoft Learn Student Ambassadors are a global group of on-campus ambassadors sponsored by 
+                                Microsoft who are eager to help fellow students, lead in their local tech community, 
+                                and develop technical and career skills for the future.
+
+                                WHAT IS MSC, KiiT Chapter ?
+
+                                Microsoft Student Community, KiiT chapter , is a technical community, under the wing of 
+                                Microsoft Learn Student Ambassadors. 
+                                Our community is dedicatedly working on elevating the coding culture at Kalinga Institute of 
+                                Industrial Technology, Bhubaneswar by providing opportunities to students to work on projects and 
+                                boost their analytical and logical skills along with the coding.
+
+                                Our Project Wing is dedicated to provide the exposure to projects, bootcamps, hackathons, 
+                                and many fun activities to increase the knowledge of out fellow peers. We have a YouTube channel 
+                                where we document all our events, a great place to learn from.
+                                style: TextStyle(color:Colors.white)
+                                */
+                                // Divider(color: Colors.white),
+                                // Text(
+                                //     "Microsoft Learn Student Ambassadors are a global group of on-campus ambassadors sponsored by Microsoft who are eager to help fellow students, lead in their local tech community,and develop technical and career skills for the future. ",
+                                //     style: TextStyle(color: Colors.white)),
+                                // Text("\nWHAT IS MSC, KiiT Chapter ?",
+                                //     style: TextStyle(color: Colors.white)),
+                                // Text(
+                                //     "\nMicrosoft Student Community, KiiT chapter , is a technical community, under the wing of  Microsoft Learn Student Ambassadors.  Our community is dedicatedly working on elevating the coding culture at Kalinga Institute of Industrial Technology, Bhubaneswar by providing opportunities to students to work on projects and  boost their analytical and logical skills along with the coding.",
+                                //     style: TextStyle(color: Colors.white)),
+                                // Text(
+                                //     "\nOur Project Wing is dedicated to provide the exposure to projects, bootcamps, hackathons, and many fun activities to increase the knowledge of out fellow peers. We have a YouTube channel  where we document all our events, a great place to learn from.",
+                                //     style: TextStyle(color: Colors.white)),
+                                // Divider(color: Colors.white),
                               ],
                             ),
                           );
