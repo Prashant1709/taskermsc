@@ -126,7 +126,7 @@ class _homeState extends State<home> {
         flutterLocalNotificationsPlugin.show(
             0,
             "Tasker",
-            "One of your tasks is near deadline",
+            "One of your tasks is near deadline, or has crossed it, please check",
             NotificationDetails(
                 android: AndroidNotificationDetails(channel.id, channel.name,
                     importance: Importance.high,
@@ -904,52 +904,13 @@ class _homeState extends State<home> {
                                                         fontSize: 18,
                                                       )),
                                                 ),
-                                                // Text("",
-                                                //     style: TextStyle(
-                                                //       color: Colors.white,
-                                                //       fontSize: 18,
-                                                //     )),
-                                                // Text("",
-                                                //     style: TextStyle(
-                                                //       color: Colors.white,
-                                                //       fontSize: 18,
-                                                //     ))
+
                                               ],
                                             )
                                           ],
                                         )
                                       ],
                                     )),
-                                /*Microsoft Learn Student Ambassadors are a global group of on-campus ambassadors sponsored by 
-                                Microsoft who are eager to help fellow students, lead in their local tech community, 
-                                and develop technical and career skills for the future.
-
-                                WHAT IS MSC, KiiT Chapter ?
-
-                                Microsoft Student Community, KiiT chapter , is a technical community, under the wing of 
-                                Microsoft Learn Student Ambassadors. 
-                                Our community is dedicatedly working on elevating the coding culture at Kalinga Institute of 
-                                Industrial Technology, Bhubaneswar by providing opportunities to students to work on projects and 
-                                boost their analytical and logical skills along with the coding.
-
-                                Our Project Wing is dedicated to provide the exposure to projects, bootcamps, hackathons, 
-                                and many fun activities to increase the knowledge of out fellow peers. We have a YouTube channel 
-                                where we document all our events, a great place to learn from.
-                                style: TextStyle(color:Colors.white)
-                                */
-                                // Divider(color: Colors.white),
-                                // Text(
-                                //     "Microsoft Learn Student Ambassadors are a global group of on-campus ambassadors sponsored by Microsoft who are eager to help fellow students, lead in their local tech community,and develop technical and career skills for the future. ",
-                                //     style: TextStyle(color: Colors.white)),
-                                // Text("\nWHAT IS MSC, KiiT Chapter ?",
-                                //     style: TextStyle(color: Colors.white)),
-                                // Text(
-                                //     "\nMicrosoft Student Community, KiiT chapter , is a technical community, under the wing of  Microsoft Learn Student Ambassadors.  Our community is dedicatedly working on elevating the coding culture at Kalinga Institute of Industrial Technology, Bhubaneswar by providing opportunities to students to work on projects and  boost their analytical and logical skills along with the coding.",
-                                //     style: TextStyle(color: Colors.white)),
-                                // Text(
-                                //     "\nOur Project Wing is dedicated to provide the exposure to projects, bootcamps, hackathons, and many fun activities to increase the knowledge of out fellow peers. We have a YouTube channel  where we document all our events, a great place to learn from.",
-                                //     style: TextStyle(color: Colors.white)),
-                                // Divider(color: Colors.white),
                               ],
                             ),
                           );
@@ -1004,13 +965,13 @@ class _homeState extends State<home> {
                                 .collection('Task')
                                 .snapshots(),
                             builder: (context, snapshot) {
-                              return ListView.builder(
+                              return task!.isNotEmpty ? ListView.builder(
                                   controller: scrollController,
                                   itemCount: task.isEmpty ? 0 : task.length,
                                   itemBuilder: (context, int index) {
                                     if (date[index]
-                                            .difference(DateTime.now())
-                                            .isNegative !=
+                                        .difference(DateTime.now())
+                                        .isNegative !=
                                         true) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -1021,7 +982,7 @@ class _homeState extends State<home> {
                                             margin: EdgeInsets.all(0),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(20)),
+                                                BorderRadius.circular(20)),
                                             child: ConstrainedBox(
                                               constraints: BoxConstraints(
                                                 minHeight: height(0.13),
@@ -1035,47 +996,47 @@ class _homeState extends State<home> {
                                                       image: pcol1[index],
                                                       fit: BoxFit.cover),
                                                   borderRadius:
-                                                      BorderRadius.circular(18),
+                                                  BorderRadius.circular(18),
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
                                                   children: [
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10,
-                                                                  right: 10),
+                                                          EdgeInsets.only(
+                                                              top: 20,
+                                                              left: 10,
+                                                              right: 10),
                                                           child: Text(
                                                             "${task[index]}",
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize:
-                                                                    height(
-                                                                        0.024),
+                                                                height(
+                                                                    0.024),
                                                                 fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
+                                                                FontWeight
+                                                                    .bold),
                                                           ),
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              EdgeInsets.only(
-                                                                  top: 20,
-                                                                  left: 10,
-                                                                  bottom: 10),
+                                                          EdgeInsets.only(
+                                                              top: 20,
+                                                              left: 10,
+                                                              bottom: 10),
                                                           child: Row(
                                                             mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                             children: [
                                                               Text(
                                                                 "End Date: " +
@@ -1086,11 +1047,11 @@ class _homeState extends State<home> {
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
-                                                                        height(
-                                                                            0.02),
+                                                                    height(
+                                                                        0.02),
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                                    FontWeight
+                                                                        .bold),
                                                               ),
                                                               SizedBox(
                                                                 width: 50,
@@ -1101,35 +1062,35 @@ class _homeState extends State<home> {
                                                                     showDialog<
                                                                         void>(
                                                                       context:
-                                                                          context,
+                                                                      context,
                                                                       barrierDismissible:
-                                                                          true,
+                                                                      true,
                                                                       // user must tap button!
                                                                       builder:
                                                                           (BuildContext
-                                                                              context) {
+                                                                      context) {
                                                                         return AlertDialog(
                                                                           shape:
-                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+                                                                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
                                                                           backgroundColor: Color.fromARGB(
                                                                               255,
                                                                               48,
                                                                               48,
                                                                               54),
                                                                           title:
-                                                                              Padding(
+                                                                          Padding(
                                                                             padding:
-                                                                                const EdgeInsets.only(left: 12, top: 10),
+                                                                            const EdgeInsets.only(left: 12, top: 10),
                                                                             child:
-                                                                                const Text(
+                                                                            const Text(
                                                                               'Update Task',
                                                                               style: TextStyle(color: Color.fromARGB(255, 250, 251, 252), fontSize: 28),
                                                                             ),
                                                                           ),
                                                                           content:
-                                                                              SingleChildScrollView(
+                                                                          SingleChildScrollView(
                                                                             child:
-                                                                                Material(
+                                                                            Material(
                                                                               color: Color.fromARGB(255, 48, 48, 54),
                                                                               child: Column(
                                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1235,81 +1196,81 @@ class _homeState extends State<home> {
                                                                                                                 Expanded(
                                                                                                                   child: _foundUsers.isNotEmpty
                                                                                                                       ? RefreshIndicator(
-                                                                                                                          onRefresh: refreshList,
-                                                                                                                          backgroundColor: Colors.blue[900],
-                                                                                                                          color: Colors.white,
-                                                                                                                          child: StreamBuilder<QuerySnapshot>(
-                                                                                                                              stream: firestoreInstance.collection('Users').snapshots(),
-                                                                                                                              builder: (context, snapshot) {
-                                                                                                                                return ListView.builder(
-                                                                                                                                  shrinkWrap: true,
-                                                                                                                                  itemCount: _foundUsers.length,
-                                                                                                                                  itemBuilder: (context, index) => Card(
-                                                                                                                                    key: ValueKey(_foundUsers[index]["id"]),
-                                                                                                                                    color: Colors.grey,
-                                                                                                                                    elevation: 4,
-                                                                                                                                    margin: const EdgeInsets.symmetric(vertical: 10),
-                                                                                                                                    child: ListTile(
-                                                                                                                                      leading: IconButton(
-                                                                                                                                        onPressed: () {
-                                                                                                                                          setState(() {
-                                                                                                                                            all = all + 1;
-                                                                                                                                            if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
-                                                                                                                                              setState(() {
-                                                                                                                                                priority = "green";
-                                                                                                                                              });
-                                                                                                                                            } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
-                                                                                                                                              setState(() {
-                                                                                                                                                priority = "yellow";
-                                                                                                                                              });
-                                                                                                                                            } else {
-                                                                                                                                              setState(() {
-                                                                                                                                                priority = "red";
-                                                                                                                                              });
-                                                                                                                                            }
-                                                                                                                                          });
+                                                                                                                    onRefresh: refreshList,
+                                                                                                                    backgroundColor: Colors.blue[900],
+                                                                                                                    color: Colors.white,
+                                                                                                                    child: StreamBuilder<QuerySnapshot>(
+                                                                                                                        stream: firestoreInstance.collection('Users').snapshots(),
+                                                                                                                        builder: (context, snapshot) {
+                                                                                                                          return ListView.builder(
+                                                                                                                            shrinkWrap: true,
+                                                                                                                            itemCount: _foundUsers.length,
+                                                                                                                            itemBuilder: (context, index) => Card(
+                                                                                                                              key: ValueKey(_foundUsers[index]["id"]),
+                                                                                                                              color: Colors.grey,
+                                                                                                                              elevation: 4,
+                                                                                                                              margin: const EdgeInsets.symmetric(vertical: 10),
+                                                                                                                              child: ListTile(
+                                                                                                                                leading: IconButton(
+                                                                                                                                  onPressed: () {
+                                                                                                                                    setState(() {
+                                                                                                                                      all = all + 1;
+                                                                                                                                      if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                                                                        setState(() {
+                                                                                                                                          priority = "green";
+                                                                                                                                        });
+                                                                                                                                      } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                                                                        setState(() {
+                                                                                                                                          priority = "yellow";
+                                                                                                                                        });
+                                                                                                                                      } else {
+                                                                                                                                        setState(() {
+                                                                                                                                          priority = "red";
+                                                                                                                                        });
+                                                                                                                                      }
+                                                                                                                                    });
 
-                                                                                                                                          firestoreInstance.collection("Users").doc('${_foundUsers[index]['id']}').collection('Task').doc('${date[index]}').set({
-                                                                                                                                            'Task': Task,
-                                                                                                                                            'Date': date[index],
-                                                                                                                                            'Priority': priority,
-                                                                                                                                            'status': false,
-                                                                                                                                            'sdate': _sdate,
-                                                                                                                                            'meet': meet,
-                                                                                                                                            'Details': tdet,
-                                                                                                                                          });
-                                                                                                                                          showDialog(
-                                                                                                                                              context: context,
-                                                                                                                                              barrierDismissible: true,
-                                                                                                                                              builder: (BuildContext bs) {
-                                                                                                                                                return AlertDialog(
-                                                                                                                                                  title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
-                                                                                                                                                );
-                                                                                                                                              });
-                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
-                                                                                                                                        },
-                                                                                                                                        icon: Icon(Icons.add),
-                                                                                                                                      ),
-                                                                                                                                      title: Text(_foundUsers[index]['username']),
-                                                                                                                                      subtitle: Text('${_foundUsers[index]["desig"]}'),
-                                                                                                                                      trailing: IconButton(
-                                                                                                                                        icon: Icon(
-                                                                                                                                          Icons.chat,
-                                                                                                                                          color: Colors.white,
-                                                                                                                                        ),
-                                                                                                                                        onPressed: () {
-                                                                                                                                          _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
-                                                                                                                                        },
-                                                                                                                                      ),
-                                                                                                                                    ),
+                                                                                                                                    firestoreInstance.collection("Users").doc('${_foundUsers[index]['id']}').collection('Task').doc('${date[index]}').set({
+                                                                                                                                      'Task': Task,
+                                                                                                                                      'Date': date[index],
+                                                                                                                                      'Priority': priority,
+                                                                                                                                      'status': false,
+                                                                                                                                      'sdate': _sdate,
+                                                                                                                                      'meet': meet,
+                                                                                                                                      'Details': tdet,
+                                                                                                                                    });
+                                                                                                                                    showDialog(
+                                                                                                                                        context: context,
+                                                                                                                                        barrierDismissible: true,
+                                                                                                                                        builder: (BuildContext bs) {
+                                                                                                                                          return AlertDialog(
+                                                                                                                                            title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
+                                                                                                                                          );
+                                                                                                                                        });
+                                                                                                                                    _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
+                                                                                                                                  },
+                                                                                                                                  icon: Icon(Icons.add),
+                                                                                                                                ),
+                                                                                                                                title: Text(_foundUsers[index]['username']),
+                                                                                                                                subtitle: Text('${_foundUsers[index]["desig"]}'),
+                                                                                                                                trailing: IconButton(
+                                                                                                                                  icon: Icon(
+                                                                                                                                    Icons.chat,
+                                                                                                                                    color: Colors.white,
                                                                                                                                   ),
-                                                                                                                                );
-                                                                                                                              }),
-                                                                                                                        )
+                                                                                                                                  onPressed: () {
+                                                                                                                                    _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
+                                                                                                                                  },
+                                                                                                                                ),
+                                                                                                                              ),
+                                                                                                                            ),
+                                                                                                                          );
+                                                                                                                        }),
+                                                                                                                  )
                                                                                                                       : const Text(
-                                                                                                                          'No results found',
-                                                                                                                          style: TextStyle(fontSize: 24),
-                                                                                                                        ),
+                                                                                                                    'No results found',
+                                                                                                                    style: TextStyle(fontSize: 24),
+                                                                                                                  ),
                                                                                                                 ),
                                                                                                               ],
                                                                                                             ),
@@ -1435,7 +1396,7 @@ class _homeState extends State<home> {
                                                                             SizedBox(height: 40)
                                                                           ],
                                                                           elevation:
-                                                                              24,
+                                                                          24,
                                                                         );
                                                                       },
                                                                     );
@@ -1451,12 +1412,12 @@ class _homeState extends State<home> {
                                                                     showDialog<
                                                                         void>(
                                                                       context:
-                                                                          context,
+                                                                      context,
                                                                       barrierDismissible:
-                                                                          false, // user must tap button!
+                                                                      false, // user must tap button!
                                                                       builder:
                                                                           (BuildContext
-                                                                              context) {
+                                                                      context) {
                                                                         return AlertDialog(
                                                                           backgroundColor: Color.fromARGB(
                                                                               255,
@@ -1467,9 +1428,9 @@ class _homeState extends State<home> {
                                                                               'Details',
                                                                               style: TextStyle(color: Colors.white)),
                                                                           content:
-                                                                              SingleChildScrollView(
+                                                                          SingleChildScrollView(
                                                                             child:
-                                                                                ListBody(
+                                                                            ListBody(
                                                                               children: <Widget>[
                                                                                 Padding(
                                                                                   padding: const EdgeInsets.all(8.0),
@@ -1504,7 +1465,7 @@ class _homeState extends State<home> {
                                                                             ),
                                                                           ],
                                                                           elevation:
-                                                                              24,
+                                                                          24,
                                                                         );
                                                                       },
                                                                     );
@@ -1534,33 +1495,58 @@ class _homeState extends State<home> {
                                     } else {
                                       return Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: [
-                                          Center(
+                                          SizedBox(height: 5,),
+                                          /*Center(
                                               child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                8, 200, 8, 8),
-                                            child: Image(
-                                              image: AssetImage("assets/2.png"),
-                                              height: 150,
-                                              width: 200,
-                                              color:
+                                                padding: const EdgeInsets.fromLTRB(
+                                                    8, 200, 8, 8),
+                                                child: Image(
+                                                  image: AssetImage("assets/2.png"),
+                                                  height: 150,
+                                                  width: 200,
+                                                  color:
                                                   Colors.white.withOpacity(0.5),
-                                              colorBlendMode:
+                                                  colorBlendMode:
                                                   BlendMode.modulate,
-                                            ),
-                                          )),
+                                                ),
+                                              )),
                                           Text(
-                                            "No Up-Comming Tasks",
+                                            "No Up-Coming Tasks",
                                             style: TextStyle(
                                                 color: Colors.white
                                                     .withOpacity(0.7),
                                                 fontSize: 22),
-                                          ),
+                                          ),*/
                                         ],
                                       );
                                     }
-                                  });
+                                  }):Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        8, 8, 8, 8),
+                                    child: Image(
+                                      image: AssetImage("assets/2.png"),
+                                      height: 150,
+                                      width: 200,
+                                      color:
+                                      Colors.white.withOpacity(0.5),
+                                      colorBlendMode: BlendMode.modulate,
+                                    ),
+                                  ),
+                                  Text(
+                                    "No Up-Coming Tasks",
+                                    style: TextStyle(
+                                        color:
+                                        Colors.white.withOpacity(0.7),
+                                        fontSize: 22),
+                                  ),
+                                ],
+                              );
                             }),
                       ),
                     ),
@@ -1583,7 +1569,7 @@ class _homeState extends State<home> {
                                 .collection('Task')
                                 .snapshots(),
                             builder: (context, snapshot) {
-                              return task.isEmpty
+                              return task!.isNotEmpty
                                   ? ListView.builder(
                                       itemCount: task.isEmpty ? 0 : task.length,
                                       itemBuilder: (context, int index) {
@@ -1778,7 +1764,8 @@ class _homeState extends State<home> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Center(
+                                              SizedBox(height: 5,),
+                                             /* Center(
                                                   child: Padding(
                                                 padding:
                                                     const EdgeInsets.fromLTRB(
@@ -1800,7 +1787,7 @@ class _homeState extends State<home> {
                                                     color: Colors.white
                                                         .withOpacity(0.7),
                                                     fontSize: 22),
-                                              ),
+                                              ),*/
                                             ],
                                           );
                                         }
@@ -1852,7 +1839,8 @@ class _homeState extends State<home> {
                                 .collection('Task')
                                 .snapshots(),
                             builder: (context, snapshot) {
-                              return ListView.builder(
+                              return task!.isNotEmpty ?
+                                ListView.builder(
                                   itemCount: task.isEmpty ? 0 : task.length,
                                   itemBuilder: (context, int index) {
                                     if (task[index].isEmpty != true) {
@@ -2456,7 +2444,8 @@ class _homeState extends State<home> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Center(
+                                          SizedBox(height: 5,),
+                                          /*Center(
                                               child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 8, 200, 8, 8),
@@ -2476,11 +2465,37 @@ class _homeState extends State<home> {
                                                 color: Colors.white
                                                     .withOpacity(0.7),
                                                 fontSize: 22),
-                                          ),
+                                          ),*/
                                         ],
                                       );
                                     }
-                                  });
+                                  }):Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            8, 8, 8, 8),
+                                        child: Image(
+                                          image: AssetImage("assets/2.png"),
+                                          height: 150,
+                                          width: 200,
+                                          color:
+                                          Colors.white.withOpacity(0.5),
+                                          colorBlendMode:
+                                          BlendMode.modulate,
+                                        ),
+                                      )),
+                                  Text(
+                                    "History Cleared",
+                                    style: TextStyle(
+                                        color: Colors.white
+                                            .withOpacity(0.7),
+                                        fontSize: 22),
+                                  ),
+                                ],
+                              );
                             }),
                       ),
                     ),
