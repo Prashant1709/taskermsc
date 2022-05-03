@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class calendar extends StatefulWidget {
   const calendar({Key? key}) : super(key: key);
@@ -23,6 +24,9 @@ class _calendarState extends State<calendar> {
   String uid = "";
   String Task = "";
   String priority = "";
+  String meet="";
+  String tdet="";
+  bool mcreate=false;
   double _priority = 0;
   CalendarController _controller = CalendarController();
   String? _text = '', _titleText = '';
@@ -35,6 +39,15 @@ class _calendarState extends State<calendar> {
   //List <String> priority=[];
   List<bool> Status = [];
   List pcol1 = [];
+  List<String> uids = [];
+  List<String> users = [];
+  List<String> udesig = [];
+  List<String>meetl=[];
+  List<String>tdetail=[];
+  List<String>assignee=[];
+  List<String> uno = [];
+  List<Map<String, dynamic>> _foundUsers = [];
+  List<Map<String, dynamic>> _Users = [];
   @override
   void initState() {
     super.initState();
@@ -51,15 +64,15 @@ class _calendarState extends State<calendar> {
         .collection('Users')
         .doc('$uid')
         .snapshots()
-        .listen((result) {
-      print(result.get("username"));
-      username = result.get("username");
-      all=result.get('number');
+        .listen((event) {
+      all = event.get('number');
     });
+
     firestoreInstance
         .collection("Users")
         .doc('$uid')
-        .collection('Task').snapshots()
+        .collection('Task')
+        .snapshots()
         .listen((event) {
       for (var list in event.docs) {
         Timestamp timestamp = list.get('Date');
@@ -71,24 +84,88 @@ class _calendarState extends State<calendar> {
         task.add(task1);
         var sta = list.get('status');
         Status.add(sta);
+        var link = list.get('meet');
+        meetl.add(link);
+        //print(link);
+        var assigner=list.get('assignee');
+        assignee.add(assigner);
+        var det = list.get('Details');
+        tdetail.add(det);
         var prio = list.get('Priority');
-        //priority.add(prio);
+        // priority.add(prio);
         if (prio == "green") {
           setState(() {
-            pcol1.add(Colors.green);
+            pcol1.add(AssetImage("assets/green_background.jpg"));
           });
         }
         if (prio == "yellow") {
           setState(() {
-            pcol1.add(Colors.amber);
+            pcol1.add(AssetImage("assets/yellow_background.png"));
           });
         }
         if (prio == "red") {
           setState(() {
-            pcol1.add(Colors.red);
+            pcol1.add(AssetImage("assets/red_background.jpg"));
           });
         }
       }
+    });
+    firestoreInstance.collection('Users').snapshots().listen((event) {
+      for (var i in event.docs) {
+        if (i.id != _auth.currentUser?.uid) {
+          _Users.add({
+            "id": i.id,
+            "username": i.get('username'),
+            "phone": i.get('phone'),
+            "desig": i.get('designation')
+          });
+        }
+      }
+    });
+    _foundUsers = _Users;
+  }
+  Future<Null> refreshUser() async {
+    await Future.delayed(Duration(seconds: 2));
+    uids.clear();
+    users.clear();
+    udesig.clear();
+    uno.clear();
+    _Users.clear();
+    await Future.delayed(Duration(seconds: 1));
+    getdat();
+  }
+  Future<Null> refreshList() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      Task = "";
+    });
+    date.clear();
+    task.clear();
+    meetl.clear();
+    uids.clear();
+    users.clear();
+    udesig.clear();
+    uno.clear();
+    Status.clear();
+    pcol1.clear();
+    tdetail.clear();
+    _Users.clear();
+    await Future.delayed(Duration(seconds: 1));
+    getdat();
+  }
+  void _runFilter(String enteredKeyword) {
+    List<Map<String, dynamic>> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = _Users;
+    } else {
+      results = _Users.where((user) => user["username"]
+          .toLowerCase()
+          .contains(enteredKeyword.toLowerCase())).toList();
+    }
+
+    // Refresh the UI
+    setState(() {
+      _foundUsers = results;
     });
   }
 
@@ -141,7 +218,38 @@ class _calendarState extends State<calendar> {
     });
     //print(dateTime);
   }
+  Future<void> _launchInWebViewOrVC(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
 
+  Future<void> _launcchat(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> _launchmeet(String url) async {
+    if (!await launch(
+      url,
+      forceSafariVC: false,
+      forceWebView: false,
+      headers: <String, String>{'my_header_key': 'my_header_value'},
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
   void calendarTapped(CalendarTapDetails details) {
     showDialog(
         context: context,
@@ -171,7 +279,7 @@ class _calendarState extends State<calendar> {
                                   mainAxisSpacing: 10),
                           itemCount: task.length,
                           itemBuilder: (context, int index) {
-                            if (task[0].isEmpty) {
+                            if (task[0].isEmpty && Status[index]==false) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(
@@ -232,62 +340,56 @@ class _calendarState extends State<calendar> {
                                 ),
 
                                 onPressed: () {
-                                  showDialog<void>(
-                                    context: context,
-                                    barrierDismissible: true,
+                                  showDialog<
+                                      void>(
+                                    context:
+                                    context,
+                                    barrierDismissible:
+                                    true,
                                     // user must tap button!
-                                    builder: (BuildContext context) {
+                                    builder:
+                                        (BuildContext
+                                    context) {
                                       return AlertDialog(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 48, 48, 54),
-                                        title: const Text(
-                                          'Update Task',
-                                          style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 250, 251, 252),
-                                              fontSize: 22),
+                                        shape:
+                                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
+                                        backgroundColor: Color.fromARGB(
+                                            255,
+                                            48,
+                                            48,
+                                            54),
+                                        title:
+                                        Padding(
+                                          padding:
+                                          const EdgeInsets.only(left: 12, top: 10),
+                                          child:
+                                          const Text(
+                                            'Update Task',
+                                            style: TextStyle(color: Color.fromARGB(255, 250, 251, 252), fontSize: 28),
+                                          ),
                                         ),
-                                        content: SingleChildScrollView(
-                                          child: Material(
-                                            color:
-                                                Color.fromARGB(255, 48, 48, 54),
+                                        content:
+                                        SingleChildScrollView(
+                                          child:
+                                          Material(
+                                            color: Color.fromARGB(255, 48, 48, 54),
                                             child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
                                                 SizedBox(
-                                                  height: 20,
+                                                  height: 10,
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
+                                                  padding: const EdgeInsets.only(left: 4.0, bottom: 20),
                                                   child: Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color:
-                                                                Colors.white),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),
+                                                    decoration: BoxDecoration(border: Border.all(color: Colors.white), borderRadius: BorderRadius.circular(5)),
                                                     width: 350,
                                                     height: 50,
-                                                    padding: EdgeInsets.only(
-                                                        left: 4),
+                                                    padding: EdgeInsets.only(left: 4),
                                                     child: TextFormField(
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.black),
-                                                      decoration: InputDecoration(
-                                                          border:
-                                                              InputBorder.none,
-                                                          hintText: "Type here",
-                                                          hintStyle: TextStyle(
-                                                              color:
-                                                                  Colors.grey)),
-                                                      keyboardType:
-                                                          TextInputType
-                                                              .visiblePassword,
+                                                      style: TextStyle(fontSize: 18, color: Colors.white),
+                                                      decoration: InputDecoration(border: InputBorder.none, hintText: "Title here(<25 chars)", hintStyle: TextStyle(color: Colors.grey)),
+                                                      keyboardType: TextInputType.visiblePassword,
                                                       obscureText: false,
                                                       onChanged: (value) {
                                                         Task = value;
@@ -295,49 +397,38 @@ class _calendarState extends State<calendar> {
                                                     ),
                                                   ),
                                                 ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    MaterialButton(
-                                                      onPressed: () {
-                                                        _selectDateTime(context);
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 10, bottom: 20),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                    width: 350,
+                                                    height: 50,
+                                                    padding: EdgeInsets.only(left: 4),
+                                                    child: TextFormField(
+                                                      style: TextStyle(fontSize: 18, color: Colors.white),
+                                                      decoration: InputDecoration(border: InputBorder.none, hintText: "Details here/Event Name", hintStyle: TextStyle(color: Colors.grey)),
+                                                      keyboardType: TextInputType.visiblePassword,
+                                                      obscureText: false,
+                                                      onChanged: (value) {
+                                                        tdet = value;
                                                       },
-                                                      color: Colors.blue[900],
-                                                      child: Text(
-                                                        "Select End Date",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10.0)),
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                                 SizedBox(
                                                   width: 30,
                                                 ),
                                                 Text(
                                                   "Set Priority",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18),
+                                                  style: TextStyle(color: Colors.white, fontSize: 18),
                                                 ),
                                                 StatefulBuilder(
-                                                  builder:
-                                                      (context, setState) =>
-                                                          Slider(
+                                                  builder: (context, setState) => Slider(
                                                     value: _priority,
-                                                            max: 9,
-                                                            divisions:9,
-                                                            label:"Priority:${(_priority+1).round().toString()}",
-                                                            onChanged: (double value) {
+                                                    max: 9,
+                                                    divisions: 9,
+                                                    label: "Priority:${(_priority + 1).round().toString()}",
+                                                    onChanged: (double value) {
                                                       // print("$value");
                                                       setState(() {
                                                         _priority = value;
@@ -349,23 +440,192 @@ class _calendarState extends State<calendar> {
                                                 SizedBox(
                                                   width: 20,
                                                 ),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        IconButton(
+                                                          icon: const Icon(
+                                                            Icons.person_add,
+                                                            color: Colors.white,
+                                                          ),
+                                                          tooltip: 'Add collaborators',
+                                                          onPressed: () {
+                                                            showModalBottomSheet(
+                                                                backgroundColor: Color.fromARGB(255, 0, 0, 0),
+                                                                context: context,
+                                                                builder: (BuildContext bc) {
+                                                                  return StreamBuilder<QuerySnapshot>(
+                                                                      stream: firestoreInstance.collection("Users").snapshots(),
+                                                                      builder: (context, snapshot) {
+                                                                        return Padding(
+                                                                          padding: const EdgeInsets.all(10),
+                                                                          child: Column(
+                                                                            children: [
+                                                                              const SizedBox(
+                                                                                height: 20,
+                                                                              ),
+                                                                              TextField(
+                                                                                onChanged: (value) => _runFilter(value),
+                                                                                decoration: const InputDecoration(labelText: 'Search', suffixIcon: Icon(Icons.search)),
+                                                                              ),
+                                                                              const SizedBox(
+                                                                                height: 20,
+                                                                              ),
+                                                                              Expanded(
+                                                                                child: _foundUsers.isNotEmpty
+                                                                                    ? RefreshIndicator(
+                                                                                  onRefresh: refreshList,
+                                                                                  backgroundColor: Colors.blue[900],
+                                                                                  color: Colors.white,
+                                                                                  child: StreamBuilder<QuerySnapshot>(
+                                                                                      stream: firestoreInstance.collection('Users').snapshots(),
+                                                                                      builder: (context, snapshot) {
+                                                                                        return ListView.builder(
+                                                                                          shrinkWrap: true,
+                                                                                          itemCount: _foundUsers.length,
+                                                                                          itemBuilder: (context, index) => Card(
+                                                                                            key: ValueKey(_foundUsers[index]["id"]),
+                                                                                            color: Colors.grey,
+                                                                                            elevation: 4,
+                                                                                            margin: const EdgeInsets.symmetric(vertical: 10),
+                                                                                            child: ListTile(
+                                                                                              leading: IconButton(
+                                                                                                onPressed: () {
+                                                                                                  setState(() {
+                                                                                                    all = all + 1;
+                                                                                                    if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                                      setState(() {
+                                                                                                        priority = "green";
+                                                                                                      });
+                                                                                                    } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                                      setState(() {
+                                                                                                        priority = "yellow";
+                                                                                                      });
+                                                                                                    } else {
+                                                                                                      setState(() {
+                                                                                                        priority = "red";
+                                                                                                      });
+                                                                                                    }
+                                                                                                  });
+
+                                                                                                  firestoreInstance.collection("Users").doc('${_foundUsers[index]['id']}').collection('Task').doc('${date[index]}').set({
+                                                                                                    'Task': Task,
+                                                                                                    'Date': date[index],
+                                                                                                    'Priority': priority,
+                                                                                                    'status': false,
+                                                                                                    'sdate': _sdate,
+                                                                                                    'meet': meet,
+                                                                                                    'assignee':_auth.currentUser?.displayName,
+                                                                                                    'Details': tdet,
+                                                                                                  });
+                                                                                                  showDialog(
+                                                                                                      context: context,
+                                                                                                      barrierDismissible: true,
+                                                                                                      builder: (BuildContext bs) {
+                                                                                                        return AlertDialog(
+                                                                                                          title: Text("Task Assigned to ${_foundUsers[index]['username']}"),
+                                                                                                        );
+                                                                                                      });
+                                                                                                  _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
+                                                                                                },
+                                                                                                icon: Icon(Icons.add),
+                                                                                              ),
+                                                                                              title: Text(_foundUsers[index]['username']),
+                                                                                              subtitle: Text('${_foundUsers[index]["desig"]}'),
+                                                                                              trailing: IconButton(
+                                                                                                icon: Icon(
+                                                                                                  Icons.chat,
+                                                                                                  color: Colors.white,
+                                                                                                ),
+                                                                                                onPressed: () {
+                                                                                                  _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
+                                                                                                },
+                                                                                              ),
+                                                                                            ),
+                                                                                          ),
+                                                                                        );
+                                                                                      }),
+                                                                                )
+                                                                                    : const Text(
+                                                                                  'No results found',
+                                                                                  style: TextStyle(fontSize: 24),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      });
+                                                                });
+                                                          },
+                                                        ),
+                                                        Text(
+                                                          'Collaborate',
+                                                          style: TextStyle(color: Colors.white),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        IconButton(
+                                                          icon: const Icon(
+                                                            Icons.calendar_today,
+                                                            color: Colors.white,
+                                                          ),
+                                                          tooltip: 'Add meet',
+                                                          onPressed: () {
+                                                            /*_launchInWebViewOrVC(
+                                                                        _url);*/
+                                                            setState(() {
+                                                              mcreate = true;
+                                                              print("meet$mcreate");
+                                                            });
+                                                          },
+                                                        ),
+                                                        Text(
+                                                          'Meeting',
+                                                          style: TextStyle(color: Colors.white),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(top: 40),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(5)),
+                                                    width: 350,
+                                                    height: 50,
+                                                    padding: EdgeInsets.only(left: 4),
+                                                    child: TextFormField(
+                                                      style: TextStyle(fontSize: 18, color: Colors.white),
+                                                      decoration: InputDecoration(border: InputBorder.none, hintText: "Meet link here", hintStyle: TextStyle(color: Colors.grey)),
+                                                      keyboardType: TextInputType.visiblePassword,
+                                                      obscureText: false,
+                                                      onChanged: (value) {
+                                                        meet = value;
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
                                         ),
-                                        actions: <Widget>[
+                                        actions: <
+                                            Widget>[
                                           MaterialButton(
                                             onPressed: () {
                                               setState(() {
                                                 all = all - 1;
-                                                if (_priority.toInt() >= 0 &&
-                                                    _priority.toInt() < 4) {
+                                                if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
                                                   setState(() {
                                                     priority = "green";
                                                   });
-                                                } else if (_priority.toInt() >=
-                                                        4 &&
-                                                    _priority.toInt() <= 7) {
+                                                } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
                                                   setState(() {
                                                     priority = "yellow";
                                                   });
@@ -375,76 +635,57 @@ class _calendarState extends State<calendar> {
                                                   });
                                                 }
                                               });
-                                              firestoreInstance
-                                                  .collection("Users")
-                                                  .doc('$uid')
-                                                  .collection('Task')
-                                                  .doc('${date[index]}')
-                                                  .update({
+                                              firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').update({
                                                 'Task': Task,
-                                                'Date': dateTime,
+                                                //'Date': dateTime,
                                                 'Priority': priority,
                                                 'status': false,
+                                                'assignee':_auth.currentUser?.displayName,
+                                                'meet': meet,
+                                                'Details': tdet,
                                               });
-                                              firestoreInstance
-                                                  .collection("Users")
-                                                  .doc("$uid")
-                                                  .update({'number': all});
+                                              firestoreInstance.collection("Users").doc("$uid").update({
+                                                'number': all
+                                              });
+                                              refreshList();
                                               Navigator.pop(context);
-                                              setState(() {
-                                                date.clear();
-                                                task.clear();
-                                                Status.clear();
-                                              });
-                                              getdat();
                                             },
                                             color: Colors.blue[900],
                                             child: Text(
                                               "Update",
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                              style: TextStyle(color: Colors.white),
                                             ),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        20.0)),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                           ),
                                           MaterialButton(
                                             onPressed: () {
                                               setState(() {
                                                 all = all - 1;
                                               });
-                                              firestoreInstance
-                                                  .collection("Users")
-                                                  .doc('$uid')
-                                                  .collection('Task')
-                                                  .doc('${date[index]}').delete();
-                                              firestoreInstance
-                                                  .collection("Users")
-                                                  .doc('$uid').update({'number': all});
-                                              Navigator.pop(context);
-                                              setState(() {
-                                                date.clear();
-                                                task.clear();
-                                                Status.clear();
+                                              firestoreInstance.collection("Users").doc('$uid').collection('Task').doc('${date[index]}').update(
+                                                  {
+                                                    'status': true,
+                                                  });
+                                              firestoreInstance.collection("Users").doc('$uid').update({
+                                                'number': all
                                               });
-                                              getdat();
+                                              Navigator.pop(context);
+                                              refreshList();
                                             },
                                             color: Colors.blue[900],
                                             child: Text(
                                               "Mark as Done",
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                              style: TextStyle(color: Colors.white),
                                             ),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        20.0)),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                           ),
+                                          SizedBox(height: 40)
                                         ],
-                                        elevation: 24,
+                                        elevation:
+                                        24,
                                       );
                                     },
+
                                   );
                                 },
 
@@ -539,15 +780,23 @@ class _calendarState extends State<calendar> {
           //Floating action button on Scaffold
 
           onPressed: () {
+            setState(() {
+              meet = "null";
+            });
             showDialog<void>(
               context: context,
               barrierDismissible: true, // user must tap button!
               builder: (BuildContext context) {
                 return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0)),
                   backgroundColor: Color.fromARGB(255, 48, 48, 54),
-                  title: const Text(
-                    'Create Task',
-                    style: TextStyle(color: Colors.white, fontSize: 22),
+                  title: Padding(
+                    padding: EdgeInsets.only(left: 10, top: 10),
+                    child: const Text(
+                      'Create Task',
+                      style: TextStyle(color: Colors.white, fontSize: 28),
+                    ),
                   ),
                   content: SingleChildScrollView(
                     child: Material(
@@ -557,10 +806,11 @@ class _calendarState extends State<calendar> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding:
+                              const EdgeInsets.only(top: 10, bottom: 20),
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey),
@@ -570,11 +820,12 @@ class _calendarState extends State<calendar> {
                                 padding: EdgeInsets.only(left: 4),
                                 child: TextFormField(
                                   style: TextStyle(
-                                      fontSize: 18, color: Colors.black),
+                                      fontSize: 18, color: Colors.white),
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: "Type here",
-                                      hintStyle: TextStyle(color: Colors.grey)),
+                                      hintText: "Title here(<25 chars)",
+                                      hintStyle:
+                                      TextStyle(color: Colors.grey)),
                                   keyboardType: TextInputType.visiblePassword,
                                   obscureText: false,
                                   onChanged: (value) {
@@ -583,8 +834,35 @@ class _calendarState extends State<calendar> {
                                 ),
                               ),
                             ),
+                            Padding(
+                              padding:
+                              const EdgeInsets.only(top: 10, bottom: 20),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(5)),
+                                width: 350,
+                                height: 50,
+                                padding: EdgeInsets.only(left: 4),
+                                child: TextFormField(
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Details here/Event Name",
+                                      hintStyle:
+                                      TextStyle(color: Colors.grey)),
+                                  keyboardType: TextInputType.visiblePassword,
+                                  obscureText: false,
+                                  onChanged: (value) {
+                                    tdet = value;
+                                  },
+                                ),
+                              ),
+                            ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
                               children: [
                                 MaterialButton(
                                   onPressed: () {
@@ -592,12 +870,12 @@ class _calendarState extends State<calendar> {
                                   },
                                   color: Colors.blue[900],
                                   child: Text(
-                                    "Select End Date",
+                                    "End Date & Time",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
-                                          BorderRadius.circular(10.0)),
+                                      BorderRadius.circular(10.0)),
                                 ),
                               ],
                             ),
@@ -606,15 +884,16 @@ class _calendarState extends State<calendar> {
                             ),
                             Text(
                               "Set Priority",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 18),
                             ),
                             StatefulBuilder(
                               builder: (context, setState) => Slider(
                                 value: _priority,
                                 max: 9,
-                                divisions:9,
-                                label:"Priority:${(_priority+1).round().toString()}",
+                                divisions: 9,
+                                label:
+                                "Priority:${(_priority + 1).round().toString()}",
                                 onChanged: (double value) {
                                   // print("$value");
                                   setState(() {
@@ -628,23 +907,9 @@ class _calendarState extends State<calendar> {
                               width: 20,
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
                               children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: const Icon(Icons.image),
-                                      color: Colors.white,
-                                      tooltip: 'Add image to task',
-                                      onPressed: () {},
-                                    ),
-                                    Text('Picture',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ))
-                                  ],
-                                ),
                                 Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
@@ -652,7 +917,147 @@ class _calendarState extends State<calendar> {
                                       color: Colors.white,
                                       icon: const Icon(Icons.person_add),
                                       tooltip: 'Add collaborators',
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        refreshUser();
+                                        showModalBottomSheet(
+                                            context: context,
+                                            builder: (BuildContext bc) {
+                                              return Padding(
+                                                padding:
+                                                const EdgeInsets.all(10),
+                                                child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    TextField(
+                                                      onChanged: (value) =>
+                                                          _runFilter(value),
+                                                      decoration:
+                                                      const InputDecoration(
+                                                          labelText:
+                                                          'Search',
+                                                          suffixIcon:
+                                                          Icon(Icons
+                                                              .search)),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    Expanded(
+                                                      child: _foundUsers
+                                                          .isNotEmpty
+                                                          ? RefreshIndicator(
+                                                        onRefresh:
+                                                        refreshList,
+                                                        backgroundColor:
+                                                        Colors.blue[
+                                                        900],
+                                                        color: Colors
+                                                            .white,
+                                                        child: StreamBuilder<
+                                                            QuerySnapshot>(
+                                                            stream: firestoreInstance
+                                                                .collection(
+                                                                'Users')
+                                                                .snapshots(),
+                                                            builder:
+                                                                (context,
+                                                                snapshot) {
+                                                              return ListView
+                                                                  .builder(
+                                                                shrinkWrap:
+                                                                true,
+                                                                itemCount:
+                                                                _foundUsers.length,
+                                                                itemBuilder:
+                                                                    (context, index) =>
+                                                                    Card(
+                                                                      key: ValueKey(_foundUsers[index]
+                                                                      [
+                                                                      "id"]),
+                                                                      color:
+                                                                      Colors.grey,
+                                                                      elevation:
+                                                                      4,
+                                                                      margin:
+                                                                      const EdgeInsets.symmetric(vertical: 10),
+                                                                      child:
+                                                                      ListTile(
+                                                                        leading:
+                                                                        IconButton(
+                                                                          onPressed: () {
+                                                                            setState(() {
+                                                                              all = all + 1;
+                                                                              if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                                                                                setState(() {
+                                                                                  priority = "green";
+                                                                                });
+                                                                              } else if (_priority.toInt() >= 4 && _priority.toInt() <= 7) {
+                                                                                setState(() {
+                                                                                  priority = "yellow";
+                                                                                });
+                                                                              } else {
+                                                                                setState(() {
+                                                                                  priority = "red";
+                                                                                });
+                                                                              }
+                                                                            });
+
+                                                                            firestoreInstance.collection("Users").doc('${_foundUsers[index]["id"]}').collection('Task').doc('$dateTime').set({
+                                                                              'Task': Task,
+                                                                              'Date': dateTime,
+                                                                              'Priority': priority,
+                                                                              'status': false,
+                                                                              'assignee':_auth.currentUser?.displayName,
+                                                                              'sdate': _sdate,
+                                                                              'meet': meet,
+                                                                              'Details': tdet,
+                                                                            });
+                                                                            showDialog(
+                                                                                context: context,
+                                                                                barrierDismissible: true,
+                                                                                builder: (BuildContext bs) {
+                                                                                  return AlertDialog(
+                                                                                    backgroundColor: Color.fromARGB(255, 56, 52, 52),
+                                                                                    title: Text("Task Assigned to ${_foundUsers[index]['username']}", style: TextStyle(color: Colors.white)),
+                                                                                  );
+                                                                                });
+                                                                            _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Task: ${Task} assigned to you by ${_auth.currentUser?.displayName}, check your app for new tasks");
+                                                                          },
+                                                                          icon: Icon(Icons.add),
+                                                                        ),
+                                                                        title:
+                                                                        Text(_foundUsers[index]['username']),
+                                                                        subtitle:
+                                                                        Text('${_foundUsers[index]["desig"]}'),
+                                                                        trailing:
+                                                                        IconButton(
+                                                                          icon: Icon(
+                                                                            Icons.chat,
+                                                                            color: Colors.white,
+                                                                          ),
+                                                                          onPressed: () {
+                                                                            _launcchat("https://wa.me/${_foundUsers[index]['phone']}?text=Please check your app for new tasks");
+                                                                          },
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                              );
+                                                            }),
+                                                      )
+                                                          : const Text(
+                                                        'No results found',
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                            24),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            });
+                                      },
                                     ),
                                     Text('Collaborate',
                                         style: TextStyle(
@@ -667,7 +1072,9 @@ class _calendarState extends State<calendar> {
                                       color: Colors.white,
                                       icon: const Icon(Icons.calendar_today),
                                       tooltip: 'Add meet',
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _launchInWebViewOrVC("https://meet.google.com");
+                                      },
                                     ),
                                     Text('Meeting',
                                         style: TextStyle(
@@ -676,57 +1083,111 @@ class _calendarState extends State<calendar> {
                                   ],
                                 ),
                               ],
-                            )
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(5)),
+                                width: 350,
+                                height: 50,
+                                padding: EdgeInsets.only(left: 4),
+                                child: TextFormField(
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Paste meet link here",
+                                      hintStyle:
+                                      TextStyle(color: Colors.grey)),
+                                  keyboardType: TextInputType.visiblePassword,
+                                  obscureText: false,
+                                  onChanged: (value) {
+                                    meet = value;
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
                   actions: <Widget>[
-                    MaterialButton(
-                      onPressed: () {
-                        setState(() {
-                          all = all + 1;
-                          if (_priority.toInt() >= 0 && _priority.toInt() < 4) {
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 30, right: 15),
+                      child: MaterialButton(
+                        onPressed: () {
+                          if (Task.isNotEmpty &&
+                              Task.length.toInt() < 25 &&
+                              dateTime
+                                  .difference(DateTime.now())
+                                  .isNegative !=
+                                  true) {
                             setState(() {
-                              priority = "green";
+                              all = all + 1;
+                              if (_priority.toInt() >= 0 &&
+                                  _priority.toInt() < 4) {
+                                setState(() {
+                                  priority = "green";
+                                });
+                              } else if (_priority.toInt() >= 4 &&
+                                  _priority.toInt() <= 7) {
+                                setState(() {
+                                  priority = "yellow";
+                                });
+                              } else {
+                                setState(() {
+                                  priority = "red";
+                                });
+                              }
                             });
-                          } else if (_priority.toInt() >= 4 &&
-                              _priority.toInt() <= 7) {
-                            setState(() {
-                              priority = "yellow";
+
+                            firestoreInstance
+                                .collection("Users")
+                                .doc('$uid')
+                                .collection('Task')
+                                .doc('$dateTime')
+                                .set({
+                              'Task': Task,
+                              'Details': tdet,
+                              'Date': dateTime,
+                              'Priority': priority,
+                              'status': false,
+                              'assignee':_auth.currentUser?.displayName,
+                              'sdate': _sdate,
+                              'meet': meet,
                             });
+                            firestoreInstance
+                                .collection("$uid")
+                                .doc("Data")
+                                .update({'number': all});
+                            refreshList();
+                            Navigator.pop(context);
                           } else {
-                            setState(() {
-                              priority = "red";
-                            });
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext bs) {
+                                  return AlertDialog(
+                                    backgroundColor:
+                                    Color.fromARGB(255, 56, 52, 52),
+                                    title: Text(
+                                        "Title and New date time needed or Title length to be less than 25 charachters",
+                                        style:
+                                        TextStyle(color: Colors.white)),
+                                  );
+                                });
                           }
-                        });
-                        firestoreInstance
-                            .collection("Users")
-                            .doc('$uid')
-                            .collection('Task')
-                            .doc('$dateTime')
-                            .set({
-                          'Task': Task,
-                          'Date': dateTime,
-                          'Priority': priority,
-                          'status': false,
-                          'sdate': _sdate,
-                        });
-                        firestoreInstance
-                            .collection("$uid")
-                            .doc("Data")
-                            .update({'number': all});
-                        Navigator.pop(context);
-                      },
-                      color: Colors.teal,
-                      child: Text(
-                        "Create",
-                        style: TextStyle(color: Colors.white),
+                        },
+                        color: Colors.blue[900],
+                        child: Text(
+                          "Create",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
                       ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
                     ),
                   ],
                   elevation: 24,
