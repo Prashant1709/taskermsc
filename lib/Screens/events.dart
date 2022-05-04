@@ -1022,7 +1022,7 @@ class _eventState extends State<event> {
                                                 ))),
                                       );
                                     } else {
-                                      return Column(mainAxisAlignment: MainAxisAlignment.centerFina,
+                                      return Column(mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.all(20.0),
