@@ -95,17 +95,17 @@ class _calendarState extends State<calendar> {
         // priority.add(prio);
         if (prio == "green") {
           setState(() {
-            pcol1.add(AssetImage("assets/green_background.jpg"));
+            pcol1.add(Colors.green);
           });
         }
         if (prio == "yellow") {
           setState(() {
-            pcol1.add(AssetImage("assets/yellow_background.png"));
+            pcol1.add(Colors.yellow);
           });
         }
         if (prio == "red") {
           setState(() {
-            pcol1.add(AssetImage("assets/red_background.jpg"));
+            pcol1.add(Colors.red);
           });
         }
       }
@@ -279,7 +279,7 @@ class _calendarState extends State<calendar> {
                                   mainAxisSpacing: 10),
                           itemCount: task.length,
                           itemBuilder: (context, int index) {
-                            if (task[0].isEmpty && Status[index]==false) {
+                            if (task[0].isEmpty && Status[index]==true) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Container(

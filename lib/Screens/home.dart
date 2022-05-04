@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:taskermsc/Screens/FAQ.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -394,6 +395,11 @@ class _homeState extends State<home> {
               ],
               indicatorColor: Colors.white,
             ),
+            actions: [
+              IconButton(onPressed: (){
+                Navigator.pushNamed(context,'/fa');
+              }, icon:Icon(Icons.help,color: Colors.white,))
+            ],
           ),
           drawer: Drawer(
             backgroundColor: Color.fromARGB(255, 36, 40, 42),
@@ -527,24 +533,16 @@ class _homeState extends State<home> {
                                 Divider(color: Colors.white),
 
                                 Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                      "Microsoft Learn Student Ambassadors are a global group of on-campus ambassadors sponsored by Microsoft who are eager to help fellow students, lead in their local tech community,and develop technical and career skills for the future. ",
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                                Text("\nWHAT IS MSC, KiiT Chapter ?",
-                                    style: TextStyle(color: Colors.white)),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                      "\nMicrosoft Student Community, KiiT chapter , is a technical community, under the wing of  Microsoft Learn Student Ambassadors.  Our community is dedicatedly working on elevating the coding culture at Kalinga Institute of Industrial Technology, Bhubaneswar by providing opportunities to students to work on projects and  boost their analytical and logical skills along with the coding.",
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                      "\nOur Project Wing is dedicated to provide the exposure to projects, bootcamps, hackathons, and many fun activities to increase the knowledge of out fellow peers. We have a YouTube channel  where we document all our events, a great place to learn from.",
-                                      style: TextStyle(color: Colors.white)),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Card(color: Color.fromARGB(246, 2, 105, 184),
+                                    elevation:10,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                          "Microsoft Learn Student Ambassadors are a global group of on-campus ambassadors sponsored by Microsoft who are eager to help fellow students, lead in their local tech community,and develop technical and career skills for the future. ",
+                                          style: TextStyle(color: Colors.white)),
+                                    ),
+                                  ),
                                 ),
                                 Divider(color: Colors.white),
 
@@ -922,16 +920,7 @@ class _homeState extends State<home> {
                         isScrollControlled: true);
                   },
                 ),
-                ListTile(
-                  leading: Icon(
-                    Icons.question_answer,
-                    color: Colors.teal,
-                  ),
-                  title: Text("FAQs", style: TextStyle(color: Colors.white)),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/faq');
-                  },
-                ),
+
                 ListTile(
                   leading: Icon(
                     Icons.exit_to_app,

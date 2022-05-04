@@ -72,6 +72,7 @@ class MyApp extends StatelessWidget {
           '/profile2': (context) => Profile2(),
           '/chat': (context) => chat(),
           '/event':(context)=>event(),
+          '/fa':(context)=>faq(),
         },
         home: Home(),
       );
@@ -90,7 +91,7 @@ class MyApp extends StatelessWidget {
           '/profile2': (context) => Profile2(),
           '/chat': (context) => chat(),
           '/event':(context)=>event(),
-          '/faq':(context)=>faq(),
+          '/fa':(context)=>faq(),
         },
         home: Home(),
       );

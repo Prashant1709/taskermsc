@@ -45,6 +45,13 @@ class _faqState extends State<faq> {
           'Simply add a task and then check the priority bar to set the priotity level of the task.',
       'isExpanded': false
     },
+    {
+      'id': 6,
+      'title': 'Q5: WHAT IS MSC, KiiT Chapter ?',
+      'description':
+      'Microsoft Student Community, KiiT chapter , is a technical community, under the wing of  Microsoft Learn Student Ambassadors.  Our community is dedicatedly working on elevating the coding culture at Kalinga Institute of Industrial Technology, Bhubaneswar by providing opportunities to students to work on projects and  boost their analytical and logical skills along with the coding.',
+      'isExpanded': false
+    },
   ];
   Widget build(BuildContext context) {
     return Scaffold(

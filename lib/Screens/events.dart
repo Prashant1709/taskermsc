@@ -779,7 +779,7 @@ class _eventState extends State<event> {
                   children: [
                     RefreshIndicator(
                       onRefresh: refreshList,
-                      backgroundColor: Colors.purple,
+                      backgroundColor: Colors.blue,
                       color: Colors.white,
                       child: SizedBox(
                         height: 700,
@@ -801,7 +801,7 @@ class _eventState extends State<event> {
                                             height: 100,
                                             width: 70,
                                             child: Card(
-                                                color: Colors.blueGrey,
+                                                color: Color.fromRGBO(238, 187, 195, 1),
                                                 child: OutlinedButton(
                                                   onPressed: () {
                                                     showDialog(
@@ -935,7 +935,7 @@ class _eventState extends State<event> {
                                             height: 100,
                                             width: 70,
                                             child: Card(
-                                                color: Colors.blueGrey,
+                                                color: Color.fromRGBO(238, 187, 195, 1),
                                                 child: OutlinedButton(
                                                   onPressed: () {
                                                     showDialog(
@@ -1022,15 +1022,19 @@ class _eventState extends State<event> {
                                                 ))),
                                       );
                                     } else {
-                                      return Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Center(
-                                            child: Text(
-                                          "All Clear Captain",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 32),
-                                        )),
+                                      return Column(mainAxisAlignment: MainAxisAlignment.centerFina,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Center(
+                                                child: Text(
+                                              "All Clear Captain",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 32),
+                                            )),
+                                          ),
+                                        ],
                                       );
                                     }
                                   });
@@ -1065,7 +1069,7 @@ class _eventState extends State<event> {
                                             height: 100,
                                             width: 70,
                                             child: Card(
-                                                color: Colors.blueGrey,
+                                                color: Color.fromRGBO(238, 187, 195, 1),
                                                 child: OutlinedButton(
                                                   onPressed: () {
                                                     showDialog(
@@ -1152,11 +1156,15 @@ class _eventState extends State<event> {
                                                 ))),
                                       );
                                     } else {
-                                      return Center(
-                                          child: Text(
-                                        "no Data to show",
-                                        style: TextStyle(color: Colors.white),
-                                      ));
+                                      return Column(mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Center(
+                                              child: Text(
+                                            "no Data to show",
+                                            style: TextStyle(color: Colors.white),
+                                          )),
+                                        ],
+                                      );
                                     }
                                   });
                             }),
